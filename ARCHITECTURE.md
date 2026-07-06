@@ -20,6 +20,7 @@ verdictlayer/
     verdict_layer_skeleton.py
   INTEGRATION_CHECKLIST.md
   GENLAYER_READ_INTEGRATION.md
+  GENLAYER_WRITE_PLAN.md
   README.md
   SUBMISSION_CHECKLIST.md
   DEMO_SCRIPT.md
@@ -42,6 +43,7 @@ verdictlayer/
     lib/
       genlayerReadClient.ts
       genlayerReadSmokeTest.ts
+      genlayerWriteTypes.ts
       README.md
       verdictLayerClient.ts
       verdictLayerClientTypes.ts
@@ -144,3 +146,9 @@ The UI can manually trigger read-only GenLayer contract calls through the GenLay
 The Vite frontend can call deployed GenLayer read methods through the diagnostics panel. The verified browser path reads the contract version and latest module results for Claim, Task, and Dispute verdicts.
 
 No wallet-signed writes have been added yet.
+
+## Write Transaction Planning
+
+The wallet-signed write lifecycle has been planned, and the installed GenLayerJS write API has been inspected. There is no write runtime yet.
+
+The next step is a dev-only write helper or diagnostics flow before wiring any production form submits to real GenLayer transactions.

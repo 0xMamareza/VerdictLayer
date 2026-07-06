@@ -26,6 +26,8 @@ Read diagnostics UI added for manual browser smoke testing of deployed contract 
 
 Browser read smoke test succeeded. The frontend can read deployed GenLayer contract state through the diagnostics panel while mock verdict flows remain active.
 
+Write integration status: transaction lifecycle planned. No wallet-signed writes implemented yet.
+
 Submission package status: README, checklist, and demo script prepared.
 
 Published repository: https://github.com/0xMamareza/VerdictLayer

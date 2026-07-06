@@ -16,6 +16,9 @@
 - Browser read smoke test can be run after adding local `.env`.
 - Browser read smoke test succeeded.
 - Contract read methods verified from frontend.
+- Write transaction plan created.
+- Write API inspected.
+- Write implementation not started yet.
 - Write transactions not implemented yet.
 - No wallet-signed write contract calls yet.
 - Mock mode remains active.
