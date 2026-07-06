@@ -4,7 +4,7 @@
 
 - Frontend mock flows are working.
 - Integration mode is hardcoded to mock.
-- No GenLayerJS installed yet.
+- GenLayerJS installed and SDK imports discovered.
 - No wallet connection yet.
 - No deployed contract address yet.
 
