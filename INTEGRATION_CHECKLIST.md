@@ -18,9 +18,15 @@
 - Contract read methods verified from frontend.
 - Write transaction plan created.
 - Write API inspected.
-- Write implementation not started yet.
-- Write transactions not implemented yet.
-- No wallet-signed write contract calls yet.
+- Dev-only Claim write diagnostics implemented.
+- Claim write diagnostics manually tested successfully.
+- Transaction hash recorded.
+- Read-after-write verified.
+- Production form writes not implemented yet.
+- Task/Dispute writes still pending.
+- Production form writes still pending.
+- Manual browser transaction test required.
+- No production wallet-signed write contract calls yet.
 - Mock mode remains active.
 - No deployed contract address yet.
 

@@ -3,6 +3,7 @@ import "./App.css";
 import { ClaimVerdictForm } from "./components/ClaimVerdictForm";
 import { DisputeVerdictForm } from "./components/DisputeVerdictForm";
 import { GenLayerReadDiagnostics } from "./components/GenLayerReadDiagnostics";
+import { GenLayerWriteDiagnostics } from "./components/GenLayerWriteDiagnostics";
 import { NetworkStatusCard } from "./components/NetworkStatusCard";
 import { TaskVerdictForm } from "./components/TaskVerdictForm";
 import { WalletStatusCard } from "./components/WalletStatusCard";
@@ -103,6 +104,8 @@ function App() {
   const selectedModule: VerdictModule | undefined = verdictModules.find(
     (module) => module.id === selectedModuleId,
   );
+  const isWalletConnected = walletState.status === "connected";
+  const isOnSupportedGenLayerNetwork = networkState.status === "connected_supported";
 
   function detectConnectedWalletNetwork(): void {
     const provider = getInjectedEthereumProvider();
@@ -246,6 +249,11 @@ function App() {
       </div>
 
       <GenLayerReadDiagnostics />
+      <GenLayerWriteDiagnostics
+        walletAddress={walletState.address}
+        isWalletConnected={isWalletConnected}
+        isOnSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
+      />
 
       <section className="module-grid" aria-label="VerdictLayer modules">
         {verdictModules.map((module) => (

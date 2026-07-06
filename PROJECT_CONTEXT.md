@@ -26,7 +26,11 @@ Read diagnostics UI added for manual browser smoke testing of deployed contract 
 
 Browser read smoke test succeeded. The frontend can read deployed GenLayer contract state through the diagnostics panel while mock verdict flows remain active.
 
-Write integration status: transaction lifecycle planned. No wallet-signed writes implemented yet.
+Write integration status: transaction lifecycle planned. Production wallet-signed writes are not implemented yet.
+
+Write diagnostics status: dev-only Claim write transaction path added. Production forms remain mock.
+
+Claim write diagnostics succeeded. A real wallet-signed GenLayer transaction was submitted from the browser and the updated latest claim verdict was read afterward.
 
 Submission package status: README, checklist, and demo script prepared.
 

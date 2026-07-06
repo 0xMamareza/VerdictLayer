@@ -396,6 +396,69 @@ h1 {
   overflow-wrap: anywhere;
 }
 
+.write-diagnostics-card {
+  border-color: #e5d4b8;
+}
+
+.write-warning {
+  margin-bottom: 0;
+  border: 1px solid #efd0a6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #76521b;
+  background: #fff5df;
+  font-weight: 800;
+}
+
+.write-sample-panel {
+  margin-top: 16px;
+  border: 1px solid #dce5df;
+  border-radius: 8px;
+  padding: 14px;
+  background: #fbfcfa;
+}
+
+.write-sample-panel h3 {
+  margin: 0 0 12px;
+  color: #17201c;
+  font-size: 0.95rem;
+}
+
+.write-sample-panel dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.write-sample-panel div {
+  display: grid;
+  gap: 4px;
+}
+
+.write-sample-panel dt {
+  color: #6b7b73;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.write-sample-panel dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #17201c;
+  font-weight: 700;
+}
+
+.write-status {
+  margin: 14px 0 0;
+  color: #24342c;
+  font-weight: 800;
+}
+
+.write-results {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .selected-panel {
   margin-top: 22px;
   padding: 26px;
@@ -673,7 +736,8 @@ h1 {
   .dispute-grid,
   .result-details,
   .diagnostics-config,
-  .diagnostics-results {
+  .diagnostics-results,
+  .write-results {
     grid-template-columns: 1fr;
   }
 

@@ -31,6 +31,7 @@ verdictlayer/
       DisputeVerdictForm.tsx
       DisputeVerdictResultCard.tsx
       GenLayerReadDiagnostics.tsx
+      GenLayerWriteDiagnostics.tsx
       NetworkStatusCard.tsx
       TaskVerdictForm.tsx
       TaskVerdictResultCard.tsx
@@ -43,6 +44,7 @@ verdictlayer/
     lib/
       genlayerReadClient.ts
       genlayerReadSmokeTest.ts
+      genlayerWriteClient.ts
       genlayerWriteTypes.ts
       README.md
       verdictLayerClient.ts
@@ -149,6 +151,18 @@ No wallet-signed writes have been added yet.
 
 ## Write Transaction Planning
 
-The wallet-signed write lifecycle has been planned, and the installed GenLayerJS write API has been inspected. There is no write runtime yet.
+The wallet-signed write lifecycle has been planned, and the installed GenLayerJS write API has been inspected. Production write runtime is not wired into the module forms yet.
 
-The next step is a dev-only write helper or diagnostics flow before wiring any production form submits to real GenLayer transactions.
+The next step after diagnostics validation is wiring production form submits to real GenLayer transactions behind the integration boundary.
+
+## Dev-Only Write Diagnostics Layer
+
+One Claim write transaction path exists for diagnostics. It is isolated from production forms, uses wallet-signed GenLayer `writeContract`, waits for a receipt, and reads the latest Claim result after the receipt.
+
+Task and Dispute write paths are not implemented yet, and production verdict forms remain mock-driven.
+
+## Verified Claim Write Path
+
+The browser can submit `submit_claim_verdict` through GenLayerJS. A wallet-signed transaction succeeded, and the read-after-write flow returned the updated latest Claim result.
+
+This path is still isolated from production forms.

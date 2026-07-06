@@ -130,3 +130,24 @@ It accepts `hash`, optional `status`, optional `interval`, and optional `retries
 7. Add production safety copy.
 8. Deploy public website.
 
+## Dev-Only Claim Write Diagnostics
+
+A dev-only diagnostics path for `submit_claim_verdict` has been implemented. It is isolated from the production Claim, Task, and Dispute forms, which still use mock runtime behavior.
+
+The diagnostics transaction requires:
+
+- Connected wallet.
+- Supported GenLayer network.
+- Configured public contract address.
+
+After the Claim write receipt is received, the diagnostics panel reads `get_latest_claim_verdict` and displays the latest raw Claim result.
+
+Task and Dispute writes are not implemented yet.
+
+## Claim Write Diagnostics Test Status
+
+The dev-only Claim write transaction was manually tested successfully. The transaction hash is recorded in `GENLAYER_WRITE_TEST_REPORT.md`.
+
+The read-after-write step returned the updated latest Claim result from `get_latest_claim_verdict`.
+
+Task and Dispute write paths are not implemented yet, and production form writes are not implemented yet.
