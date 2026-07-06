@@ -86,6 +86,7 @@ h1 {
 }
 
 .module-card,
+.wallet-card,
 .selected-panel {
   border: 1px solid #d9e1dc;
   border-radius: 8px;
@@ -110,6 +111,7 @@ h1 {
 }
 
 .module-card h2,
+.wallet-card h2,
 .selected-panel h2 {
   color: #121a15;
   font-size: 1.25rem;
@@ -117,6 +119,7 @@ h1 {
 }
 
 .module-card p,
+.wallet-card p,
 .selected-panel p {
   color: #5c6d65;
   line-height: 1.6;
@@ -162,6 +165,40 @@ h1 {
 
 .module-button:active {
   transform: translateY(1px);
+}
+
+.wallet-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  margin-top: 28px;
+  padding: 22px;
+}
+
+.wallet-card h2 {
+  margin-bottom: 10px;
+}
+
+.wallet-status {
+  margin-bottom: 10px;
+  color: #24342c;
+  font-weight: 800;
+}
+
+.wallet-message {
+  margin-bottom: 12px;
+}
+
+.wallet-note {
+  margin-bottom: 0;
+  color: #66766f;
+  font-size: 0.95rem;
+}
+
+.wallet-button {
+  width: min(220px, 100%);
+  flex: 0 0 auto;
 }
 
 .selected-panel {
@@ -423,6 +460,11 @@ h1 {
 
   .module-grid {
     grid-template-columns: 1fr;
+  }
+
+  .wallet-card {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .source-grid,

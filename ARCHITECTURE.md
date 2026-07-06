@@ -31,6 +31,7 @@ verdictlayer/
       TaskVerdictForm.tsx
       TaskVerdictResultCard.tsx
       VerdictResultCard.tsx
+      WalletStatusCard.tsx
     config/
       integration.ts
       modules.ts
@@ -40,8 +41,10 @@ verdictlayer/
       verdictLayerClientTypes.ts
       verdictLayerMockClient.ts
       verdictLayerRealClient.ts
+      wallet.ts
     types/
       contractSchemas.ts
+      ethereum.ts
       verdict.ts
     utils/
       mockClaimJudge.ts
@@ -101,3 +104,9 @@ The future step is replacing the mock client with real GenLayer integration thro
 All module submits now use async client calls. This prepares the UI for wallet-signed GenLayer transactions while keeping mock mode as the active runtime.
 
 No real GenLayerJS integration has been added yet.
+
+## Wallet Preparation Layer
+
+Injected wallet detection and a wallet account request flow have been added for future GenLayer transactions. There is no network switching yet, and no real GenLayer transaction calls have been implemented.
+
+Runtime remains in mock mode, so Claim, Task, and Dispute verdict flows continue to work without a connected wallet.

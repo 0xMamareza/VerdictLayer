@@ -5,7 +5,10 @@
 - Frontend mock flows are working.
 - Integration mode is hardcoded to mock.
 - GenLayerJS installed and SDK imports discovered.
-- No wallet connection yet.
+- Wallet detection/connect UI added.
+- No network switching yet.
+- No real contract calls yet.
+- Mock mode remains active.
 - No deployed contract address yet.
 
 ## B. Required decisions before real integration
