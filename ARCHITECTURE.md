@@ -19,6 +19,7 @@ verdictlayer/
     verdict_layer.py
     verdict_layer_skeleton.py
   INTEGRATION_CHECKLIST.md
+  GENLAYER_READ_INTEGRATION.md
   README.md
   SUBMISSION_CHECKLIST.md
   DEMO_SCRIPT.md
@@ -28,6 +29,7 @@ verdictlayer/
       ClaimVerdictForm.tsx
       DisputeVerdictForm.tsx
       DisputeVerdictResultCard.tsx
+      GenLayerReadDiagnostics.tsx
       NetworkStatusCard.tsx
       TaskVerdictForm.tsx
       TaskVerdictResultCard.tsx
@@ -38,6 +40,8 @@ verdictlayer/
       integration.ts
       modules.ts
     lib/
+      genlayerReadClient.ts
+      genlayerReadSmokeTest.ts
       README.md
       verdictLayerClient.ts
       verdictLayerClientTypes.ts
@@ -124,3 +128,19 @@ No real GenLayer transactions are sent from the detection layer. Runtime remains
 Wallet network switching support has been added with `wallet_switchEthereumChain`, plus a `wallet_addEthereumChain` fallback when the target GenLayer chain is missing from the wallet. The target network defaults to Studionet, while Bradbury metadata is prepared for later use.
 
 No real GenLayer writes have been added yet. Runtime remains in mock mode.
+
+## Read-Only GenLayer Client Layer
+
+Environment-based runtime selection is prepared through `src/config/integration.ts`, while mock remains the default unless `VITE_VERDICTLAYER_INTEGRATION_MODE=genlayer` is set. Read-only contract methods can be called through `src/lib/genlayerReadClient.ts`.
+
+Frontend forms still use the client boundary and remain safe for mock runtime by default. Write transactions remain unimplemented.
+
+## Read Diagnostics Layer
+
+The UI can manually trigger read-only GenLayer contract calls through the GenLayer Read Diagnostics panel. No transactions are sent, and mock verdict flows remain active.
+
+## Verified Browser Read Path
+
+The Vite frontend can call deployed GenLayer read methods through the diagnostics panel. The verified browser path reads the contract version and latest module results for Claim, Task, and Dispute verdicts.
+
+No wallet-signed writes have been added yet.

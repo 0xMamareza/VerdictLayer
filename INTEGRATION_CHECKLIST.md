@@ -10,7 +10,14 @@
 - Known networks configured: Studionet and Bradbury.
 - Network switching UI added for Studionet.
 - Bradbury metadata prepared.
-- No real contract calls yet.
+- Env-based integration mode prepared.
+- Read-only GenLayer client layer added.
+- Read diagnostics UI added.
+- Browser read smoke test can be run after adding local `.env`.
+- Browser read smoke test succeeded.
+- Contract read methods verified from frontend.
+- Write transactions not implemented yet.
+- No wallet-signed write contract calls yet.
 - Mock mode remains active.
 - No deployed contract address yet.
 

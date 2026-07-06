@@ -20,6 +20,12 @@ Network UI status: wallet chain detection added for Studionet and Bradbury. Runt
 
 Network switching status: users can switch/add the target GenLayer network through wallet RPC methods. Runtime remains mock.
 
+Real integration status: read-only GenLayer client layer prepared. Write transactions are not implemented yet. Mock remains default.
+
+Read diagnostics UI added for manual browser smoke testing of deployed contract read methods.
+
+Browser read smoke test succeeded. The frontend can read deployed GenLayer contract state through the diagnostics panel while mock verdict flows remain active.
+
 Submission package status: README, checklist, and demo script prepared.
 
 Published repository: https://github.com/0xMamareza/VerdictLayer

@@ -8,8 +8,10 @@ The client interface is now async. Mock mode is still active, but the async shap
 
 `verdictLayerMockClient.ts` is temporary. It exposes contract-shaped submit functions while still using local deterministic mock utilities internally.
 
-`verdictLayerRealClient.ts` is a placeholder for future GenLayerJS integration. It intentionally throws until wallet, network, and contract decisions are made.
+`verdictLayerRealClient.ts` keeps submit/write methods blocked while exposing read-only helpers for deployed contract reads.
 
-`verdictLayerClient.ts` is the active integration selector. It currently chooses the mock client because `INTEGRATION_MODE` is hardcoded to `"mock"` in `src/config/integration.ts`.
+`genlayerReadClient.ts` is the read-only GenLayerJS wrapper. It does not send wallet-signed writes.
+
+`verdictLayerClient.ts` is the active integration selector. It chooses mock mode by default unless `VITE_VERDICTLAYER_INTEGRATION_MODE=genlayer` is configured.
 
 React components should call `verdictLayerClient`, not mock utilities or contract APIs directly.

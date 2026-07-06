@@ -95,6 +95,7 @@ h1 {
 .module-card,
 .wallet-card,
 .network-card,
+.diagnostics-card,
 .selected-panel {
   border: 1px solid #d9e1dc;
   border-radius: 8px;
@@ -121,6 +122,7 @@ h1 {
 .module-card h2,
 .wallet-card h2,
 .network-card h2,
+.diagnostics-card h2,
 .selected-panel h2 {
   color: #121a15;
   font-size: 1.25rem;
@@ -130,6 +132,7 @@ h1 {
 .module-card p,
 .wallet-card p,
 .network-card p,
+.diagnostics-card p,
 .selected-panel p {
   color: #5c6d65;
   line-height: 1.6;
@@ -294,6 +297,103 @@ h1 {
   margin: 0;
   color: #17201c;
   font-weight: 800;
+}
+
+.diagnostics-card {
+  margin-top: 18px;
+  padding: 22px;
+}
+
+.diagnostics-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 18px;
+}
+
+.diagnostics-header h2 {
+  margin-bottom: 10px;
+}
+
+.diagnostics-note {
+  margin-bottom: 0;
+  color: #66766f;
+  font-size: 0.95rem;
+}
+
+.diagnostics-button {
+  width: min(260px, 100%);
+  flex: 0 0 auto;
+}
+
+.diagnostics-config {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.diagnostics-config div {
+  border: 1px solid #dce5df;
+  border-radius: 8px;
+  padding: 12px;
+  background: #f7faf7;
+}
+
+.diagnostics-config dt {
+  margin-bottom: 6px;
+  color: #6b7b73;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.diagnostics-config dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #17201c;
+  font-weight: 800;
+}
+
+.diagnostics-error {
+  margin-top: 14px;
+}
+
+.diagnostics-results {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.diagnostics-results div {
+  border: 1px solid #dce5df;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fbfcfa;
+}
+
+.diagnostics-results h3 {
+  margin: 0 0 8px;
+  color: #17201c;
+  font-size: 0.9rem;
+}
+
+.diagnostics-results pre {
+  min-height: 72px;
+  max-height: 180px;
+  margin: 0;
+  overflow: auto;
+  border-radius: 8px;
+  padding: 10px;
+  color: #17201c;
+  background: #eef3ef;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .selected-panel {
@@ -562,7 +662,8 @@ h1 {
   }
 
   .wallet-card,
-  .network-card {
+  .network-card,
+  .diagnostics-header {
     align-items: stretch;
     flex-direction: column;
   }
@@ -570,7 +671,9 @@ h1 {
   .source-grid,
   .proof-grid,
   .dispute-grid,
-  .result-details {
+  .result-details,
+  .diagnostics-config,
+  .diagnostics-results {
     grid-template-columns: 1fr;
   }
 

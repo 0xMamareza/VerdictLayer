@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { ClaimVerdictForm } from "./components/ClaimVerdictForm";
 import { DisputeVerdictForm } from "./components/DisputeVerdictForm";
+import { GenLayerReadDiagnostics } from "./components/GenLayerReadDiagnostics";
 import { NetworkStatusCard } from "./components/NetworkStatusCard";
 import { TaskVerdictForm } from "./components/TaskVerdictForm";
 import { WalletStatusCard } from "./components/WalletStatusCard";
@@ -243,6 +244,8 @@ function App() {
           isSwitchingNetwork={isSwitchingNetwork}
         />
       </div>
+
+      <GenLayerReadDiagnostics />
 
       <section className="module-grid" aria-label="VerdictLayer modules">
         {verdictModules.map((module) => (
