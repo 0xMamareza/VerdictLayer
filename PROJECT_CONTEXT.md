@@ -12,6 +12,8 @@ Current integration mode: local mock contract boundary. No wallet or GenLayerJS 
 
 Current runtime mode: mock.
 
+Frontend client boundary migrated to async mode. Runtime remains mock.
+
 Submission package status: README, checklist, and demo script prepared.
 
 Published repository: https://github.com/0xMamareza/VerdictLayer

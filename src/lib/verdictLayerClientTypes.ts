@@ -8,7 +8,7 @@ import type {
 } from "../types/contractSchemas";
 
 export type VerdictLayerClient = {
-  submitClaimVerdict(input: ClaimVerdictContractInput): ClaimVerdictContractResult;
-  submitTaskVerdict(input: TaskVerdictContractInput): TaskVerdictContractResult;
-  submitDisputeVerdict(input: DisputeVerdictContractInput): DisputeVerdictContractResult;
+  submitClaimVerdict(input: ClaimVerdictContractInput): Promise<ClaimVerdictContractResult>;
+  submitTaskVerdict(input: TaskVerdictContractInput): Promise<TaskVerdictContractResult>;
+  submitDisputeVerdict(input: DisputeVerdictContractInput): Promise<DisputeVerdictContractResult>;
 };

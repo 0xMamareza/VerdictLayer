@@ -95,3 +95,9 @@ Frontend integration is still intentionally separated through the client boundar
 The frontend and contract are intentionally decoupled. The frontend demonstrates the UX for all three verdict modules, while the contract demonstrates GenLayer deployment and the method interface.
 
 The future step is replacing the mock client with real GenLayer integration through the existing client boundary layer.
+
+## Async Client Boundary
+
+All module submits now use async client calls. This prepares the UI for wallet-signed GenLayer transactions while keeping mock mode as the active runtime.
+
+No real GenLayerJS integration has been added yet.

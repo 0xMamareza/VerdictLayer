@@ -4,6 +4,8 @@ This folder is the future integration boundary between React components and the 
 
 `verdictLayerClientTypes.ts` defines the stable client interface that React components depend on.
 
+The client interface is now async. Mock mode is still active, but the async shape matches the future GenLayer write/read transaction flow.
+
 `verdictLayerMockClient.ts` is temporary. It exposes contract-shaped submit functions while still using local deterministic mock utilities internally.
 
 `verdictLayerRealClient.ts` is a placeholder for future GenLayerJS integration. It intentionally throws until wallet, network, and contract decisions are made.

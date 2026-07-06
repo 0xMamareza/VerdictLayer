@@ -10,18 +10,22 @@ import type { VerdictLayerClient } from "./verdictLayerClientTypes";
 
 function throwNotImplemented(): never {
   throw new Error(
-    "GenLayerJS integration is not implemented yet. Current mode should remain mock. Check INTEGRATION_CHECKLIST.md.",
+    "GenLayerJS integration is not implemented yet. Current runtime mode should remain mock. See INTEGRATION_CHECKLIST.md.",
   );
 }
 
 export const verdictLayerRealClient: VerdictLayerClient = {
-  submitClaimVerdict(_input: ClaimVerdictContractInput): ClaimVerdictContractResult {
+  async submitClaimVerdict(
+    _input: ClaimVerdictContractInput,
+  ): Promise<ClaimVerdictContractResult> {
     return throwNotImplemented();
   },
-  submitTaskVerdict(_input: TaskVerdictContractInput): TaskVerdictContractResult {
+  async submitTaskVerdict(_input: TaskVerdictContractInput): Promise<TaskVerdictContractResult> {
     return throwNotImplemented();
   },
-  submitDisputeVerdict(_input: DisputeVerdictContractInput): DisputeVerdictContractResult {
+  async submitDisputeVerdict(
+    _input: DisputeVerdictContractInput,
+  ): Promise<DisputeVerdictContractResult> {
     return throwNotImplemented();
   },
 };

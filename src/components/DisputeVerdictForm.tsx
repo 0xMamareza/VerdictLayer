@@ -10,6 +10,8 @@ export function DisputeVerdictForm() {
   const [evidence, setEvidence] = useState<string>("");
   const [decisionRule, setDecisionRule] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [result, setResult] = useState<DisputeVerdictResult | null>(null);
 
   function validateInputs(): string | null {
@@ -36,27 +38,39 @@ export function DisputeVerdictForm() {
     return null;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
 
     const validationMessage: string | null = validateInputs();
 
     if (validationMessage) {
       setErrorMessage(validationMessage);
+      setSubmitError(null);
       setResult(null);
       return;
     }
 
     setErrorMessage(null);
-    setResult(
-      verdictLayerClient.submitDisputeVerdict({
+    setSubmitError(null);
+    setIsSubmitting(true);
+
+    try {
+      const nextResult: DisputeVerdictResult = await verdictLayerClient.submitDisputeVerdict({
         disputeTitle: disputeTitle.trim(),
         sideAClaim: sideAClaim.trim(),
         sideBClaim: sideBClaim.trim(),
         evidence: evidence.trim(),
         decisionRule: decisionRule.trim(),
-      }),
-    );
+      });
+      setResult(nextResult);
+    } catch (error: unknown) {
+      setSubmitError(
+        error instanceof Error ? error.message : "Unable to generate mock resolution.",
+      );
+      setResult(null);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -115,14 +129,18 @@ export function DisputeVerdictForm() {
         </label>
 
         {errorMessage ? <p className="form-error">{errorMessage}</p> : null}
+        {submitError ? <p className="form-error">{submitError}</p> : null}
 
-        <button className="module-button form-submit" type="submit">
-          Generate Mock Resolution
+        <button className="module-button form-submit" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Resolving..." : "Generate Mock Resolution"}
         </button>
       </form>
 
       <p className="helper-text">
         This is a local mock resolution. GenLayer Intelligent Contract integration comes later.
+      </p>
+      <p className="helper-text">
+        Async-ready: this flow is prepared for future wallet-signed GenLayer transactions.
       </p>
 
       {result ? <DisputeVerdictResultCard result={result} /> : null}

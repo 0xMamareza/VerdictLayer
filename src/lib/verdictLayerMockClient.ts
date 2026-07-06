@@ -11,9 +11,9 @@ import { mockDisputeResolver } from "../utils/mockDisputeResolver";
 import { mockTaskJudge } from "../utils/mockTaskJudge";
 import type { VerdictLayerClient } from "./verdictLayerClientTypes";
 
-export function submitClaimVerdict(
+export async function submitClaimVerdict(
   input: ClaimVerdictContractInput,
-): ClaimVerdictContractResult {
+): Promise<ClaimVerdictContractResult> {
   return mockClaimJudge({
     claim: input.claim,
     sourceUrls: [input.sourceUrl1, input.sourceUrl2, input.sourceUrl3],
@@ -21,16 +21,18 @@ export function submitClaimVerdict(
   });
 }
 
-export function submitTaskVerdict(input: TaskVerdictContractInput): TaskVerdictContractResult {
+export async function submitTaskVerdict(
+  input: TaskVerdictContractInput,
+): Promise<TaskVerdictContractResult> {
   return mockTaskJudge({
     ...input,
     generatedAt: new Date().toISOString(),
   });
 }
 
-export function submitDisputeVerdict(
+export async function submitDisputeVerdict(
   input: DisputeVerdictContractInput,
-): DisputeVerdictContractResult {
+): Promise<DisputeVerdictContractResult> {
   return mockDisputeResolver({
     ...input,
     generatedAt: new Date().toISOString(),

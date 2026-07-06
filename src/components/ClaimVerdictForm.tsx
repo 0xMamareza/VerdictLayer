@@ -9,6 +9,8 @@ export function ClaimVerdictForm() {
   const [claim, setClaim] = useState<string>("");
   const [sourceUrls, setSourceUrls] = useState<string[]>([...emptySourceUrls]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [result, setResult] = useState<ClaimVerdictResult | null>(null);
 
   function updateSourceUrl(index: number, value: string): void {
@@ -19,7 +21,7 @@ export function ClaimVerdictForm() {
     );
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
 
     const trimmedClaim: string = claim.trim();
@@ -27,25 +29,36 @@ export function ClaimVerdictForm() {
 
     if (trimmedClaim.length === 0) {
       setErrorMessage("Enter a claim to generate a mock verdict.");
+      setSubmitError(null);
       setResult(null);
       return;
     }
 
     if (!hasSourceUrl) {
       setErrorMessage("Add at least one source URL.");
+      setSubmitError(null);
       setResult(null);
       return;
     }
 
     setErrorMessage(null);
-    setResult(
-      verdictLayerClient.submitClaimVerdict({
+    setSubmitError(null);
+    setIsSubmitting(true);
+
+    try {
+      const nextResult: ClaimVerdictResult = await verdictLayerClient.submitClaimVerdict({
         claim: trimmedClaim,
         sourceUrl1: sourceUrls[0] ?? "",
         sourceUrl2: sourceUrls[1] ?? "",
         sourceUrl3: sourceUrls[2] ?? "",
-      }),
-    );
+      });
+      setResult(nextResult);
+    } catch (error: unknown) {
+      setSubmitError(error instanceof Error ? error.message : "Unable to generate mock verdict.");
+      setResult(null);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -76,14 +89,18 @@ export function ClaimVerdictForm() {
         </div>
 
         {errorMessage ? <p className="form-error">{errorMessage}</p> : null}
+        {submitError ? <p className="form-error">{submitError}</p> : null}
 
-        <button className="module-button form-submit" type="submit">
-          Generate Mock Verdict
+        <button className="module-button form-submit" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Generating..." : "Generate Mock Verdict"}
         </button>
       </form>
 
       <p className="helper-text">
         This is a local mock verdict. GenLayer Intelligent Contract integration comes later.
+      </p>
+      <p className="helper-text">
+        Async-ready: this flow is prepared for future wallet-signed GenLayer transactions.
       </p>
 
       {result ? <VerdictResultCard result={result} /> : null}

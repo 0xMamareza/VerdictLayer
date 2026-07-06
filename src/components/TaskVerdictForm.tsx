@@ -11,6 +11,8 @@ export function TaskVerdictForm() {
   const [githubRepoUrl, setGithubRepoUrl] = useState<string>("");
   const [explanation, setExplanation] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [result, setResult] = useState<TaskVerdictResult | null>(null);
 
   function hasProofField(): boolean {
@@ -19,7 +21,7 @@ export function TaskVerdictForm() {
     );
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
 
     const trimmedTaskTitle: string = taskTitle.trim();
@@ -27,33 +29,45 @@ export function TaskVerdictForm() {
 
     if (trimmedTaskTitle.length === 0) {
       setErrorMessage("Enter a task title to generate a mock review.");
+      setSubmitError(null);
       setResult(null);
       return;
     }
 
     if (trimmedTaskRequirements.length === 0) {
       setErrorMessage("Enter task requirements to generate a mock review.");
+      setSubmitError(null);
       setResult(null);
       return;
     }
 
     if (!hasProofField()) {
       setErrorMessage("Add at least one proof field before generating a mock review.");
+      setSubmitError(null);
       setResult(null);
       return;
     }
 
     setErrorMessage(null);
-    setResult(
-      verdictLayerClient.submitTaskVerdict({
+    setSubmitError(null);
+    setIsSubmitting(true);
+
+    try {
+      const nextResult: TaskVerdictResult = await verdictLayerClient.submitTaskVerdict({
         taskTitle: trimmedTaskTitle,
         taskRequirements: trimmedTaskRequirements,
         contractAddress,
         transactionHash,
         githubRepoUrl,
         explanation,
-      }),
-    );
+      });
+      setResult(nextResult);
+    } catch (error: unknown) {
+      setSubmitError(error instanceof Error ? error.message : "Unable to generate mock review.");
+      setResult(null);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -122,14 +136,18 @@ export function TaskVerdictForm() {
         </label>
 
         {errorMessage ? <p className="form-error">{errorMessage}</p> : null}
+        {submitError ? <p className="form-error">{submitError}</p> : null}
 
-        <button className="module-button form-submit" type="submit">
-          Generate Mock Review
+        <button className="module-button form-submit" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Reviewing..." : "Generate Mock Review"}
         </button>
       </form>
 
       <p className="helper-text">
         This is a local mock review. GenLayer Intelligent Contract integration comes later.
+      </p>
+      <p className="helper-text">
+        Async-ready: this flow is prepared for future wallet-signed GenLayer transactions.
       </p>
 
       {result ? <TaskVerdictResultCard result={result} /> : null}
