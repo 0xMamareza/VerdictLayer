@@ -6,6 +6,8 @@
 - Integration mode is hardcoded to mock.
 - GenLayerJS installed and SDK imports discovered.
 - Wallet detection/connect UI added.
+- GenLayer network detection UI added.
+- Known networks configured: Studionet and Bradbury.
 - No network switching yet.
 - No real contract calls yet.
 - Mock mode remains active.

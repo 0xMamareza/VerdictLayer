@@ -85,8 +85,16 @@ h1 {
   margin-top: 36px;
 }
 
+.status-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+
 .module-card,
 .wallet-card,
+.network-card,
 .selected-panel {
   border: 1px solid #d9e1dc;
   border-radius: 8px;
@@ -112,6 +120,7 @@ h1 {
 
 .module-card h2,
 .wallet-card h2,
+.network-card h2,
 .selected-panel h2 {
   color: #121a15;
   font-size: 1.25rem;
@@ -120,6 +129,7 @@ h1 {
 
 .module-card p,
 .wallet-card p,
+.network-card p,
 .selected-panel p {
   color: #5c6d65;
   line-height: 1.6;
@@ -172,33 +182,84 @@ h1 {
   align-items: center;
   justify-content: space-between;
   gap: 22px;
-  margin-top: 28px;
   padding: 22px;
 }
 
-.wallet-card h2 {
+.network-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding: 22px;
+}
+
+.wallet-card h2,
+.network-card h2 {
   margin-bottom: 10px;
 }
 
-.wallet-status {
+.wallet-status,
+.network-status {
   margin-bottom: 10px;
   color: #24342c;
   font-weight: 800;
 }
 
-.wallet-message {
+.wallet-message,
+.network-warning {
   margin-bottom: 12px;
 }
 
-.wallet-note {
+.network-warning {
+  border: 1px solid #efd0a6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #76521b;
+  background: #fff5df;
+  font-weight: 700;
+}
+
+.wallet-note,
+.network-note {
   margin-bottom: 0;
   color: #66766f;
   font-size: 0.95rem;
 }
 
-.wallet-button {
+.wallet-button,
+.network-button {
   width: min(220px, 100%);
   flex: 0 0 auto;
+}
+
+.network-details {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.network-details div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid #dce5df;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #f7faf7;
+}
+
+.network-details dt {
+  color: #6b7b73;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.network-details dd {
+  margin: 0;
+  color: #17201c;
+  font-weight: 800;
 }
 
 .selected-panel {
@@ -462,7 +523,12 @@ h1 {
     grid-template-columns: 1fr;
   }
 
-  .wallet-card {
+  .status-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wallet-card,
+  .network-card {
     align-items: stretch;
     flex-direction: column;
   }

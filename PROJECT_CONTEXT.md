@@ -16,6 +16,8 @@ Frontend client boundary migrated to async mode. Runtime remains mock.
 
 Wallet UI status: injected wallet detection and connect flow added. Runtime remains mock.
 
+Network UI status: wallet chain detection added for Studionet and Bradbury. Runtime remains mock.
+
 Submission package status: README, checklist, and demo script prepared.
 
 Published repository: https://github.com/0xMamareza/VerdictLayer

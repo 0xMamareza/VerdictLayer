@@ -2,21 +2,69 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { ClaimVerdictForm } from "./components/ClaimVerdictForm";
 import { DisputeVerdictForm } from "./components/DisputeVerdictForm";
+import { NetworkStatusCard } from "./components/NetworkStatusCard";
 import { TaskVerdictForm } from "./components/TaskVerdictForm";
 import { WalletStatusCard } from "./components/WalletStatusCard";
+import { getKnownGenLayerNetworkByChainId } from "./config/genlayerNetworks";
 import { verdictModules, type VerdictModule, type VerdictModuleId } from "./config/modules";
 import {
   getInjectedEthereumProvider,
+  getWalletChainId,
+  parseHexChainIdToDecimal,
   requestWalletAccounts,
+  type NetworkDetectionState,
   type WalletConnectionState,
 } from "./lib/wallet";
 
-function getReadableErrorMessage(error: unknown): string {
+function getReadableErrorMessage(error: unknown, fallbackMessage: string): string {
   if (error instanceof Error && error.message.trim().length > 0) {
     return error.message;
   }
 
-  return "Wallet connection failed.";
+  return fallbackMessage;
+}
+
+function getNotDetectedNetworkState(): NetworkDetectionState {
+  return {
+    status: "not_detected",
+    chainIdHex: null,
+    chainIdDecimal: null,
+    networkLabel: null,
+    errorMessage: null,
+  };
+}
+
+function getNotConnectedNetworkState(): NetworkDetectionState {
+  return {
+    status: "not_connected",
+    chainIdHex: null,
+    chainIdDecimal: null,
+    networkLabel: null,
+    errorMessage: null,
+  };
+}
+
+function getNetworkStateFromChainId(chainIdHex: string): NetworkDetectionState {
+  const knownNetwork = getKnownGenLayerNetworkByChainId(chainIdHex);
+  const chainIdDecimal = knownNetwork?.chainIdDecimal ?? parseHexChainIdToDecimal(chainIdHex);
+
+  if (knownNetwork) {
+    return {
+      status: "connected_supported",
+      chainIdHex: knownNetwork.chainIdHex,
+      chainIdDecimal,
+      networkLabel: knownNetwork.label,
+      errorMessage: null,
+    };
+  }
+
+  return {
+    status: "connected_unsupported",
+    chainIdHex,
+    chainIdDecimal,
+    networkLabel: null,
+    errorMessage: null,
+  };
 }
 
 function App() {
@@ -27,6 +75,9 @@ function App() {
     errorMessage: null,
     isMetaMask: false,
   });
+  const [networkState, setNetworkState] = useState<NetworkDetectionState>(
+    getNotDetectedNetworkState,
+  );
 
   useEffect(() => {
     const provider = getInjectedEthereumProvider();
@@ -37,11 +88,59 @@ function App() {
       errorMessage: null,
       isMetaMask: provider?.isMetaMask === true,
     });
+    setNetworkState(provider ? getNotConnectedNetworkState() : getNotDetectedNetworkState());
   }, []);
 
   const selectedModule: VerdictModule | undefined = verdictModules.find(
     (module) => module.id === selectedModuleId,
   );
+
+  function detectConnectedWalletNetwork(): void {
+    const provider = getInjectedEthereumProvider();
+
+    if (!provider) {
+      setNetworkState(getNotDetectedNetworkState());
+      return;
+    }
+
+    setNetworkState({
+      status: "checking",
+      chainIdHex: null,
+      chainIdDecimal: null,
+      networkLabel: null,
+      errorMessage: null,
+    });
+
+    void getWalletChainId()
+      .then((chainIdHex) => {
+        setNetworkState(getNetworkStateFromChainId(chainIdHex));
+      })
+      .catch((error: unknown) => {
+        setNetworkState({
+          status: "error",
+          chainIdHex: null,
+          chainIdDecimal: null,
+          networkLabel: null,
+          errorMessage: getReadableErrorMessage(error, "Network detection failed."),
+        });
+      });
+  }
+
+  function handleRefreshNetwork(): void {
+    const provider = getInjectedEthereumProvider();
+
+    if (!provider) {
+      setNetworkState(getNotDetectedNetworkState());
+      return;
+    }
+
+    if (walletState.status !== "connected") {
+      setNetworkState(getNotConnectedNetworkState());
+      return;
+    }
+
+    detectConnectedWalletNetwork();
+  }
 
   function handleConnectWallet(): void {
     const provider = getInjectedEthereumProvider();
@@ -67,14 +166,16 @@ function App() {
           errorMessage: null,
           isMetaMask: provider?.isMetaMask === true,
         });
+        detectConnectedWalletNetwork();
       })
       .catch((error: unknown) => {
         setWalletState({
           status: "error",
           address: null,
-          errorMessage: getReadableErrorMessage(error),
+          errorMessage: getReadableErrorMessage(error, "Wallet connection failed."),
           isMetaMask: provider?.isMetaMask === true,
         });
+        setNetworkState(provider ? getNotConnectedNetworkState() : getNotDetectedNetworkState());
       });
   }
 
@@ -90,7 +191,13 @@ function App() {
         </p>
       </section>
 
-      <WalletStatusCard walletState={walletState} onConnect={handleConnectWallet} />
+      <div className="status-card-grid">
+        <WalletStatusCard walletState={walletState} onConnect={handleConnectWallet} />
+        <NetworkStatusCard
+          networkState={networkState}
+          onRefreshNetwork={handleRefreshNetwork}
+        />
+      </div>
 
       <section className="module-grid" aria-label="VerdictLayer modules">
         {verdictModules.map((module) => (

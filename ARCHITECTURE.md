@@ -28,11 +28,13 @@ verdictlayer/
       ClaimVerdictForm.tsx
       DisputeVerdictForm.tsx
       DisputeVerdictResultCard.tsx
+      NetworkStatusCard.tsx
       TaskVerdictForm.tsx
       TaskVerdictResultCard.tsx
       VerdictResultCard.tsx
       WalletStatusCard.tsx
     config/
+      genlayerNetworks.ts
       integration.ts
       modules.ts
     lib/
@@ -110,3 +112,9 @@ No real GenLayerJS integration has been added yet.
 Injected wallet detection and a wallet account request flow have been added for future GenLayer transactions. There is no network switching yet, and no real GenLayer transaction calls have been implemented.
 
 Runtime remains in mock mode, so Claim, Task, and Dispute verdict flows continue to work without a connected wallet.
+
+## Network Detection Layer
+
+Static GenLayer network metadata has been added for Studionet and Bradbury. The app can read the connected wallet chain id with `eth_chainId` and display whether the wallet is on a supported GenLayer network.
+
+Network switching is not implemented yet, and no real GenLayer transactions are sent. Runtime remains in mock mode.
