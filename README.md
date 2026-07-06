@@ -2,6 +2,8 @@
 
 AI-native verdicts for claims, tasks, and disputes.
 
+GitHub Repository: https://github.com/0xMamareza/VerdictLayer
+
 ## What VerdictLayer Is
 
 VerdictLayer is a GenLayer-powered Web3 MVP for turning messy evidence into structured verdicts. It gives builders a simple interface for checking claims, reviewing task submissions, and resolving small evidence-based disputes.

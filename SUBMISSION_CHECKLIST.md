@@ -42,7 +42,7 @@
 
 ## Links
 
-- GitHub repo link: TBD
+- GitHub repo link: https://github.com/0xMamareza/VerdictLayer
 
 ## Final Submission Notes
 

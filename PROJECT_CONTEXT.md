@@ -14,6 +14,8 @@ Current runtime mode: mock.
 
 Submission package status: README, checklist, and demo script prepared.
 
+Published repository: https://github.com/0xMamareza/VerdictLayer
+
 ## Current Contract Status
 
 - v0.1 deterministic GenLayer contract deployed manually.
