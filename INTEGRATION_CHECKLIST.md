@@ -8,7 +8,8 @@
 - Wallet detection/connect UI added.
 - GenLayer network detection UI added.
 - Known networks configured: Studionet and Bradbury.
-- No network switching yet.
+- Network switching UI added for Studionet.
+- Bradbury metadata prepared.
 - No real contract calls yet.
 - Mock mode remains active.
 - No deployed contract address yet.

@@ -6,7 +6,14 @@ export type GenLayerNetworkConfig = {
   chainIdDecimal: number;
   chainIdHex: string;
   status: "development" | "testnet";
+  nativeCurrencyName: string;
+  nativeCurrencySymbol: string;
+  nativeCurrencyDecimals: number;
+  rpcUrls: string[];
+  blockExplorerUrls: string[];
 };
+
+export const DEFAULT_TARGET_GENLAYER_NETWORK_KEY: GenLayerNetworkKey = "studionet";
 
 export const GENLAYER_NETWORKS: GenLayerNetworkConfig[] = [
   {
@@ -15,6 +22,11 @@ export const GENLAYER_NETWORKS: GenLayerNetworkConfig[] = [
     chainIdDecimal: 61999,
     chainIdHex: "0xf22f",
     status: "development",
+    nativeCurrencyName: "GEN",
+    nativeCurrencySymbol: "GEN",
+    nativeCurrencyDecimals: 18,
+    rpcUrls: ["https://studio.genlayer.com/api"],
+    blockExplorerUrls: [],
   },
   {
     key: "bradbury",
@@ -22,8 +34,23 @@ export const GENLAYER_NETWORKS: GenLayerNetworkConfig[] = [
     chainIdDecimal: 4221,
     chainIdHex: "0x107d",
     status: "testnet",
+    nativeCurrencyName: "GEN",
+    nativeCurrencySymbol: "GEN",
+    nativeCurrencyDecimals: 18,
+    rpcUrls: ["https://rpc.testnet-chain.genlayer.com"],
+    blockExplorerUrls: ["https://explorer.testnet-chain.genlayer.com"],
   },
 ];
+
+export function getGenLayerNetworkByKey(key: GenLayerNetworkKey): GenLayerNetworkConfig {
+  const network = GENLAYER_NETWORKS.find((candidate) => candidate.key === key);
+
+  if (!network) {
+    throw new Error(`Unknown GenLayer network key: ${key}`);
+  }
+
+  return network;
+}
 
 export function getKnownGenLayerNetworkByChainId(
   chainIdHex: string,
@@ -36,4 +63,3 @@ export function getKnownGenLayerNetworkByChainId(
     ) ?? null
   );
 }
-

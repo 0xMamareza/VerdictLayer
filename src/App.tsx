@@ -5,16 +5,23 @@ import { DisputeVerdictForm } from "./components/DisputeVerdictForm";
 import { NetworkStatusCard } from "./components/NetworkStatusCard";
 import { TaskVerdictForm } from "./components/TaskVerdictForm";
 import { WalletStatusCard } from "./components/WalletStatusCard";
-import { getKnownGenLayerNetworkByChainId } from "./config/genlayerNetworks";
+import {
+  DEFAULT_TARGET_GENLAYER_NETWORK_KEY,
+  getGenLayerNetworkByKey,
+  getKnownGenLayerNetworkByChainId,
+} from "./config/genlayerNetworks";
 import { verdictModules, type VerdictModule, type VerdictModuleId } from "./config/modules";
 import {
   getInjectedEthereumProvider,
   getWalletChainId,
   parseHexChainIdToDecimal,
   requestWalletAccounts,
+  switchOrAddWalletNetwork,
   type NetworkDetectionState,
   type WalletConnectionState,
 } from "./lib/wallet";
+
+const targetGenLayerNetwork = getGenLayerNetworkByKey(DEFAULT_TARGET_GENLAYER_NETWORK_KEY);
 
 function getReadableErrorMessage(error: unknown, fallbackMessage: string): string {
   if (error instanceof Error && error.message.trim().length > 0) {
@@ -78,6 +85,7 @@ function App() {
   const [networkState, setNetworkState] = useState<NetworkDetectionState>(
     getNotDetectedNetworkState,
   );
+  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState<boolean>(false);
 
   useEffect(() => {
     const provider = getInjectedEthereumProvider();
@@ -142,6 +150,40 @@ function App() {
     detectConnectedWalletNetwork();
   }
 
+  function handleSwitchNetwork(): void {
+    const provider = getInjectedEthereumProvider();
+
+    if (!provider) {
+      setNetworkState(getNotDetectedNetworkState());
+      return;
+    }
+
+    if (walletState.status !== "connected") {
+      setNetworkState(getNotConnectedNetworkState());
+      return;
+    }
+
+    setIsSwitchingNetwork(true);
+
+    void switchOrAddWalletNetwork(targetGenLayerNetwork)
+      .then(() => getWalletChainId())
+      .then((chainIdHex) => {
+        setNetworkState(getNetworkStateFromChainId(chainIdHex));
+      })
+      .catch((error: unknown) => {
+        setNetworkState({
+          status: "error",
+          chainIdHex: null,
+          chainIdDecimal: null,
+          networkLabel: null,
+          errorMessage: getReadableErrorMessage(error, "Network switch failed."),
+        });
+      })
+      .finally(() => {
+        setIsSwitchingNetwork(false);
+      });
+  }
+
   function handleConnectWallet(): void {
     const provider = getInjectedEthereumProvider();
 
@@ -195,7 +237,10 @@ function App() {
         <WalletStatusCard walletState={walletState} onConnect={handleConnectWallet} />
         <NetworkStatusCard
           networkState={networkState}
+          targetNetworkLabel={targetGenLayerNetwork.label}
           onRefreshNetwork={handleRefreshNetwork}
+          onSwitchNetwork={handleSwitchNetwork}
+          isSwitchingNetwork={isSwitchingNetwork}
         />
       </div>
 

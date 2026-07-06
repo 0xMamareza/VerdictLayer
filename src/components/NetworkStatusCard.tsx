@@ -2,16 +2,19 @@ import type { NetworkDetectionState } from "../lib/wallet";
 
 type NetworkStatusCardProps = {
   networkState: NetworkDetectionState;
+  targetNetworkLabel: string;
   onRefreshNetwork: () => void;
+  onSwitchNetwork: () => void;
+  isSwitchingNetwork: boolean;
 };
 
 function getNetworkStatusText(networkState: NetworkDetectionState): string {
   if (networkState.status === "connected_supported" && networkState.networkLabel) {
-    return `Connected to ${networkState.networkLabel}.`;
+    return `Connected to ${networkState.networkLabel}. Wallet is on a supported GenLayer network.`;
   }
 
   if (networkState.status === "connected_unsupported") {
-    return "Connected wallet is on a non-GenLayer network.";
+    return "Wallet is connected to an unsupported network. Switch before real transactions.";
   }
 
   if (networkState.status === "checking") {
@@ -31,9 +34,13 @@ function getNetworkStatusText(networkState: NetworkDetectionState): string {
 
 export function NetworkStatusCard({
   networkState,
+  targetNetworkLabel,
   onRefreshNetwork,
+  onSwitchNetwork,
+  isSwitchingNetwork,
 }: NetworkStatusCardProps) {
   const isChecking = networkState.status === "checking";
+  const isBusy = isChecking || isSwitchingNetwork;
   const showUnsupportedWarning = networkState.status === "connected_unsupported";
 
   return (
@@ -41,12 +48,12 @@ export function NetworkStatusCard({
       <div>
         <p className="panel-label">Network</p>
         <h2>Network</h2>
+        <p className="network-target">Target: {targetNetworkLabel}</p>
         <p className="network-status">{getNetworkStatusText(networkState)}</p>
 
         {showUnsupportedWarning ? (
           <p className="network-warning">
-            This wallet is not connected to Studionet or Bradbury. Network switching will be added
-            later.
+            Wallet is connected to an unsupported network. Switch before real transactions.
           </p>
         ) : null}
 
@@ -72,19 +79,29 @@ export function NetworkStatusCard({
         ) : null}
 
         <p className="network-note">
-          Network detection is read-only. Switching to GenLayer will be added later.
+          Network switching is prepared for future GenLayer transactions. Verdict flows still run
+          in mock mode.
         </p>
       </div>
 
-      <button
-        className="module-button network-button"
-        type="button"
-        onClick={onRefreshNetwork}
-        disabled={isChecking}
-      >
-        {isChecking ? "Checking..." : "Refresh Network"}
-      </button>
+      <div className="network-actions">
+        <button
+          className="module-button network-button"
+          type="button"
+          onClick={onSwitchNetwork}
+          disabled={isBusy}
+        >
+          {isSwitchingNetwork ? "Switching..." : `Switch to ${targetNetworkLabel}`}
+        </button>
+        <button
+          className="module-button network-button network-button-secondary"
+          type="button"
+          onClick={onRefreshNetwork}
+          disabled={isBusy}
+        >
+          {isChecking ? "Checking..." : "Refresh Network"}
+        </button>
+      </div>
     </section>
   );
 }
-

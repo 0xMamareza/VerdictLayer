@@ -117,4 +117,10 @@ Runtime remains in mock mode, so Claim, Task, and Dispute verdict flows continue
 
 Static GenLayer network metadata has been added for Studionet and Bradbury. The app can read the connected wallet chain id with `eth_chainId` and display whether the wallet is on a supported GenLayer network.
 
-Network switching is not implemented yet, and no real GenLayer transactions are sent. Runtime remains in mock mode.
+No real GenLayer transactions are sent from the detection layer. Runtime remains in mock mode.
+
+## Network Switching Layer
+
+Wallet network switching support has been added with `wallet_switchEthereumChain`, plus a `wallet_addEthereumChain` fallback when the target GenLayer chain is missing from the wallet. The target network defaults to Studionet, while Bradbury metadata is prepared for later use.
+
+No real GenLayer writes have been added yet. Runtime remains in mock mode.

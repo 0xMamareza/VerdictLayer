@@ -205,6 +205,13 @@ h1 {
   font-weight: 800;
 }
 
+.network-target {
+  margin-bottom: 10px;
+  color: #496b5d;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
 .wallet-message,
 .network-warning {
   margin-bottom: 12px;
@@ -230,6 +237,33 @@ h1 {
 .network-button {
   width: min(220px, 100%);
   flex: 0 0 auto;
+}
+
+.network-actions {
+  display: grid;
+  flex: 0 0 min(240px, 100%);
+  gap: 10px;
+}
+
+.network-actions .network-button {
+  width: 100%;
+}
+
+.network-button-secondary {
+  border: 1px solid #bfd0c7;
+  color: #21332b;
+  background: #f7faf7;
+}
+
+.network-button-secondary:hover,
+.network-button-secondary:focus-visible {
+  color: #ffffff;
+  background: #355246;
+}
+
+.network-button-secondary:disabled {
+  color: #ffffff;
+  background: #7c8982;
 }
 
 .network-details {

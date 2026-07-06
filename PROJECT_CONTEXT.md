@@ -18,6 +18,8 @@ Wallet UI status: injected wallet detection and connect flow added. Runtime rema
 
 Network UI status: wallet chain detection added for Studionet and Bradbury. Runtime remains mock.
 
+Network switching status: users can switch/add the target GenLayer network through wallet RPC methods. Runtime remains mock.
+
 Submission package status: README, checklist, and demo script prepared.
 
 Published repository: https://github.com/0xMamareza/VerdictLayer
