@@ -288,7 +288,13 @@ function App() {
               isSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
             />
           ) : null}
-          {selectedModule.id === "task-verdicts" ? <TaskVerdictForm /> : null}
+          {selectedModule.id === "task-verdicts" ? (
+            <TaskVerdictForm
+              walletAddress={walletState.address}
+              isWalletConnected={isWalletConnected}
+              isSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
+            />
+          ) : null}
           {selectedModule.id === "dispute-verdicts" ? <DisputeVerdictForm /> : null}
         </section>
       ) : null}

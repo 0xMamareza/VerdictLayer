@@ -13,7 +13,11 @@
 - [x] Production Claim browser transaction verified.
 - [x] Production Claim transaction hash documented.
 - [x] Staged Claim routing verified.
-- [ ] Task production integration pending.
+- [x] Production Task browser transaction verified.
+- [x] Production Task transaction hash documented.
+- [x] Typed Task result documented.
+- [x] Task `missingItems` normalization verified.
+- [x] Claim and Task staged routing verified.
 - [ ] Dispute production integration pending.
 
 ## Screenshots Needed

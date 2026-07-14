@@ -36,9 +36,14 @@
 - Claim transaction hash recorded.
 - Claim typed read-after-write result verified.
 - Mock fallback preserved.
-- Task production integration pending.
+- Production Task real integration implemented.
+- Production Task manual browser test succeeded.
+- Task transaction hash recorded.
+- Task typed read-after-write result verified.
+- Task `missingItems` normalization verified.
+- Claim production integration remains verified.
 - Dispute production integration pending.
-- Task and Dispute production form writes still pending.
+- Dispute production form write still pending.
 - Public deployment still pending.
 - All three manual browser diagnostic transaction tests completed.
 - Production Claim wallet-signed write verified; Task and Dispute remain mock.

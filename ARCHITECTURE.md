@@ -193,12 +193,20 @@ Claim, Task, and Dispute diagnostics are now all verified. Production forms rema
 
 ## Staged Production Integration
 
-The Claim production form is the first real GenLayer-enabled module. The staged client router sends Claim submissions to the real client only when integration mode is `genlayer`, while Task and Dispute remain mock-driven during their separate migrations.
+Claim and Task are the first real GenLayer-enabled production modules. The staged client router sends their submissions to the real client only when integration mode is `genlayer`, while Dispute remains mock-driven until its separate migration.
 
-Wallet and supported-network context is passed explicitly from the app through the Claim form to the client boundary. The read and write diagnostics remain available independently.
+Wallet and supported-network context is passed explicitly from the app through the Claim and Task forms to the client boundary. The read and write diagnostics remain available independently.
 
 ## Verified Production Claim Path
 
 Claim routes to the real GenLayer client only when integration mode is `genlayer`. Wallet and supported-network context are required, and the transaction lifecycle is surfaced to the Claim UI.
 
-Typed Claim result validation succeeded after read-after-write. Task and Dispute still route to the mock client.
+Typed Claim result validation succeeded after read-after-write. Task is also production-enabled, while Dispute still routes to the mock client.
+
+## Verified Production Task Path
+
+Task routes to the real GenLayer client only when integration mode is `genlayer`. Explicit wallet and supported-network context is required, and the transaction lifecycle is surfaced in the Task UI.
+
+The raw Task result is strictly parsed. Compatibility normalization converts the deployed v0.1 `missingItems` string output into `string[]`.
+
+The wallet-signed Task transaction and typed result validation succeeded. Claim and Task are verified real paths, while Dispute remains routed to the mock client.

@@ -50,3 +50,47 @@ The production Claim Verdicts form successfully submitted a wallet-signed GenLay
 - `.env` is ignored.
 - No seed phrases, private keys, or wallet secrets are committed.
 - A burner/dev wallet is recommended for testnet use.
+
+## Production Task Integration Test Status
+
+### Test Scope
+
+- Production module tested: Task Verdicts
+- Network: GenLayer Studionet
+- Runtime mode: `genlayer`
+- Wallet type: burner/dev wallet
+- Claim and Task used real GenLayer routes
+- Dispute remained mock during this staged rollout
+
+### Transaction Result
+
+- Method: `submit_task_verdict`
+- Transaction hash: `0x44ac98dadf29635f468a0dc95d3f8007352bc8a57dfe7c8b9a88815810f0c1e5`
+- Transaction status: success
+
+### Typed Read-After-Write Result
+
+```json
+{
+  "status": "accepted",
+  "score": 90,
+  "feedback": "Submission includes strong proof for the task.",
+  "missingItems": [],
+  "generatedAt": "contract_execution"
+}
+```
+
+### Compatibility Normalization
+
+The deployed v0.1 contract returned `missingItems` in its string-compatible format. The production client normalized the no-missing-items result into an empty string array, and the UI rendered it as "No key proof gaps detected."
+
+### Staged Router Verification
+
+- Claim routed to the real GenLayer client.
+- Task routed to the real GenLayer client.
+- Dispute remained on the mock client.
+- Mock fallback remains available when integration mode is `mock`.
+
+### Conclusion
+
+The production Task Verdicts form successfully submitted a wallet-signed GenLayer transaction, waited for acceptance, read the updated task review, normalized the deployed contract result, and rendered the typed result in the production Task UI.

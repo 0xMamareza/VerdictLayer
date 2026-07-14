@@ -4,18 +4,20 @@ import { verdictLayerMockClient } from "./verdictLayerMockClient";
 import { verdictLayerRealClient } from "./verdictLayerRealClient";
 
 export const verdictLayerClient: VerdictLayerClient = {
-  // Claim is the first production module in the staged GenLayer rollout.
+  // Claim and Task are production-enabled in the staged GenLayer rollout.
   submitClaimVerdict(input, context) {
     return INTEGRATION_MODE === "genlayer"
       ? verdictLayerRealClient.submitClaimVerdict(input, context)
       : verdictLayerMockClient.submitClaimVerdict(input, context);
   },
 
-  // Task and Dispute remain mock until their separately verified migrations.
   submitTaskVerdict(input, context) {
-    return verdictLayerMockClient.submitTaskVerdict(input, context);
+    return INTEGRATION_MODE === "genlayer"
+      ? verdictLayerRealClient.submitTaskVerdict(input, context)
+      : verdictLayerMockClient.submitTaskVerdict(input, context);
   },
 
+  // Dispute remains mock until the final separately verified migration.
   submitDisputeVerdict(input, context) {
     return verdictLayerMockClient.submitDisputeVerdict(input, context);
   },

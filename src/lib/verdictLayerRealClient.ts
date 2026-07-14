@@ -60,9 +60,90 @@ function parseClaimVerdictResult(rawResult: string): ClaimVerdictContractResult 
   };
 }
 
+function isTaskVerdictStatus(value: unknown): value is TaskVerdictContractResult["status"] {
+  return (
+    value === "accepted" ||
+    value === "needs_review" ||
+    value === "incomplete" ||
+    value === "rejected"
+  );
+}
+
+function normalizeTaskMissingItems(value: unknown): string[] | null {
+  if (typeof value === "string") {
+    const normalizedValue = value.trim();
+
+    if (normalizedValue.toLowerCase() === "none") {
+      return [];
+    }
+
+    return normalizedValue
+      .split(",")
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+  }
+
+  if (Array.isArray(value) && value.every((item) => typeof item === "string")) {
+    return [...value];
+  }
+
+  return null;
+}
+
+function parseTaskVerdictResult(rawResult: string): TaskVerdictContractResult {
+  let parsedResult: unknown;
+
+  try {
+    parsedResult = JSON.parse(rawResult) as unknown;
+  } catch {
+    throw new Error("GenLayer returned an invalid Task verdict result.");
+  }
+
+  if (!isRecord(parsedResult)) {
+    throw new Error("GenLayer returned an invalid Task verdict result.");
+  }
+
+  const missingItems = normalizeTaskMissingItems(parsedResult.missingItems);
+
+  if (
+    !isTaskVerdictStatus(parsedResult.status) ||
+    typeof parsedResult.score !== "number" ||
+    !Number.isFinite(parsedResult.score) ||
+    typeof parsedResult.feedback !== "string" ||
+    missingItems === null ||
+    typeof parsedResult.generatedAt !== "string"
+  ) {
+    throw new Error("GenLayer returned an invalid Task verdict result.");
+  }
+
+  return {
+    status: parsedResult.status,
+    score: parsedResult.score,
+    feedback: parsedResult.feedback,
+    missingItems,
+    generatedAt: parsedResult.generatedAt,
+  };
+}
+
 function getValidatedWalletAddress(context?: VerdictLayerSubmitContext): string {
   if (!context || !context.isWalletConnected) {
     throw new Error("Connect your wallet before submitting a GenLayer verdict.");
+  }
+
+  if (!context.walletAddress || context.walletAddress.trim().length === 0) {
+    throw new Error("Connected wallet address is missing.");
+  }
+
+  if (!context.isSupportedGenLayerNetwork) {
+    throw new Error("Switch to a supported GenLayer network before submitting.");
+  }
+
+  return context.walletAddress;
+}
+
+function getValidatedTaskWalletAddress(context?: VerdictLayerSubmitContext): string {
+  if (!context || !context.isWalletConnected) {
+    throw new Error("Connect your wallet before submitting a GenLayer task review.");
   }
 
   if (!context.walletAddress || context.walletAddress.trim().length === 0) {
@@ -127,10 +208,31 @@ export const verdictLayerRealClient: VerdictLayerClient = {
     }
   },
   async submitTaskVerdict(
-    _input: TaskVerdictContractInput,
-    _context?: VerdictLayerSubmitContext,
+    input: TaskVerdictContractInput,
+    context?: VerdictLayerSubmitContext,
   ): Promise<TaskVerdictContractResult> {
-    return throwNotImplemented();
+    const walletAddress = getValidatedTaskWalletAddress(context);
+    const { submitTaskVerdictTransaction } = await import("./genlayerWriteClient");
+    const writeResult = await submitTaskVerdictTransaction(input, walletAddress, {
+      onStatusChange: context?.onStatusChange,
+      onTransactionHash: context?.onTransactionHash,
+    });
+
+    if (writeResult.errorMessage) {
+      context?.onStatusChange?.("error");
+      throw new Error(writeResult.errorMessage);
+    }
+
+    try {
+      const rawResult = await getLatestTaskVerdictRaw();
+      const result = parseTaskVerdictResult(rawResult);
+
+      context?.onStatusChange?.("success");
+      return result;
+    } catch (error: unknown) {
+      context?.onStatusChange?.("error");
+      throw error;
+    }
   },
   async submitDisputeVerdict(
     _input: DisputeVerdictContractInput,

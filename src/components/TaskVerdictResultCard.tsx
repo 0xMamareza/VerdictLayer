@@ -2,25 +2,37 @@ import type { TaskVerdictResult } from "../types/verdict";
 
 type TaskVerdictResultCardProps = {
   result: TaskVerdictResult;
+  source?: "mock" | "genlayer";
 };
 
 function formatGeneratedAt(generatedAt: string): string {
+  const generatedDate = new Date(generatedAt);
+
+  if (Number.isNaN(generatedDate.getTime())) {
+    return generatedAt;
+  }
+
   return new Intl.DateTimeFormat("en", {
     dateStyle: "medium",
     timeStyle: "short",
-  }).format(new Date(generatedAt));
+  }).format(generatedDate);
 }
 
 function formatStatus(status: TaskVerdictResult["status"]): string {
   return status.replace("_", " ");
 }
 
-export function TaskVerdictResultCard({ result }: TaskVerdictResultCardProps) {
+export function TaskVerdictResultCard({
+  result,
+  source = "mock",
+}: TaskVerdictResultCardProps) {
+  const resultLabel = source === "genlayer" ? "GenLayer task review" : "Mock review";
+
   return (
-    <article className="result-card" aria-label="Mock task review result">
+    <article className="result-card" aria-label={`${resultLabel} result`}>
       <div className="result-card-header">
         <div>
-          <p className="panel-label">Mock review</p>
+          <p className="panel-label">{resultLabel}</p>
           <h3>{formatStatus(result.status)}</h3>
         </div>
         <span className={`verdict-pill verdict-pill-${result.status}`}>{result.score}/100</span>

@@ -40,9 +40,13 @@ Dispute write diagnostics status: dev-only Dispute write transaction path added.
 
 Dispute write diagnostics succeeded. All three VerdictLayer modules now have verified browser-based wallet-signed GenLayer write transactions and successful read-after-write results. Production forms still use mock mode.
 
-Production integration status: Claim form is connected to the verified GenLayer write/read flow behind the genlayer integration mode. Task and Dispute production forms remain mock.
+Production integration status: Claim and Task forms are connected to the verified GenLayer write/read flow behind the genlayer integration mode. Dispute remains mock.
 
-Production Claim integration verified. The real Claim form successfully submitted a browser wallet-signed GenLayer transaction and rendered the typed read-after-write result. Task and Dispute production forms remain mock.
+Production Claim integration verified. The real Claim form successfully submitted a browser wallet-signed GenLayer transaction and rendered the typed read-after-write result. Task is also production-enabled; Dispute remains mock.
+
+Production integration status: Claim and Task forms are connected to real GenLayer behind genlayer mode. Dispute remains mock.
+
+Production Task integration verified. The real Task form successfully submitted a browser wallet-signed GenLayer transaction and rendered the strictly parsed task result. The verified result was accepted with a score of 90, strong-proof feedback, and no missing proof gaps. Claim and Task are real in genlayer mode; Dispute remains mock.
 
 Submission package status: README, checklist, and demo script prepared.
 

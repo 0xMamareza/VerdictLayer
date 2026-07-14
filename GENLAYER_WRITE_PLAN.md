@@ -190,7 +190,7 @@ The next implementation phase is to connect the production Claim, Task, and Disp
 
 The production Claim form now routes through the real GenLayer write/read flow when integration mode is `genlayer`, while it continues using deterministic local logic when integration mode is `mock`.
 
-Task and Dispute production forms temporarily remain mock-driven. The Claim flow enforces wallet and supported-network checks before submission, and its UI displays transaction lifecycle status plus the submitted transaction hash.
+Task is now also production-enabled in `genlayer` mode, while Dispute temporarily remains mock-driven. The Claim flow enforces wallet and supported-network checks before submission, and its UI displays transaction lifecycle status plus the submitted transaction hash.
 
 ## Production Claim Form Test Status
 
@@ -198,4 +198,20 @@ The production Claim integration was manually tested successfully. Its transacti
 
 Wallet and supported-network validation worked, the transaction lifecycle and hash were displayed in the Claim UI, and strict typed result parsing succeeded after the read-after-write step.
 
-Task and Dispute production forms remain mock. The next staged migration is Task production integration.
+Claim and Task production integrations are verified. Dispute remains mock, and its production integration is the next staged migration.
+
+## Production Task Form Integration
+
+The production Task form now routes through the real GenLayer write/read flow when integration mode is `genlayer`, while it continues using deterministic local logic when integration mode is `mock`.
+
+Claim remains connected to real GenLayer in `genlayer` mode, and Dispute temporarily remains mock-driven. The Task flow enforces wallet and supported-network checks and displays its transaction lifecycle plus transaction hash.
+
+The deployed v0.1 `missingItems` string output is normalized into the contract-facing `string[]` result type.
+
+## Production Task Form Test Status
+
+The production Task integration was manually tested successfully. Its transaction hash is recorded in `GENLAYER_PRODUCTION_TEST_REPORT.md`.
+
+Wallet and supported-network validation worked, the transaction lifecycle and hash were displayed, strict result parsing succeeded, and `missingItems` normalization produced an empty array. The verified Task score was `90`.
+
+Claim and Task production integrations are now verified. Dispute remains mock, and production Dispute integration is the next staged migration.

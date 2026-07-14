@@ -1,22 +1,75 @@
 import { type FormEvent, useState } from "react";
+import { INTEGRATION_MODE } from "../config/integration";
 import { verdictLayerClient } from "../lib/verdictLayerClient";
+import type { GenLayerWriteStatus } from "../lib/genlayerWriteTypes";
 import type { TaskVerdictResult } from "../types/verdict";
 import { TaskVerdictResultCard } from "./TaskVerdictResultCard";
 
-export function TaskVerdictForm() {
+type TaskVerdictFormProps = {
+  walletAddress: string | null;
+  isWalletConnected: boolean;
+  isSupportedGenLayerNetwork: boolean;
+};
+
+function isWriteRunning(status: GenLayerWriteStatus): boolean {
+  return (
+    status === "validating" ||
+    status === "submitting_transaction" ||
+    status === "waiting_for_receipt" ||
+    status === "reading_result"
+  );
+}
+
+function getGenLayerButtonLabel(status: GenLayerWriteStatus): string {
+  switch (status) {
+    case "validating":
+      return "Preparing...";
+    case "submitting_transaction":
+      return "Confirm in Wallet...";
+    case "waiting_for_receipt":
+      return "Waiting for Receipt...";
+    case "reading_result":
+      return "Reading Task Review...";
+    case "success":
+      return "Submit Another Task";
+    case "error":
+      return "Retry GenLayer Submission";
+    default:
+      return "Submit Task to GenLayer";
+  }
+}
+
+function getWriteStatusLabel(status: GenLayerWriteStatus): string {
+  return status.replace(/_/g, " ");
+}
+
+export function TaskVerdictForm({
+  walletAddress,
+  isWalletConnected,
+  isSupportedGenLayerNetwork,
+}: TaskVerdictFormProps) {
   const [taskTitle, setTaskTitle] = useState<string>("");
   const [taskRequirements, setTaskRequirements] = useState<string>("");
   const [contractAddress, setContractAddress] = useState<string>("");
-  const [transactionHash, setTransactionHash] = useState<string>("");
+  const [proofTransactionHash, setProofTransactionHash] = useState<string>("");
   const [githubRepoUrl, setGithubRepoUrl] = useState<string>("");
   const [explanation, setExplanation] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [writeStatus, setWriteStatus] = useState<GenLayerWriteStatus>("idle");
+  const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [result, setResult] = useState<TaskVerdictResult | null>(null);
 
+  const isGenLayerMode = INTEGRATION_MODE === "genlayer";
+  const hasWalletAddress = walletAddress !== null && walletAddress.trim().length > 0;
+  const isGenLayerReady =
+    isWalletConnected && hasWalletAddress && isSupportedGenLayerNetwork;
+  const isGenLayerSubmitDisabled =
+    !isGenLayerReady || isSubmitting || isWriteRunning(writeStatus);
+
   function hasProofField(): boolean {
-    return [contractAddress, transactionHash, githubRepoUrl, explanation].some(
+    return [contractAddress, proofTransactionHash, githubRepoUrl, explanation].some(
       (value) => value.trim().length > 0,
     );
   }
@@ -27,44 +80,100 @@ export function TaskVerdictForm() {
     const trimmedTaskTitle: string = taskTitle.trim();
     const trimmedTaskRequirements: string = taskRequirements.trim();
 
+    setSubmitError(null);
+    setTransactionHash(null);
+    setWriteStatus(isGenLayerMode ? "validating" : "idle");
+
     if (trimmedTaskTitle.length === 0) {
-      setErrorMessage("Enter a task title to generate a mock review.");
-      setSubmitError(null);
+      setErrorMessage(
+        isGenLayerMode
+          ? "Enter a task title to submit to GenLayer."
+          : "Enter a task title to generate a mock review.",
+      );
       setResult(null);
+      setWriteStatus("idle");
       return;
     }
 
     if (trimmedTaskRequirements.length === 0) {
-      setErrorMessage("Enter task requirements to generate a mock review.");
-      setSubmitError(null);
+      setErrorMessage(
+        isGenLayerMode
+          ? "Enter task requirements to submit to GenLayer."
+          : "Enter task requirements to generate a mock review.",
+      );
       setResult(null);
+      setWriteStatus("idle");
       return;
     }
 
     if (!hasProofField()) {
-      setErrorMessage("Add at least one proof field before generating a mock review.");
-      setSubmitError(null);
+      setErrorMessage(
+        isGenLayerMode
+          ? "Add at least one proof field before submitting to GenLayer."
+          : "Add at least one proof field before generating a mock review.",
+      );
       setResult(null);
+      setWriteStatus("idle");
+      return;
+    }
+
+    if (isGenLayerMode && !isWalletConnected) {
+      setErrorMessage(null);
+      setSubmitError("Connect your wallet before submitting a GenLayer task review.");
+      setWriteStatus("wallet_required");
+      return;
+    }
+
+    if (isGenLayerMode && !walletAddress) {
+      setErrorMessage(null);
+      setSubmitError("Connected wallet address is missing.");
+      setWriteStatus("wallet_required");
+      return;
+    }
+
+    if (isGenLayerMode && !isSupportedGenLayerNetwork) {
+      setErrorMessage(null);
+      setSubmitError("Switch to a supported GenLayer network before submitting.");
+      setWriteStatus("wrong_network");
       return;
     }
 
     setErrorMessage(null);
-    setSubmitError(null);
     setIsSubmitting(true);
 
     try {
-      const nextResult: TaskVerdictResult = await verdictLayerClient.submitTaskVerdict({
+      const input = {
         taskTitle: trimmedTaskTitle,
         taskRequirements: trimmedTaskRequirements,
         contractAddress,
-        transactionHash,
+        transactionHash: proofTransactionHash,
         githubRepoUrl,
         explanation,
-      });
+      };
+      const nextResult: TaskVerdictResult = isGenLayerMode
+        ? await verdictLayerClient.submitTaskVerdict(input, {
+            walletAddress,
+            isWalletConnected,
+            isSupportedGenLayerNetwork,
+            onStatusChange: setWriteStatus,
+            onTransactionHash: setTransactionHash,
+          })
+        : await verdictLayerClient.submitTaskVerdict(input);
+
       setResult(nextResult);
     } catch (error: unknown) {
-      setSubmitError(error instanceof Error ? error.message : "Unable to generate mock review.");
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : isGenLayerMode
+            ? "Unable to submit the GenLayer task review."
+            : "Unable to generate mock review.",
+      );
       setResult(null);
+
+      if (isGenLayerMode) {
+        setWriteStatus("error");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -73,6 +182,19 @@ export function TaskVerdictForm() {
   return (
     <div className="task-flow">
       <form className="claim-form" onSubmit={handleSubmit}>
+        {isGenLayerMode ? (
+          <div
+            className={`claim-genlayer-readiness ${isGenLayerReady ? "is-ready" : "is-warning"}`}
+          >
+            <h3>GenLayer transaction readiness</h3>
+            <p>Wallet: {isWalletConnected && hasWalletAddress ? "connected" : "required"}</p>
+            <p>
+              Supported GenLayer network: {isSupportedGenLayerNetwork ? "ready" : "required"}
+            </p>
+            <p>This submission sends a real wallet-signed transaction.</p>
+          </div>
+        ) : null}
+
         <label className="form-field">
           <span>Task title</span>
           <input
@@ -108,8 +230,8 @@ export function TaskVerdictForm() {
             <span>Transaction hash</span>
             <input
               type="text"
-              value={transactionHash}
-              onChange={(event) => setTransactionHash(event.target.value)}
+              value={proofTransactionHash}
+              onChange={(event) => setProofTransactionHash(event.target.value)}
               placeholder="0x..."
             />
           </label>
@@ -138,19 +260,52 @@ export function TaskVerdictForm() {
         {errorMessage ? <p className="form-error">{errorMessage}</p> : null}
         {submitError ? <p className="form-error">{submitError}</p> : null}
 
-        <button className="module-button form-submit" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Reviewing..." : "Generate Mock Review"}
+        {isGenLayerMode ? (
+          <p
+            className={`claim-transaction-status ${writeStatus === "success" ? "is-success" : ""}`}
+          >
+            Transaction status: {getWriteStatusLabel(writeStatus)}
+          </p>
+        ) : null}
+
+        {isGenLayerMode && transactionHash ? (
+          <div className="claim-transaction-hash" aria-live="polite">
+            <span>Transaction Hash</span>
+            <code>{transactionHash}</code>
+          </div>
+        ) : null}
+
+        <button
+          className={`module-button form-submit ${isGenLayerMode ? "real-submit" : ""}`}
+          type="submit"
+          disabled={isGenLayerMode ? isGenLayerSubmitDisabled : isSubmitting}
+        >
+          {isGenLayerMode
+            ? getGenLayerButtonLabel(writeStatus)
+            : isSubmitting
+              ? "Reviewing..."
+              : "Generate Mock Review"}
         </button>
       </form>
 
-      <p className="helper-text">
-        This is a local mock review. GenLayer Intelligent Contract integration comes later.
-      </p>
-      <p className="helper-text">
-        Async-ready: this flow is prepared for future wallet-signed GenLayer transactions.
-      </p>
+      {isGenLayerMode ? (
+        <p className="helper-text">
+          The task review is read from the deployed contract after the transaction is accepted.
+        </p>
+      ) : (
+        <>
+          <p className="helper-text">
+            This is a local mock review. GenLayer Intelligent Contract integration comes later.
+          </p>
+          <p className="helper-text">
+            Async-ready: this flow is prepared for future wallet-signed GenLayer transactions.
+          </p>
+        </>
+      )}
 
-      {result ? <TaskVerdictResultCard result={result} /> : null}
+      {result ? (
+        <TaskVerdictResultCard result={result} source={isGenLayerMode ? "genlayer" : "mock"} />
+      ) : null}
     </div>
   );
 }
