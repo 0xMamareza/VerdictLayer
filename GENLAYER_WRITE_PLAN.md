@@ -151,3 +151,19 @@ The dev-only Claim write transaction was manually tested successfully. The trans
 The read-after-write step returned the updated latest Claim result from `get_latest_claim_verdict`.
 
 Task and Dispute write paths are not implemented yet, and production form writes are not implemented yet.
+
+## Dev-Only Task Write Diagnostics
+
+A dev-only diagnostics path for `submit_task_verdict` has been implemented. It is isolated from the production Claim, Task, and Dispute forms, which still use mock runtime behavior.
+
+The diagnostics transaction requires:
+
+- Connected wallet.
+- Supported GenLayer network.
+- Configured public contract address.
+
+After the Task write receipt is received, the diagnostics panel reads `get_latest_task_verdict` and displays the latest raw Task result.
+
+The dev-only Task write transaction was manually tested successfully. Its transaction hash is recorded in `GENLAYER_WRITE_TEST_REPORT.md`, and the read-after-write step returned the updated latest Task result.
+
+The Dispute write path is not implemented yet, and production form writes are not implemented yet.

@@ -159,10 +159,22 @@ The next step after diagnostics validation is wiring production form submits to 
 
 One Claim write transaction path exists for diagnostics. It is isolated from production forms, uses wallet-signed GenLayer `writeContract`, waits for a receipt, and reads the latest Claim result after the receipt.
 
-Task and Dispute write paths are not implemented yet, and production verdict forms remain mock-driven.
+A Task write helper also exists for diagnostics. It is isolated from production forms and reads the latest Task result after the receipt.
+
+Dispute write paths are not implemented yet, and production verdict forms remain mock-driven.
 
 ## Verified Claim Write Path
 
 The browser can submit `submit_claim_verdict` through GenLayerJS. A wallet-signed transaction succeeded, and the read-after-write flow returned the updated latest Claim result.
+
+This path is still isolated from production forms.
+
+## Task Write Diagnostics Path
+
+The Task write helper exists for `submit_task_verdict`. It remains isolated from production forms and reads the latest Task result after the receipt.
+
+## Verified Task Write Path
+
+The browser can submit `submit_task_verdict` through GenLayerJS. A wallet-signed transaction succeeded, and the read-after-write flow returned the updated latest Task result.
 
 This path is still isolated from production forms.

@@ -5,7 +5,10 @@ import {
   GENLAYER_CONTRACT_ADDRESS,
   GENLAYER_NETWORK_NAME,
 } from "../config/integration";
-import type { ClaimVerdictContractInput } from "../types/contractSchemas";
+import type {
+  ClaimVerdictContractInput,
+  TaskVerdictContractInput,
+} from "../types/contractSchemas";
 import { getInjectedEthereumProvider } from "./wallet";
 import type { GenLayerWriteResult } from "./genlayerWriteTypes";
 
@@ -45,7 +48,7 @@ function getConfiguredAccount(account: string): `0x${string}` {
   return normalizedAccount as `0x${string}`;
 }
 
-function getReadableErrorMessage(error: unknown): string {
+function getReadableErrorMessage(error: unknown, fallbackMessage: string): string {
   if (error instanceof Error && error.message.trim().length > 0) {
     return error.message;
   }
@@ -58,7 +61,7 @@ function getReadableErrorMessage(error: unknown): string {
     }
   }
 
-  return "GenLayer claim write transaction failed.";
+  return fallbackMessage;
 }
 
 function getTransactionHash(value: unknown): string | null {
@@ -89,9 +92,11 @@ function getReceiptStatus(value: unknown): string | null {
   return null;
 }
 
-export async function submitClaimVerdictTransaction(
-  input: ClaimVerdictContractInput,
+async function submitVerdictTransaction(
+  functionName: "submit_claim_verdict" | "submit_task_verdict",
+  args: string[],
   account: string,
+  fallbackErrorMessage: string,
 ): Promise<GenLayerWriteResult> {
   try {
     const provider = getInjectedEthereumProvider();
@@ -108,8 +113,8 @@ export async function submitClaimVerdictTransaction(
 
     const transactionHashResult: unknown = await client.writeContract({
       address: getConfiguredContractAddress(),
-      functionName: "submit_claim_verdict",
-      args: [input.claim, input.sourceUrl1, input.sourceUrl2, input.sourceUrl3],
+      functionName,
+      args,
       value: 0n,
     });
     const txHash = getTransactionHash(transactionHashResult);
@@ -134,8 +139,38 @@ export async function submitClaimVerdictTransaction(
       txHash: null,
       receiptStatus: null,
       rawResult: null,
-      errorMessage: getReadableErrorMessage(error),
+      errorMessage: getReadableErrorMessage(error, fallbackErrorMessage),
     };
   }
 }
 
+export async function submitClaimVerdictTransaction(
+  input: ClaimVerdictContractInput,
+  account: string,
+): Promise<GenLayerWriteResult> {
+  return submitVerdictTransaction(
+    "submit_claim_verdict",
+    [input.claim, input.sourceUrl1, input.sourceUrl2, input.sourceUrl3],
+    account,
+    "GenLayer claim write transaction failed.",
+  );
+}
+
+export async function submitTaskVerdictTransaction(
+  input: TaskVerdictContractInput,
+  account: string,
+): Promise<GenLayerWriteResult> {
+  return submitVerdictTransaction(
+    "submit_task_verdict",
+    [
+      input.taskTitle,
+      input.taskRequirements,
+      input.contractAddress,
+      input.transactionHash,
+      input.githubRepoUrl,
+      input.explanation,
+    ],
+    account,
+    "GenLayer task write transaction failed.",
+  );
+}

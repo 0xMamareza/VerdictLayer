@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { GENLAYER_CONTRACT_ADDRESS } from "../config/integration";
-import type { ClaimVerdictContractInput } from "../types/contractSchemas";
+import type {
+  ClaimVerdictContractInput,
+  TaskVerdictContractInput,
+} from "../types/contractSchemas";
 import type { GenLayerWriteResult, GenLayerWriteStatus } from "../lib/genlayerWriteTypes";
 
 const sampleClaimInput: ClaimVerdictContractInput = {
@@ -8,6 +11,16 @@ const sampleClaimInput: ClaimVerdictContractInput = {
   sourceUrl1: "https://genlayer.com",
   sourceUrl2: "https://docs.genlayer.com",
   sourceUrl3: "",
+};
+
+const sampleTaskInput: TaskVerdictContractInput = {
+  taskTitle: "Deploy first GenLayer contract",
+  taskRequirements: "Submit contract address, transaction hash, README, and screenshot.",
+  contractAddress: "0x123456789",
+  transactionHash: "0xtesthash123",
+  githubRepoUrl: "https://github.com/0xMamareza/VerdictLayer",
+  explanation:
+    "This submission deploys a deterministic VerdictLayer GenLayer contract and includes proof fields for the builder task validation flow.",
 };
 
 type GenLayerWriteDiagnosticsProps = {
@@ -20,12 +33,43 @@ function getContractAddressConfigured(): boolean {
   return GENLAYER_CONTRACT_ADDRESS.trim().length > 0;
 }
 
-function getReadableErrorMessage(error: unknown): string {
+function getReadableErrorMessage(error: unknown, fallbackMessage: string): string {
   if (error instanceof Error && error.message.trim().length > 0) {
     return error.message;
   }
 
-  return "Claim write diagnostics failed.";
+  return fallbackMessage;
+}
+
+function getWriteIsRunning(status: GenLayerWriteStatus): boolean {
+  return (
+    status === "submitting_transaction" ||
+    status === "waiting_for_receipt" ||
+    status === "reading_result"
+  );
+}
+
+function renderWriteResult(result: GenLayerWriteResult | null, resultLabel: string) {
+  if (!result) {
+    return null;
+  }
+
+  return (
+    <div className="diagnostics-results write-results" aria-live="polite">
+      <div>
+        <h3>Transaction Hash</h3>
+        <pre>{result.txHash ?? "none"}</pre>
+      </div>
+      <div>
+        <h3>Receipt Status</h3>
+        <pre>{result.receiptStatus ?? "none"}</pre>
+      </div>
+      <div>
+        <h3>{resultLabel}</h3>
+        <pre>{result.rawResult ?? "not read yet"}</pre>
+      </div>
+    </div>
+  );
 }
 
 export function GenLayerWriteDiagnostics({
@@ -33,32 +77,39 @@ export function GenLayerWriteDiagnostics({
   isWalletConnected,
   isOnSupportedGenLayerNetwork,
 }: GenLayerWriteDiagnosticsProps) {
-  const [status, setStatus] = useState<GenLayerWriteStatus>("idle");
-  const [result, setResult] = useState<GenLayerWriteResult | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [claimStatus, setClaimStatus] = useState<GenLayerWriteStatus>("idle");
+  const [claimResult, setClaimResult] = useState<GenLayerWriteResult | null>(null);
+  const [claimErrorMessage, setClaimErrorMessage] = useState<string | null>(null);
+  const [taskStatus, setTaskStatus] = useState<GenLayerWriteStatus>("idle");
+  const [taskResult, setTaskResult] = useState<GenLayerWriteResult | null>(null);
+  const [taskErrorMessage, setTaskErrorMessage] = useState<string | null>(null);
 
   const hasContractAddress = getContractAddressConfigured();
-  const isRunning =
-    status === "submitting_transaction" ||
-    status === "waiting_for_receipt" ||
-    status === "reading_result";
-  const canSubmit =
+  const isClaimRunning = getWriteIsRunning(claimStatus);
+  const isTaskRunning = getWriteIsRunning(taskStatus);
+  const canSubmitClaim =
     isWalletConnected &&
     walletAddress !== null &&
     isOnSupportedGenLayerNetwork &&
     hasContractAddress &&
-    !isRunning;
+    !isClaimRunning;
+  const canSubmitTask =
+    isWalletConnected &&
+    walletAddress !== null &&
+    isOnSupportedGenLayerNetwork &&
+    hasContractAddress &&
+    !isTaskRunning;
 
   function handleSubmitClaimTransaction(): void {
     if (!walletAddress) {
-      setStatus("wallet_required");
-      setErrorMessage("Connect a wallet before submitting the diagnostics transaction.");
+      setClaimStatus("wallet_required");
+      setClaimErrorMessage("Connect a wallet before submitting the diagnostics transaction.");
       return;
     }
 
-    setStatus("submitting_transaction");
-    setResult(null);
-    setErrorMessage(null);
+    setClaimStatus("submitting_transaction");
+    setClaimResult(null);
+    setClaimErrorMessage(null);
 
     void import("../lib/genlayerWriteClient")
       .then(({ submitClaimVerdictTransaction }) =>
@@ -66,13 +117,13 @@ export function GenLayerWriteDiagnostics({
       )
       .then((writeResult) => {
         if (writeResult.errorMessage) {
-          setStatus("error");
-          setResult(writeResult);
-          setErrorMessage(writeResult.errorMessage);
+          setClaimStatus("error");
+          setClaimResult(writeResult);
+          setClaimErrorMessage(writeResult.errorMessage);
           return Promise.resolve(null);
         }
 
-        setStatus("reading_result");
+        setClaimStatus("reading_result");
 
         return import("../lib/verdictLayerRealClient").then(({ getLatestClaimVerdictRaw }) =>
           getLatestClaimVerdictRaw().then((latestClaim) => ({
@@ -86,17 +137,66 @@ export function GenLayerWriteDiagnostics({
           return;
         }
 
-        setResult(completedResult);
-        setStatus("success");
+        setClaimResult(completedResult);
+        setClaimStatus("success");
       })
       .catch((error: unknown) => {
-        setStatus("error");
-        setErrorMessage(getReadableErrorMessage(error));
+        setClaimStatus("error");
+        setClaimErrorMessage(getReadableErrorMessage(error, "Claim write diagnostics failed."));
+      });
+  }
+
+  function handleSubmitTaskTransaction(): void {
+    if (!walletAddress) {
+      setTaskStatus("wallet_required");
+      setTaskErrorMessage("Connect a wallet before submitting the diagnostics transaction.");
+      return;
+    }
+
+    setTaskStatus("submitting_transaction");
+    setTaskResult(null);
+    setTaskErrorMessage(null);
+
+    void import("../lib/genlayerWriteClient")
+      .then(({ submitTaskVerdictTransaction }) =>
+        submitTaskVerdictTransaction(sampleTaskInput, walletAddress),
+      )
+      .then((writeResult) => {
+        if (writeResult.errorMessage) {
+          setTaskStatus("error");
+          setTaskResult(writeResult);
+          setTaskErrorMessage(writeResult.errorMessage);
+          return Promise.resolve(null);
+        }
+
+        setTaskStatus("reading_result");
+
+        return import("../lib/verdictLayerRealClient").then(({ getLatestTaskVerdictRaw }) =>
+          getLatestTaskVerdictRaw().then((latestTask) => ({
+            ...writeResult,
+            rawResult: latestTask,
+          })),
+        );
+      })
+      .then((completedResult) => {
+        if (!completedResult) {
+          return;
+        }
+
+        setTaskResult(completedResult);
+        setTaskStatus("success");
+      })
+      .catch((error: unknown) => {
+        setTaskStatus("error");
+        setTaskErrorMessage(getReadableErrorMessage(error, "Task write diagnostics failed."));
       });
   }
 
   return (
-    <section className="diagnostics-card write-diagnostics-card" aria-label="GenLayer write diagnostics">
+    <section
+      className="diagnostics-card write-diagnostics-card"
+      aria-label="GenLayer write diagnostics"
+    >
       <div className="diagnostics-header">
         <div>
           <p className="panel-label">Diagnostics</p>
@@ -105,14 +205,6 @@ export function GenLayerWriteDiagnostics({
             Dev-only transaction test. This sends a real wallet-signed GenLayer transaction.
           </p>
         </div>
-        <button
-          className="module-button diagnostics-button"
-          type="button"
-          onClick={handleSubmitClaimTransaction}
-          disabled={!canSubmit}
-        >
-          {isRunning ? "Submitting..." : "Submit Claim Test Transaction"}
-        </button>
       </div>
 
       <dl className="diagnostics-config">
@@ -130,45 +222,99 @@ export function GenLayerWriteDiagnostics({
         </div>
       </dl>
 
-      <div className="write-sample-panel">
-        <h3>Sample Claim</h3>
-        <dl>
+      <div className="write-test-section">
+        <div className="write-test-header">
           <div>
-            <dt>Claim</dt>
-            <dd>{sampleClaimInput.claim}</dd>
+            <h3>Claim Write Test</h3>
+            <p>Dev-only Claim transaction test.</p>
           </div>
-          <div>
-            <dt>Source 1</dt>
-            <dd>{sampleClaimInput.sourceUrl1}</dd>
-          </div>
-          <div>
-            <dt>Source 2</dt>
-            <dd>{sampleClaimInput.sourceUrl2}</dd>
-          </div>
-        </dl>
+          <button
+            className="module-button diagnostics-button"
+            type="button"
+            onClick={handleSubmitClaimTransaction}
+            disabled={!canSubmitClaim}
+          >
+            {isClaimRunning ? "Submitting..." : "Submit Claim Test Transaction"}
+          </button>
+        </div>
+
+        <div className="write-sample-panel">
+          <h3>Sample Claim</h3>
+          <dl>
+            <div>
+              <dt>Claim</dt>
+              <dd>{sampleClaimInput.claim}</dd>
+            </div>
+            <div>
+              <dt>Source 1</dt>
+              <dd>{sampleClaimInput.sourceUrl1}</dd>
+            </div>
+            <div>
+              <dt>Source 2</dt>
+              <dd>{sampleClaimInput.sourceUrl2}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <p className="write-status">Claim status: {claimStatus}</p>
+        {claimErrorMessage ? (
+          <p className="form-error diagnostics-error">{claimErrorMessage}</p>
+        ) : null}
+        {renderWriteResult(claimResult, "Latest Claim Result")}
       </div>
 
-      <p className="write-status">Status: {status}</p>
-
-      {errorMessage ? <p className="form-error diagnostics-error">{errorMessage}</p> : null}
-
-      {result ? (
-        <div className="diagnostics-results write-results" aria-live="polite">
+      <div className="write-test-section">
+        <div className="write-test-header">
           <div>
-            <h3>Transaction Hash</h3>
-            <pre>{result.txHash ?? "none"}</pre>
+            <h3>Task Write Test</h3>
+            <p>Dev-only Task transaction test.</p>
           </div>
-          <div>
-            <h3>Receipt Status</h3>
-            <pre>{result.receiptStatus ?? "none"}</pre>
-          </div>
-          <div>
-            <h3>Latest Claim Result</h3>
-            <pre>{result.rawResult ?? "not read yet"}</pre>
-          </div>
+          <button
+            className="module-button diagnostics-button"
+            type="button"
+            onClick={handleSubmitTaskTransaction}
+            disabled={!canSubmitTask}
+          >
+            {isTaskRunning ? "Submitting..." : "Submit Task Test Transaction"}
+          </button>
         </div>
-      ) : null}
+
+        <div className="write-sample-panel">
+          <h3>Sample Task</h3>
+          <dl className="write-sample-grid">
+            <div>
+              <dt>Task title</dt>
+              <dd>{sampleTaskInput.taskTitle}</dd>
+            </div>
+            <div>
+              <dt>Requirements</dt>
+              <dd>{sampleTaskInput.taskRequirements}</dd>
+            </div>
+            <div>
+              <dt>Contract address</dt>
+              <dd>{sampleTaskInput.contractAddress}</dd>
+            </div>
+            <div>
+              <dt>Transaction hash</dt>
+              <dd>{sampleTaskInput.transactionHash}</dd>
+            </div>
+            <div>
+              <dt>GitHub repo</dt>
+              <dd>{sampleTaskInput.githubRepoUrl}</dd>
+            </div>
+            <div>
+              <dt>Explanation</dt>
+              <dd>{sampleTaskInput.explanation}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <p className="write-status">Task status: {taskStatus}</p>
+        {taskErrorMessage ? (
+          <p className="form-error diagnostics-error">{taskErrorMessage}</p>
+        ) : null}
+        {renderWriteResult(taskResult, "Latest Task Result")}
+      </div>
     </section>
   );
 }
-

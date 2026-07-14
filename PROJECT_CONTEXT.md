@@ -32,6 +32,10 @@ Write diagnostics status: dev-only Claim write transaction path added. Productio
 
 Claim write diagnostics succeeded. A real wallet-signed GenLayer transaction was submitted from the browser and the updated latest claim verdict was read afterward.
 
+Task write diagnostics status: dev-only Task write transaction path added. Production forms remain mock.
+
+Task write diagnostics succeeded. A real wallet-signed GenLayer transaction was submitted from the browser and the updated latest task verdict was read afterward.
+
 Submission package status: README, checklist, and demo script prepared.
 
 Published repository: https://github.com/0xMamareza/VerdictLayer

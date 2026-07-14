@@ -410,6 +410,31 @@ h1 {
   font-weight: 800;
 }
 
+.write-test-section {
+  margin-top: 18px;
+  border-top: 1px solid #e5d4b8;
+  padding-top: 18px;
+}
+
+.write-test-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.write-test-header h3 {
+  margin: 0 0 8px;
+  color: #17201c;
+  font-size: 1rem;
+}
+
+.write-test-header p {
+  margin-bottom: 0;
+  color: #66766f;
+  font-size: 0.95rem;
+}
+
 .write-sample-panel {
   margin-top: 16px;
   border: 1px solid #dce5df;
@@ -428,6 +453,10 @@ h1 {
   display: grid;
   gap: 8px;
   margin: 0;
+}
+
+.write-sample-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .write-sample-panel div {
@@ -726,7 +755,8 @@ h1 {
 
   .wallet-card,
   .network-card,
-  .diagnostics-header {
+  .diagnostics-header,
+  .write-test-header {
     align-items: stretch;
     flex-direction: column;
   }
@@ -737,7 +767,8 @@ h1 {
   .result-details,
   .diagnostics-config,
   .diagnostics-results,
-  .write-results {
+  .write-results,
+  .write-sample-grid {
     grid-template-columns: 1fr;
   }
 

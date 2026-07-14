@@ -22,8 +22,12 @@
 - Claim write diagnostics manually tested successfully.
 - Transaction hash recorded.
 - Read-after-write verified.
+- Dev-only Task write diagnostics implemented.
+- Task write diagnostics manually tested successfully.
+- Task transaction hash recorded.
+- Task read-after-write verified.
 - Production form writes not implemented yet.
-- Task/Dispute writes still pending.
+- Dispute write still pending.
 - Production form writes still pending.
 - Manual browser transaction test required.
 - No production wallet-signed write contract calls yet.

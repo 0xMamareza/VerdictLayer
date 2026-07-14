@@ -22,6 +22,24 @@ VerdictLayer
 {"module":"claim","verdict":"true","confidence":"high","summary":"The claim is supported by multiple submitted sources.","sourcesChecked":2,"generatedAt":"contract_execution"}
 ```
 
+## Task Write Diagnostics Test Status
+
+- Method tested: `submit_task_verdict`
+- Network: GenLayer Studionet
+- Runtime mode: mock, with diagnostics using real GenLayer write path
+- Wallet connected: yes
+- Supported network: yes
+- Transaction hash: `0x2b7379cbc50ace2490223d86f4e66b226e41ef9be936a4af302c27f964af94ef`
+- Receipt status: `5`
+
+### Latest Task Raw Result
+
+```json
+{"module":"task","status":"accepted","score":100,"feedback":"Submission includes strong proof for the task.","missingItems":"none","generatedAt":"contract_execution"}
+```
+
+The dev-only Task write diagnostics flow successfully submitted a wallet-signed GenLayer transaction and read the updated task verdict afterward.
+
 ## Safety Notes
 
 - No private keys, seed phrases, or wallet secrets are stored.
@@ -31,4 +49,3 @@ VerdictLayer
 ## Conclusion
 
 The dev-only Claim write diagnostics flow successfully submitted a wallet-signed GenLayer transaction and read the updated claim verdict afterward.
-
