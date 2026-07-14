@@ -416,6 +416,11 @@ h1 {
   padding-top: 18px;
 }
 
+.write-test-section + .write-test-section {
+  margin-top: 24px;
+  padding-top: 24px;
+}
+
 .write-test-header {
   display: flex;
   align-items: flex-start;
@@ -433,6 +438,10 @@ h1 {
   margin-bottom: 0;
   color: #66766f;
   font-size: 0.95rem;
+}
+
+.write-test-header .diagnostics-button {
+  flex-shrink: 0;
 }
 
 .write-sample-panel {
@@ -759,6 +768,10 @@ h1 {
   .write-test-header {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .write-test-header .diagnostics-button {
+    width: 100%;
   }
 
   .source-grid,

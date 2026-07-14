@@ -7,6 +7,7 @@ import {
 } from "../config/integration";
 import type {
   ClaimVerdictContractInput,
+  DisputeVerdictContractInput,
   TaskVerdictContractInput,
 } from "../types/contractSchemas";
 import { getInjectedEthereumProvider } from "./wallet";
@@ -93,7 +94,10 @@ function getReceiptStatus(value: unknown): string | null {
 }
 
 async function submitVerdictTransaction(
-  functionName: "submit_claim_verdict" | "submit_task_verdict",
+  functionName:
+    | "submit_claim_verdict"
+    | "submit_task_verdict"
+    | "submit_dispute_verdict",
   args: string[],
   account: string,
   fallbackErrorMessage: string,
@@ -172,5 +176,23 @@ export async function submitTaskVerdictTransaction(
     ],
     account,
     "GenLayer task write transaction failed.",
+  );
+}
+
+export async function submitDisputeVerdictTransaction(
+  input: DisputeVerdictContractInput,
+  account: string,
+): Promise<GenLayerWriteResult> {
+  return submitVerdictTransaction(
+    "submit_dispute_verdict",
+    [
+      input.disputeTitle,
+      input.sideAClaim,
+      input.sideBClaim,
+      input.evidence,
+      input.decisionRule,
+    ],
+    account,
+    "GenLayer dispute write transaction failed.",
   );
 }

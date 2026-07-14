@@ -46,7 +46,7 @@ The v0.1 contract stores the latest JSON-like result string for each module and 
 - Plain CSS
 - Python GenLayer Intelligent Contract
 
-No backend, database, wallet connection, GenLayerJS integration, or AI/non-deterministic calls are included yet.
+No backend, database, production form GenLayer writes, or AI/non-deterministic calls are included yet. Wallet and GenLayerJS integration currently remain isolated to diagnostics.
 
 ## Project Structure
 
@@ -102,6 +102,12 @@ The deployed v0.1 contract was tested manually in GenLayer Studio:
 - `submit_claim_verdict` and `get_latest_claim_verdict` succeeded.
 - `submit_task_verdict` and `get_latest_task_verdict` succeeded.
 - `submit_dispute_verdict` and `get_latest_dispute_verdict` succeeded.
+
+## Verified GenLayer Browser Transactions
+
+All three deployed contract write methods were tested successfully from the browser. Wallet connection and GenLayer Studionet switching work, and each Claim, Task, and Dispute transaction returned updated contract state through its read-after-write path.
+
+Production form integration is the next milestone. Detailed transaction evidence is recorded in [GENLAYER_WRITE_TEST_REPORT.md](GENLAYER_WRITE_TEST_REPORT.md).
 
 ## Roadmap
 

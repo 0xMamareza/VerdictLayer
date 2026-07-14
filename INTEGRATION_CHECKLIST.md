@@ -26,10 +26,14 @@
 - Task write diagnostics manually tested successfully.
 - Task transaction hash recorded.
 - Task read-after-write verified.
-- Production form writes not implemented yet.
-- Dispute write still pending.
+- Dev-only Dispute write diagnostics implemented.
+- Dispute write diagnostics manually tested successfully.
+- Dispute transaction hash recorded.
+- Dispute read-after-write verified.
+- Claim, Task, and Dispute diagnostic writes all verified.
 - Production form writes still pending.
-- Manual browser transaction test required.
+- Public deployment still pending.
+- All three manual browser diagnostic transaction tests completed.
 - No production wallet-signed write contract calls yet.
 - Mock mode remains active.
 - No deployed contract address yet.

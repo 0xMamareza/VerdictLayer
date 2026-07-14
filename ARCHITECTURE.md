@@ -131,13 +131,13 @@ No real GenLayer transactions are sent from the detection layer. Runtime remains
 
 Wallet network switching support has been added with `wallet_switchEthereumChain`, plus a `wallet_addEthereumChain` fallback when the target GenLayer chain is missing from the wallet. The target network defaults to Studionet, while Bradbury metadata is prepared for later use.
 
-No real GenLayer writes have been added yet. Runtime remains in mock mode.
+The network switching layer does not send contract writes. Runtime remains in mock mode.
 
 ## Read-Only GenLayer Client Layer
 
 Environment-based runtime selection is prepared through `src/config/integration.ts`, while mock remains the default unless `VITE_VERDICTLAYER_INTEGRATION_MODE=genlayer` is set. Read-only contract methods can be called through `src/lib/genlayerReadClient.ts`.
 
-Frontend forms still use the client boundary and remain safe for mock runtime by default. Write transactions remain unimplemented.
+Frontend forms still use the client boundary and remain safe for mock runtime by default. Production form write transactions remain unimplemented.
 
 ## Read Diagnostics Layer
 
@@ -147,7 +147,7 @@ The UI can manually trigger read-only GenLayer contract calls through the GenLay
 
 The Vite frontend can call deployed GenLayer read methods through the diagnostics panel. The verified browser path reads the contract version and latest module results for Claim, Task, and Dispute verdicts.
 
-No wallet-signed writes have been added yet.
+The read diagnostics path does not send wallet-signed writes.
 
 ## Write Transaction Planning
 
@@ -161,7 +161,9 @@ One Claim write transaction path exists for diagnostics. It is isolated from pro
 
 A Task write helper also exists for diagnostics. It is isolated from production forms and reads the latest Task result after the receipt.
 
-Dispute write paths are not implemented yet, and production verdict forms remain mock-driven.
+A Dispute write helper also exists for diagnostics. It is isolated from production forms and reads the latest Dispute result after the receipt.
+
+Production verdict forms remain mock-driven.
 
 ## Verified Claim Write Path
 
@@ -178,3 +180,13 @@ The Task write helper exists for `submit_task_verdict`. It remains isolated from
 The browser can submit `submit_task_verdict` through GenLayerJS. A wallet-signed transaction succeeded, and the read-after-write flow returned the updated latest Task result.
 
 This path is still isolated from production forms.
+
+## Dispute Write Diagnostics Path
+
+The Dispute write helper exists for `submit_dispute_verdict`. It remains isolated from production forms and reads the latest Dispute result after the receipt.
+
+## Verified Dispute Write Path
+
+The browser can submit `submit_dispute_verdict` through GenLayerJS. A wallet-signed transaction succeeded, and the read-after-write flow returned the updated latest Dispute result.
+
+Claim, Task, and Dispute diagnostics are now all verified. Production forms remain isolated from real writes.

@@ -36,6 +36,10 @@ Task write diagnostics status: dev-only Task write transaction path added. Produ
 
 Task write diagnostics succeeded. A real wallet-signed GenLayer transaction was submitted from the browser and the updated latest task verdict was read afterward.
 
+Dispute write diagnostics status: dev-only Dispute write transaction path added. Production forms remain mock.
+
+Dispute write diagnostics succeeded. All three VerdictLayer modules now have verified browser-based wallet-signed GenLayer write transactions and successful read-after-write results. Production forms still use mock mode.
+
 Submission package status: README, checklist, and demo script prepared.
 
 Published repository: https://github.com/0xMamareza/VerdictLayer

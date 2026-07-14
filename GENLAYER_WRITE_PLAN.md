@@ -142,7 +142,7 @@ The diagnostics transaction requires:
 
 After the Claim write receipt is received, the diagnostics panel reads `get_latest_claim_verdict` and displays the latest raw Claim result.
 
-Task and Dispute writes are not implemented yet.
+Task and Dispute diagnostics are also implemented and verified. Production form writes are not implemented yet.
 
 ## Claim Write Diagnostics Test Status
 
@@ -150,7 +150,7 @@ The dev-only Claim write transaction was manually tested successfully. The trans
 
 The read-after-write step returned the updated latest Claim result from `get_latest_claim_verdict`.
 
-Task and Dispute write paths are not implemented yet, and production form writes are not implemented yet.
+Claim, Task, and Dispute diagnostics write paths are verified, while production form writes are not implemented yet.
 
 ## Dev-Only Task Write Diagnostics
 
@@ -166,4 +166,22 @@ After the Task write receipt is received, the diagnostics panel reads `get_lates
 
 The dev-only Task write transaction was manually tested successfully. Its transaction hash is recorded in `GENLAYER_WRITE_TEST_REPORT.md`, and the read-after-write step returned the updated latest Task result.
 
-The Dispute write path is not implemented yet, and production form writes are not implemented yet.
+The Dispute diagnostics path is also implemented and verified. Production form writes are not implemented yet.
+
+## Dev-Only Dispute Write Diagnostics
+
+A dev-only diagnostics path for `submit_dispute_verdict` has been implemented. It is isolated from the production Claim, Task, and Dispute forms, which still use mock runtime behavior.
+
+The diagnostics transaction requires:
+
+- Connected wallet.
+- Supported GenLayer network.
+- Configured public contract address.
+
+After the Dispute write receipt is received, the diagnostics panel reads `get_latest_dispute_verdict` and displays the latest raw Dispute result.
+
+The dev-only Dispute write transaction was manually tested successfully. Its transaction hash is recorded in `GENLAYER_WRITE_TEST_REPORT.md`, and the read-after-write step returned the updated latest Dispute result.
+
+All three diagnostics write paths are now verified. Production form writes are still not implemented.
+
+The next implementation phase is to connect the production Claim, Task, and Dispute forms to the verified real client behind the existing integration-mode boundary.

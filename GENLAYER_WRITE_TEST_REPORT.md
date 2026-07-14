@@ -40,6 +40,24 @@ VerdictLayer
 
 The dev-only Task write diagnostics flow successfully submitted a wallet-signed GenLayer transaction and read the updated task verdict afterward.
 
+## Dispute Write Diagnostics Test Status
+
+- Method tested: `submit_dispute_verdict`
+- Network: GenLayer Studionet
+- Runtime mode: mock, with diagnostics using the real GenLayer write path
+- Wallet connected: yes
+- Supported network: yes
+- Transaction hash: `0xb04e6c334e1b89ee5b0aa35a554ece6304fb35d5e4bc76d985cc361c657fe7bb`
+- Receipt status: `5`
+
+### Latest Dispute Raw Result
+
+```json
+{"module":"dispute","verdict":"side_a","confidence":"high","reason":"The evidence favors Side A completion.","recommendedResolution":"Favor Side A based on the submitted evidence.","generatedAt":"contract_execution"}
+```
+
+The dev-only Dispute write diagnostics flow successfully submitted a wallet-signed GenLayer transaction and read the updated dispute verdict afterward.
+
 ## Safety Notes
 
 - No private keys, seed phrases, or wallet secrets are stored.
@@ -49,3 +67,12 @@ The dev-only Task write diagnostics flow successfully submitted a wallet-signed 
 ## Conclusion
 
 The dev-only Claim write diagnostics flow successfully submitted a wallet-signed GenLayer transaction and read the updated claim verdict afterward.
+
+## Three-Module Write Verification Summary
+
+- Claim write transaction verified.
+- Task write transaction verified.
+- Dispute write transaction verified.
+- All three write paths completed wallet-signed transactions.
+- All three read-after-write paths returned updated contract state.
+- Production module forms still run in mock mode.

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { GENLAYER_CONTRACT_ADDRESS } from "../config/integration";
 import type {
   ClaimVerdictContractInput,
+  DisputeVerdictContractInput,
   TaskVerdictContractInput,
 } from "../types/contractSchemas";
 import type { GenLayerWriteResult, GenLayerWriteStatus } from "../lib/genlayerWriteTypes";
@@ -21,6 +22,15 @@ const sampleTaskInput: TaskVerdictContractInput = {
   githubRepoUrl: "https://github.com/0xMamareza/VerdictLayer",
   explanation:
     "This submission deploys a deterministic VerdictLayer GenLayer contract and includes proof fields for the builder task validation flow.",
+};
+
+const sampleDisputeInput: DisputeVerdictContractInput = {
+  disputeTitle: "Builder task review dispute",
+  sideAClaim: "Side A says the task was completed.",
+  sideBClaim: "Side B says the proof was incomplete.",
+  evidence:
+    "The evidence says side a completed the requested builder task and provided the required proof.",
+  decisionRule: "Judge based on whether the submitted evidence shows the task was completed.",
 };
 
 type GenLayerWriteDiagnosticsProps = {
@@ -83,10 +93,14 @@ export function GenLayerWriteDiagnostics({
   const [taskStatus, setTaskStatus] = useState<GenLayerWriteStatus>("idle");
   const [taskResult, setTaskResult] = useState<GenLayerWriteResult | null>(null);
   const [taskErrorMessage, setTaskErrorMessage] = useState<string | null>(null);
+  const [disputeStatus, setDisputeStatus] = useState<GenLayerWriteStatus>("idle");
+  const [disputeResult, setDisputeResult] = useState<GenLayerWriteResult | null>(null);
+  const [disputeErrorMessage, setDisputeErrorMessage] = useState<string | null>(null);
 
   const hasContractAddress = getContractAddressConfigured();
   const isClaimRunning = getWriteIsRunning(claimStatus);
   const isTaskRunning = getWriteIsRunning(taskStatus);
+  const isDisputeRunning = getWriteIsRunning(disputeStatus);
   const canSubmitClaim =
     isWalletConnected &&
     walletAddress !== null &&
@@ -99,6 +113,12 @@ export function GenLayerWriteDiagnostics({
     isOnSupportedGenLayerNetwork &&
     hasContractAddress &&
     !isTaskRunning;
+  const canSubmitDispute =
+    isWalletConnected &&
+    walletAddress !== null &&
+    isOnSupportedGenLayerNetwork &&
+    hasContractAddress &&
+    !isDisputeRunning;
 
   function handleSubmitClaimTransaction(): void {
     if (!walletAddress) {
@@ -189,6 +209,54 @@ export function GenLayerWriteDiagnostics({
       .catch((error: unknown) => {
         setTaskStatus("error");
         setTaskErrorMessage(getReadableErrorMessage(error, "Task write diagnostics failed."));
+      });
+  }
+
+  function handleSubmitDisputeTransaction(): void {
+    if (!walletAddress) {
+      setDisputeStatus("wallet_required");
+      setDisputeErrorMessage("Connect a wallet before submitting the diagnostics transaction.");
+      return;
+    }
+
+    setDisputeStatus("submitting_transaction");
+    setDisputeResult(null);
+    setDisputeErrorMessage(null);
+
+    void import("../lib/genlayerWriteClient")
+      .then(({ submitDisputeVerdictTransaction }) =>
+        submitDisputeVerdictTransaction(sampleDisputeInput, walletAddress),
+      )
+      .then((writeResult) => {
+        if (writeResult.errorMessage) {
+          setDisputeStatus("error");
+          setDisputeResult(writeResult);
+          setDisputeErrorMessage(writeResult.errorMessage);
+          return Promise.resolve(null);
+        }
+
+        setDisputeStatus("reading_result");
+
+        return import("../lib/verdictLayerRealClient").then(({ getLatestDisputeVerdictRaw }) =>
+          getLatestDisputeVerdictRaw().then((latestDispute) => ({
+            ...writeResult,
+            rawResult: latestDispute,
+          })),
+        );
+      })
+      .then((completedResult) => {
+        if (!completedResult) {
+          return;
+        }
+
+        setDisputeResult(completedResult);
+        setDisputeStatus("success");
+      })
+      .catch((error: unknown) => {
+        setDisputeStatus("error");
+        setDisputeErrorMessage(
+          getReadableErrorMessage(error, "Dispute write diagnostics failed."),
+        );
       });
   }
 
@@ -314,6 +382,55 @@ export function GenLayerWriteDiagnostics({
           <p className="form-error diagnostics-error">{taskErrorMessage}</p>
         ) : null}
         {renderWriteResult(taskResult, "Latest Task Result")}
+      </div>
+
+      <div className="write-test-section">
+        <div className="write-test-header">
+          <div>
+            <h3>Dispute Write Test</h3>
+            <p>Dev-only Dispute transaction test.</p>
+          </div>
+          <button
+            className="module-button diagnostics-button"
+            type="button"
+            onClick={handleSubmitDisputeTransaction}
+            disabled={!canSubmitDispute}
+          >
+            {isDisputeRunning ? "Submitting..." : "Submit Dispute Test Transaction"}
+          </button>
+        </div>
+
+        <div className="write-sample-panel">
+          <h3>Sample Dispute</h3>
+          <dl className="write-sample-grid">
+            <div>
+              <dt>Dispute title</dt>
+              <dd>{sampleDisputeInput.disputeTitle}</dd>
+            </div>
+            <div>
+              <dt>Side A claim</dt>
+              <dd>{sampleDisputeInput.sideAClaim}</dd>
+            </div>
+            <div>
+              <dt>Side B claim</dt>
+              <dd>{sampleDisputeInput.sideBClaim}</dd>
+            </div>
+            <div>
+              <dt>Evidence</dt>
+              <dd>{sampleDisputeInput.evidence}</dd>
+            </div>
+            <div>
+              <dt>Decision rule</dt>
+              <dd>{sampleDisputeInput.decisionRule}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <p className="write-status">Dispute status: {disputeStatus}</p>
+        {disputeErrorMessage ? (
+          <p className="form-error diagnostics-error">{disputeErrorMessage}</p>
+        ) : null}
+        {renderWriteResult(disputeResult, "Latest Dispute Result")}
       </div>
     </section>
   );
