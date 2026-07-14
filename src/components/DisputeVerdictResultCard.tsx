@@ -2,25 +2,37 @@ import type { DisputeVerdictResult } from "../types/verdict";
 
 type DisputeVerdictResultCardProps = {
   result: DisputeVerdictResult;
+  source?: "mock" | "genlayer";
 };
 
 function formatGeneratedAt(generatedAt: string): string {
+  const generatedDate = new Date(generatedAt);
+
+  if (Number.isNaN(generatedDate.getTime())) {
+    return generatedAt;
+  }
+
   return new Intl.DateTimeFormat("en", {
     dateStyle: "medium",
     timeStyle: "short",
-  }).format(new Date(generatedAt));
+  }).format(generatedDate);
 }
 
 function formatVerdict(verdict: DisputeVerdictResult["verdict"]): string {
   return verdict.replace("_", " ");
 }
 
-export function DisputeVerdictResultCard({ result }: DisputeVerdictResultCardProps) {
+export function DisputeVerdictResultCard({
+  result,
+  source = "mock",
+}: DisputeVerdictResultCardProps) {
+  const resultLabel = source === "genlayer" ? "GenLayer dispute verdict" : "Mock resolution";
+
   return (
-    <article className="result-card" aria-label="Mock dispute resolution result">
+    <article className="result-card" aria-label={`${resultLabel} result`}>
       <div className="result-card-header">
         <div>
-          <p className="panel-label">Mock resolution</p>
+          <p className="panel-label">{resultLabel}</p>
           <h3>{formatVerdict(result.verdict)}</h3>
         </div>
         <span className={`verdict-pill verdict-pill-${result.verdict}`}>{result.confidence}</span>

@@ -4,7 +4,8 @@ import { verdictLayerMockClient } from "./verdictLayerMockClient";
 import { verdictLayerRealClient } from "./verdictLayerRealClient";
 
 export const verdictLayerClient: VerdictLayerClient = {
-  // Claim and Task are production-enabled in the staged GenLayer rollout.
+  // All production modules use GenLayer only when the explicit mode is enabled.
+  // Mock mode remains the safe fallback; diagnostics stay isolated from this router.
   submitClaimVerdict(input, context) {
     return INTEGRATION_MODE === "genlayer"
       ? verdictLayerRealClient.submitClaimVerdict(input, context)
@@ -17,8 +18,9 @@ export const verdictLayerClient: VerdictLayerClient = {
       : verdictLayerMockClient.submitTaskVerdict(input, context);
   },
 
-  // Dispute remains mock until the final separately verified migration.
   submitDisputeVerdict(input, context) {
-    return verdictLayerMockClient.submitDisputeVerdict(input, context);
+    return INTEGRATION_MODE === "genlayer"
+      ? verdictLayerRealClient.submitDisputeVerdict(input, context)
+      : verdictLayerMockClient.submitDisputeVerdict(input, context);
   },
 };

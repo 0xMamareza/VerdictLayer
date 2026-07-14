@@ -18,7 +18,19 @@
 - [x] Typed Task result documented.
 - [x] Task `missingItems` normalization verified.
 - [x] Claim and Task staged routing verified.
-- [ ] Dispute production integration pending.
+- [x] Production Dispute real integration implemented.
+- [x] Production Dispute browser transaction verified.
+- [x] Production Dispute transaction hash documented.
+- [x] Typed Dispute result documented.
+- [x] All three production routes implemented.
+- [x] Claim and Task transaction evidence documented.
+- [x] Mock fallback preserved.
+- [x] Claim, Task, and Dispute production routing verified.
+- [x] All three read-after-write paths verified.
+- [x] Production integration evidence report complete.
+- [ ] Public deployment pending.
+- [ ] Final demo recording pending.
+- [ ] Final submission review pending.
 
 ## Screenshots Needed
 

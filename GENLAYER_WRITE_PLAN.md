@@ -182,15 +182,15 @@ After the Dispute write receipt is received, the diagnostics panel reads `get_la
 
 The dev-only Dispute write transaction was manually tested successfully. Its transaction hash is recorded in `GENLAYER_WRITE_TEST_REPORT.md`, and the read-after-write step returned the updated latest Dispute result.
 
-All three diagnostics write paths are now verified. Production form writes are still not implemented.
+All three diagnostics write paths are now verified. The production rollout is documented below.
 
-The next implementation phase is to connect the production Claim, Task, and Dispute forms to the verified real client behind the existing integration-mode boundary.
+All three production forms are connected to the verified real client behind the existing integration-mode boundary and are manually verified.
 
 ## Production Claim Form Integration
 
 The production Claim form now routes through the real GenLayer write/read flow when integration mode is `genlayer`, while it continues using deterministic local logic when integration mode is `mock`.
 
-Task is now also production-enabled in `genlayer` mode, while Dispute temporarily remains mock-driven. The Claim flow enforces wallet and supported-network checks before submission, and its UI displays transaction lifecycle status plus the submitted transaction hash.
+Task and Dispute are now also production-enabled in `genlayer` mode. The Claim flow enforces wallet and supported-network checks before submission, and its UI displays transaction lifecycle status plus the submitted transaction hash.
 
 ## Production Claim Form Test Status
 
@@ -198,13 +198,13 @@ The production Claim integration was manually tested successfully. Its transacti
 
 Wallet and supported-network validation worked, the transaction lifecycle and hash were displayed in the Claim UI, and strict typed result parsing succeeded after the read-after-write step.
 
-Claim and Task production integrations are verified. Dispute remains mock, and its production integration is the next staged migration.
+Claim, Task, and Dispute production integrations are manually verified.
 
 ## Production Task Form Integration
 
 The production Task form now routes through the real GenLayer write/read flow when integration mode is `genlayer`, while it continues using deterministic local logic when integration mode is `mock`.
 
-Claim remains connected to real GenLayer in `genlayer` mode, and Dispute temporarily remains mock-driven. The Task flow enforces wallet and supported-network checks and displays its transaction lifecycle plus transaction hash.
+Claim and Dispute are also connected to real GenLayer in `genlayer` mode. The Task flow enforces wallet and supported-network checks and displays its transaction lifecycle plus transaction hash.
 
 The deployed v0.1 `missingItems` string output is normalized into the contract-facing `string[]` result type.
 
@@ -214,4 +214,24 @@ The production Task integration was manually tested successfully. Its transactio
 
 Wallet and supported-network validation worked, the transaction lifecycle and hash were displayed, strict result parsing succeeded, and `missingItems` normalization produced an empty array. The verified Task score was `90`.
 
-Claim and Task production integrations are now verified. Dispute remains mock, and production Dispute integration is the next staged migration.
+Claim, Task, and Dispute production integrations are manually verified.
+
+## Production Dispute Form Integration
+
+The production Dispute form now routes through the real GenLayer write/read flow when integration mode is `genlayer`, while it continues using deterministic local logic when integration mode is `mock`.
+
+All three production modules now use real GenLayer in `genlayer` mode. The Dispute flow enforces wallet and supported-network checks, displays its transaction lifecycle and transaction hash, and strictly parses the contract result.
+
+## Production Dispute Form Test Status
+
+The production Dispute integration was manually tested successfully. Its transaction hash is recorded in `GENLAYER_PRODUCTION_TEST_REPORT.md`.
+
+Wallet and supported-network validation worked, the transaction lifecycle and hash were displayed, strict typed result parsing succeeded, and `contract_execution` rendering compatibility succeeded.
+
+Claim, Task, and Dispute production integrations are now manually verified. All three modules use real GenLayer in `genlayer` mode and deterministic mock clients in `mock` mode.
+
+## Production Integration Milestone Complete
+
+All three module write paths and all three read-after-write paths are implemented and verified.
+
+The next phase should focus on deployment readiness, UX hardening, error testing, and submission preparation rather than adding more write routes.

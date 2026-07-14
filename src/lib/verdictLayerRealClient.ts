@@ -12,12 +12,6 @@ import type {
   VerdictLayerSubmitContext,
 } from "./verdictLayerClientTypes";
 
-function throwNotImplemented(): never {
-  throw new Error(
-    "This production GenLayer write integration is not implemented yet. See INTEGRATION_CHECKLIST.md.",
-  );
-}
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
@@ -125,6 +119,45 @@ function parseTaskVerdictResult(rawResult: string): TaskVerdictContractResult {
   };
 }
 
+function isDisputeVerdict(value: unknown): value is DisputeVerdictContractResult["verdict"] {
+  return value === "side_a" || value === "side_b" || value === "split" || value === "unclear";
+}
+
+function isDisputeConfidence(
+  value: unknown,
+): value is DisputeVerdictContractResult["confidence"] {
+  return value === "low" || value === "medium" || value === "high";
+}
+
+function parseDisputeVerdictResult(rawResult: string): DisputeVerdictContractResult {
+  let parsedResult: unknown;
+
+  try {
+    parsedResult = JSON.parse(rawResult) as unknown;
+  } catch {
+    throw new Error("GenLayer returned an invalid Dispute verdict result.");
+  }
+
+  if (
+    !isRecord(parsedResult) ||
+    !isDisputeVerdict(parsedResult.verdict) ||
+    !isDisputeConfidence(parsedResult.confidence) ||
+    typeof parsedResult.reason !== "string" ||
+    typeof parsedResult.recommendedResolution !== "string" ||
+    typeof parsedResult.generatedAt !== "string"
+  ) {
+    throw new Error("GenLayer returned an invalid Dispute verdict result.");
+  }
+
+  return {
+    verdict: parsedResult.verdict,
+    confidence: parsedResult.confidence,
+    reason: parsedResult.reason,
+    recommendedResolution: parsedResult.recommendedResolution,
+    generatedAt: parsedResult.generatedAt,
+  };
+}
+
 function getValidatedWalletAddress(context?: VerdictLayerSubmitContext): string {
   if (!context || !context.isWalletConnected) {
     throw new Error("Connect your wallet before submitting a GenLayer verdict.");
@@ -144,6 +177,22 @@ function getValidatedWalletAddress(context?: VerdictLayerSubmitContext): string 
 function getValidatedTaskWalletAddress(context?: VerdictLayerSubmitContext): string {
   if (!context || !context.isWalletConnected) {
     throw new Error("Connect your wallet before submitting a GenLayer task review.");
+  }
+
+  if (!context.walletAddress || context.walletAddress.trim().length === 0) {
+    throw new Error("Connected wallet address is missing.");
+  }
+
+  if (!context.isSupportedGenLayerNetwork) {
+    throw new Error("Switch to a supported GenLayer network before submitting.");
+  }
+
+  return context.walletAddress;
+}
+
+function getValidatedDisputeWalletAddress(context?: VerdictLayerSubmitContext): string {
+  if (!context || !context.isWalletConnected) {
+    throw new Error("Connect your wallet before submitting a GenLayer dispute.");
   }
 
   if (!context.walletAddress || context.walletAddress.trim().length === 0) {
@@ -235,9 +284,30 @@ export const verdictLayerRealClient: VerdictLayerClient = {
     }
   },
   async submitDisputeVerdict(
-    _input: DisputeVerdictContractInput,
-    _context?: VerdictLayerSubmitContext,
+    input: DisputeVerdictContractInput,
+    context?: VerdictLayerSubmitContext,
   ): Promise<DisputeVerdictContractResult> {
-    return throwNotImplemented();
+    const walletAddress = getValidatedDisputeWalletAddress(context);
+    const { submitDisputeVerdictTransaction } = await import("./genlayerWriteClient");
+    const writeResult = await submitDisputeVerdictTransaction(input, walletAddress, {
+      onStatusChange: context?.onStatusChange,
+      onTransactionHash: context?.onTransactionHash,
+    });
+
+    if (writeResult.errorMessage) {
+      context?.onStatusChange?.("error");
+      throw new Error(writeResult.errorMessage);
+    }
+
+    try {
+      const rawResult = await getLatestDisputeVerdictRaw();
+      const result = parseDisputeVerdictResult(rawResult);
+
+      context?.onStatusChange?.("success");
+      return result;
+    } catch (error: unknown) {
+      context?.onStatusChange?.("error");
+      throw error;
+    }
   },
 };

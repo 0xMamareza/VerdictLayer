@@ -295,7 +295,13 @@ function App() {
               isSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
             />
           ) : null}
-          {selectedModule.id === "dispute-verdicts" ? <DisputeVerdictForm /> : null}
+          {selectedModule.id === "dispute-verdicts" ? (
+            <DisputeVerdictForm
+              walletAddress={walletState.address}
+              isWalletConnected={isWalletConnected}
+              isSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
+            />
+          ) : null}
         </section>
       ) : null}
     </main>

@@ -163,7 +163,7 @@ A Task write helper also exists for diagnostics. It is isolated from production 
 
 A Dispute write helper also exists for diagnostics. It is isolated from production forms and reads the latest Dispute result after the receipt.
 
-Production verdict forms remain mock-driven.
+Diagnostics remain isolated from the production form router.
 
 ## Verified Claim Write Path
 
@@ -193,15 +193,15 @@ Claim, Task, and Dispute diagnostics are now all verified. Production forms rema
 
 ## Staged Production Integration
 
-Claim and Task are the first real GenLayer-enabled production modules. The staged client router sends their submissions to the real client only when integration mode is `genlayer`, while Dispute remains mock-driven until its separate migration.
+Claim, Task, and Dispute are real GenLayer-enabled production modules. The staged client router sends their submissions to the real client only when integration mode is `genlayer`, while mock mode remains the safe fallback.
 
-Wallet and supported-network context is passed explicitly from the app through the Claim and Task forms to the client boundary. The read and write diagnostics remain available independently.
+Wallet and supported-network context is passed explicitly from the app through all three production forms to the client boundary. The read and write diagnostics remain available independently.
 
 ## Verified Production Claim Path
 
 Claim routes to the real GenLayer client only when integration mode is `genlayer`. Wallet and supported-network context are required, and the transaction lifecycle is surfaced to the Claim UI.
 
-Typed Claim result validation succeeded after read-after-write. Task is also production-enabled, while Dispute still routes to the mock client.
+Typed Claim result validation succeeded after read-after-write. Task and Dispute are also production-enabled.
 
 ## Verified Production Task Path
 
@@ -209,4 +209,26 @@ Task routes to the real GenLayer client only when integration mode is `genlayer`
 
 The raw Task result is strictly parsed. Compatibility normalization converts the deployed v0.1 `missingItems` string output into `string[]`.
 
-The wallet-signed Task transaction and typed result validation succeeded. Claim and Task are verified real paths, while Dispute remains routed to the mock client.
+The wallet-signed Task transaction and typed result validation succeeded. Claim and Task are verified real paths.
+
+## Verified Production Dispute Path
+
+Dispute routes to the real GenLayer client only when integration mode is `genlayer`. Explicit wallet and supported-network context is required, and the transaction lifecycle is surfaced in the Dispute UI.
+
+The raw result is strictly parsed into `DisputeVerdictContractResult`. The wallet-signed transaction succeeded, `side_a` is rendered as the readable label "side a", and `contract_execution` is handled safely.
+
+## Completed Production Router
+
+In `mock` mode:
+
+- Claim -> mock client
+- Task -> mock client
+- Dispute -> mock client
+
+In `genlayer` mode:
+
+- Claim -> real client
+- Task -> real client
+- Dispute -> real client
+
+Diagnostics remain isolated from production forms. No automatic transaction submission exists; every real transaction requires manual form submission and wallet approval.

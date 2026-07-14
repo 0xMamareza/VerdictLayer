@@ -199,6 +199,7 @@ export async function submitTaskVerdictTransaction(
 export async function submitDisputeVerdictTransaction(
   input: DisputeVerdictContractInput,
   account: string,
+  options?: GenLayerWriteCallbacks,
 ): Promise<GenLayerWriteResult> {
   return submitVerdictTransaction(
     "submit_dispute_verdict",
@@ -211,5 +212,6 @@ export async function submitDisputeVerdictTransaction(
     ],
     account,
     "GenLayer dispute write transaction failed.",
+    options,
   );
 }

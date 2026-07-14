@@ -40,13 +40,17 @@ Dispute write diagnostics status: dev-only Dispute write transaction path added.
 
 Dispute write diagnostics succeeded. All three VerdictLayer modules now have verified browser-based wallet-signed GenLayer write transactions and successful read-after-write results. Production forms still use mock mode.
 
-Production integration status: Claim and Task forms are connected to the verified GenLayer write/read flow behind the genlayer integration mode. Dispute remains mock.
+Production integration status: Claim, Task, and Dispute forms are connected to the verified GenLayer write/read flow behind the genlayer integration mode.
 
-Production Claim integration verified. The real Claim form successfully submitted a browser wallet-signed GenLayer transaction and rendered the typed read-after-write result. Task is also production-enabled; Dispute remains mock.
+Production Claim integration verified. The real Claim form successfully submitted a browser wallet-signed GenLayer transaction and rendered the typed read-after-write result. Task and Dispute are also production-enabled.
 
-Production integration status: Claim and Task forms are connected to real GenLayer behind genlayer mode. Dispute remains mock.
+Production integration status: all three forms are connected to real GenLayer behind genlayer mode.
 
-Production Task integration verified. The real Task form successfully submitted a browser wallet-signed GenLayer transaction and rendered the strictly parsed task result. The verified result was accepted with a score of 90, strong-proof feedback, and no missing proof gaps. Claim and Task are real in genlayer mode; Dispute remains mock.
+Production Task integration verified. The real Task form successfully submitted a browser wallet-signed GenLayer transaction and rendered the strictly parsed task result. The verified result was accepted with a score of 90, strong-proof feedback, and no missing proof gaps.
+
+Production integration status: Claim, Task, and Dispute forms are connected to real GenLayer behind genlayer mode and are manually verified. Mock mode remains available.
+
+Production Dispute integration verified. Claim, Task, and Dispute production forms have all successfully submitted browser wallet-signed GenLayer Studionet transactions and rendered strictly parsed read-after-write results. Genlayer mode now provides real integration for all three modules, while mock mode remains the deterministic fallback.
 
 Submission package status: README, checklist, and demo script prepared.
 

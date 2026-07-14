@@ -109,13 +109,20 @@ All three deployed contract write methods were tested successfully from the brow
 
 Production form integration is the next milestone. Detailed transaction evidence is recorded in [GENLAYER_WRITE_TEST_REPORT.md](GENLAYER_WRITE_TEST_REPORT.md).
 
-The production Claim and Task form integrations are available behind `VITE_VERDICTLAYER_INTEGRATION_MODE=genlayer`. Dispute remains a demo/mock flow until its staged migration. Keep `.env` local and uncommitted, and use a burner or development wallet for testnet interaction.
+The production Claim, Task, and Dispute form integrations are available behind `VITE_VERDICTLAYER_INTEGRATION_MODE=genlayer`. All three are manually verified with wallet-signed Studionet transactions and typed read-after-write results. Keep `.env` local and uncommitted, and use a burner or development wallet for testnet interaction.
 
-## Production Claim and Task Integration
+## Production Claim, Task, and Dispute Integration
 
-Claim and Task Verdicts are connected to GenLayer behind `VITE_VERDICTLAYER_INTEGRATION_MODE=genlayer`. Both were manually verified with wallet-signed Studionet transactions; their transaction and typed read-after-write evidence is documented in [GENLAYER_PRODUCTION_TEST_REPORT.md](GENLAYER_PRODUCTION_TEST_REPORT.md).
+Claim, Task, and Dispute Verdicts are connected to the deployed GenLayer contract behind `VITE_VERDICTLAYER_INTEGRATION_MODE=genlayer`. All three were manually verified with wallet-signed Studionet transactions; their transaction and typed read-after-write evidence is documented in [GENLAYER_PRODUCTION_TEST_REPORT.md](GENLAYER_PRODUCTION_TEST_REPORT.md).
 
-Dispute remains mock until its separate staged migration, and mock mode remains available for all modules. Keep `.env` uncommitted and use a burner/dev wallet for testnet interaction.
+Mock mode remains available for all modules. Keep `.env` uncommitted and use a burner/dev wallet for testnet interaction.
+
+Production integration status:
+
+- Claim: verified
+- Task: verified
+- Dispute: verified
+- Public frontend deployment: pending
 
 ## Roadmap
 

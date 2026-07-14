@@ -42,11 +42,23 @@
 - Task typed read-after-write result verified.
 - Task `missingItems` normalization verified.
 - Claim production integration remains verified.
-- Dispute production integration pending.
-- Dispute production form write still pending.
+- Task production integration remains verified.
+- Production Dispute real integration implemented.
+- Production Dispute manual browser test succeeded.
+- Dispute transaction hash recorded.
+- Dispute typed read-after-write result verified.
+- Claim production path verified.
+- Task production path verified.
+- Dispute production path verified.
+- All three real routes verified in `genlayer` mode.
+- All three mock routes retained in `mock` mode.
+- Production three-module integration milestone complete.
+- All three modules are implemented behind `genlayer` mode.
+- Mock fallback preserved for all three modules.
 - Public deployment still pending.
+- Production error-state testing still pending.
 - All three manual browser diagnostic transaction tests completed.
-- Production Claim wallet-signed write verified; Task and Dispute remain mock.
+- Production Claim, Task, and Dispute wallet-signed writes verified.
 - Mock mode remains active.
 - Deployed contract address is configured locally through ignored `.env`.
 
