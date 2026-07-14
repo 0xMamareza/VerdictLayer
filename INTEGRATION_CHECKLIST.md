@@ -31,12 +31,19 @@
 - Dispute transaction hash recorded.
 - Dispute read-after-write verified.
 - Claim, Task, and Dispute diagnostic writes all verified.
-- Production form writes still pending.
+- Production Claim form real integration implemented.
+- Production Claim manual browser test succeeded.
+- Claim transaction hash recorded.
+- Claim typed read-after-write result verified.
+- Mock fallback preserved.
+- Task production integration pending.
+- Dispute production integration pending.
+- Task and Dispute production form writes still pending.
 - Public deployment still pending.
 - All three manual browser diagnostic transaction tests completed.
-- No production wallet-signed write contract calls yet.
+- Production Claim wallet-signed write verified; Task and Dispute remain mock.
 - Mock mode remains active.
-- No deployed contract address yet.
+- Deployed contract address is configured locally through ignored `.env`.
 
 ## B. Required decisions before real integration
 

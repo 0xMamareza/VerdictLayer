@@ -281,7 +281,13 @@ function App() {
           <p>{selectedModule.description}</p>
           <span className="status-badge">{selectedModule.status}</span>
 
-          {selectedModule.id === "claim-verdicts" ? <ClaimVerdictForm /> : null}
+          {selectedModule.id === "claim-verdicts" ? (
+            <ClaimVerdictForm
+              walletAddress={walletState.address}
+              isWalletConnected={isWalletConnected}
+              isSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
+            />
+          ) : null}
           {selectedModule.id === "task-verdicts" ? <TaskVerdictForm /> : null}
           {selectedModule.id === "dispute-verdicts" ? <DisputeVerdictForm /> : null}
         </section>

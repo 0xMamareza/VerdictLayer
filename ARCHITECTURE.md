@@ -190,3 +190,15 @@ The Dispute write helper exists for `submit_dispute_verdict`. It remains isolate
 The browser can submit `submit_dispute_verdict` through GenLayerJS. A wallet-signed transaction succeeded, and the read-after-write flow returned the updated latest Dispute result.
 
 Claim, Task, and Dispute diagnostics are now all verified. Production forms remain isolated from real writes.
+
+## Staged Production Integration
+
+The Claim production form is the first real GenLayer-enabled module. The staged client router sends Claim submissions to the real client only when integration mode is `genlayer`, while Task and Dispute remain mock-driven during their separate migrations.
+
+Wallet and supported-network context is passed explicitly from the app through the Claim form to the client boundary. The read and write diagnostics remain available independently.
+
+## Verified Production Claim Path
+
+Claim routes to the real GenLayer client only when integration mode is `genlayer`. Wallet and supported-network context are required, and the transaction lifecycle is surfaced to the Claim UI.
+
+Typed Claim result validation succeeded after read-after-write. Task and Dispute still route to the mock client.

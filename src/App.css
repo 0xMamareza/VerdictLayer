@@ -576,6 +576,80 @@ h1 {
   font-weight: 700;
 }
 
+.claim-genlayer-readiness {
+  border: 1px solid #cbd8d1;
+  border-radius: 8px;
+  padding: 16px;
+  background: #f7faf8;
+}
+
+.claim-genlayer-readiness.is-ready {
+  border-color: #add2bd;
+  background: #edf8f1;
+}
+
+.claim-genlayer-readiness.is-warning {
+  border-color: #efd0a6;
+  background: #fff5df;
+}
+
+.claim-genlayer-readiness h3 {
+  margin: 0 0 10px;
+  color: #17201c;
+  font-size: 1rem;
+}
+
+.claim-genlayer-readiness p {
+  margin: 4px 0 0;
+  color: #4c5f56;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.claim-transaction-status {
+  margin: 0;
+  color: #4f6259;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.claim-transaction-status.is-success {
+  color: #1e6d43;
+}
+
+.claim-transaction-hash {
+  display: grid;
+  gap: 8px;
+}
+
+.claim-transaction-hash span {
+  color: #2b3831;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.claim-transaction-hash code {
+  display: block;
+  border: 1px solid #d5dfd9;
+  border-radius: 8px;
+  padding: 12px 14px;
+  overflow-wrap: anywhere;
+  color: #17201c;
+  background: #eef3ef;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.real-submit {
+  background: #245c42;
+}
+
+.real-submit:disabled {
+  color: #edf1ef;
+  background: #7c8982;
+}
+
 .form-submit {
   width: min(320px, 100%);
 }

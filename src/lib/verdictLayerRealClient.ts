@@ -7,12 +7,73 @@ import type {
   TaskVerdictContractResult,
 } from "../types/contractSchemas";
 import type { VerdictLayerReadMethodName } from "./genlayerReadClient";
-import type { VerdictLayerClient } from "./verdictLayerClientTypes";
+import type {
+  VerdictLayerClient,
+  VerdictLayerSubmitContext,
+} from "./verdictLayerClientTypes";
 
 function throwNotImplemented(): never {
   throw new Error(
-    "GenLayer write transactions are not implemented yet. Current runtime mode should remain mock for submits. See INTEGRATION_CHECKLIST.md.",
+    "This production GenLayer write integration is not implemented yet. See INTEGRATION_CHECKLIST.md.",
   );
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function isClaimVerdict(value: unknown): value is ClaimVerdictContractResult["verdict"] {
+  return value === "true" || value === "false" || value === "unclear" || value === "outdated";
+}
+
+function isClaimConfidence(value: unknown): value is ClaimVerdictContractResult["confidence"] {
+  return value === "low" || value === "medium" || value === "high";
+}
+
+function parseClaimVerdictResult(rawResult: string): ClaimVerdictContractResult {
+  let parsedResult: unknown;
+
+  try {
+    parsedResult = JSON.parse(rawResult) as unknown;
+  } catch {
+    throw new Error("GenLayer returned an invalid Claim verdict result.");
+  }
+
+  if (
+    !isRecord(parsedResult) ||
+    !isClaimVerdict(parsedResult.verdict) ||
+    !isClaimConfidence(parsedResult.confidence) ||
+    typeof parsedResult.summary !== "string" ||
+    typeof parsedResult.sourcesChecked !== "number" ||
+    !Number.isFinite(parsedResult.sourcesChecked) ||
+    typeof parsedResult.generatedAt !== "string"
+  ) {
+    throw new Error("GenLayer returned an invalid Claim verdict result.");
+  }
+
+  return {
+    verdict: parsedResult.verdict,
+    confidence: parsedResult.confidence,
+    summary: parsedResult.summary,
+    sourcesChecked: parsedResult.sourcesChecked,
+    generatedAt: parsedResult.generatedAt,
+  };
+}
+
+function getValidatedWalletAddress(context?: VerdictLayerSubmitContext): string {
+  if (!context || !context.isWalletConnected) {
+    throw new Error("Connect your wallet before submitting a GenLayer verdict.");
+  }
+
+  if (!context.walletAddress || context.walletAddress.trim().length === 0) {
+    throw new Error("Connected wallet address is missing.");
+  }
+
+  if (!context.isSupportedGenLayerNetwork) {
+    throw new Error("Switch to a supported GenLayer network before submitting.");
+  }
+
+  return context.walletAddress;
 }
 
 async function readVerdictLayerRaw(methodName: VerdictLayerReadMethodName): Promise<string> {
@@ -39,15 +100,41 @@ export async function getLatestDisputeVerdictRaw(): Promise<string> {
 
 export const verdictLayerRealClient: VerdictLayerClient = {
   async submitClaimVerdict(
-    _input: ClaimVerdictContractInput,
+    input: ClaimVerdictContractInput,
+    context?: VerdictLayerSubmitContext,
   ): Promise<ClaimVerdictContractResult> {
-    return throwNotImplemented();
+    const walletAddress = getValidatedWalletAddress(context);
+    const { submitClaimVerdictTransaction } = await import("./genlayerWriteClient");
+    const writeResult = await submitClaimVerdictTransaction(input, walletAddress, {
+      onStatusChange: context?.onStatusChange,
+      onTransactionHash: context?.onTransactionHash,
+    });
+
+    if (writeResult.errorMessage) {
+      context?.onStatusChange?.("error");
+      throw new Error(writeResult.errorMessage);
+    }
+
+    try {
+      const rawResult = await getLatestClaimVerdictRaw();
+      const result = parseClaimVerdictResult(rawResult);
+
+      context?.onStatusChange?.("success");
+      return result;
+    } catch (error: unknown) {
+      context?.onStatusChange?.("error");
+      throw error;
+    }
   },
-  async submitTaskVerdict(_input: TaskVerdictContractInput): Promise<TaskVerdictContractResult> {
+  async submitTaskVerdict(
+    _input: TaskVerdictContractInput,
+    _context?: VerdictLayerSubmitContext,
+  ): Promise<TaskVerdictContractResult> {
     return throwNotImplemented();
   },
   async submitDisputeVerdict(
     _input: DisputeVerdictContractInput,
+    _context?: VerdictLayerSubmitContext,
   ): Promise<DisputeVerdictContractResult> {
     return throwNotImplemented();
   },

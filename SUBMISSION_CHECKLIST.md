@@ -10,6 +10,11 @@
 - [x] Task write/read tested.
 - [x] Dispute write/read tested.
 - [x] Deployment report created.
+- [x] Production Claim browser transaction verified.
+- [x] Production Claim transaction hash documented.
+- [x] Staged Claim routing verified.
+- [ ] Task production integration pending.
+- [ ] Dispute production integration pending.
 
 ## Screenshots Needed
 

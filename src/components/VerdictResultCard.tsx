@@ -2,21 +2,30 @@ import type { ClaimVerdictResult } from "../types/verdict";
 
 type VerdictResultCardProps = {
   result: ClaimVerdictResult;
+  source?: "mock" | "genlayer";
 };
 
 function formatGeneratedAt(generatedAt: string): string {
+  const generatedDate = new Date(generatedAt);
+
+  if (Number.isNaN(generatedDate.getTime())) {
+    return generatedAt;
+  }
+
   return new Intl.DateTimeFormat("en", {
     dateStyle: "medium",
     timeStyle: "short",
-  }).format(new Date(generatedAt));
+  }).format(generatedDate);
 }
 
-export function VerdictResultCard({ result }: VerdictResultCardProps) {
+export function VerdictResultCard({ result, source = "mock" }: VerdictResultCardProps) {
+  const resultLabel = source === "genlayer" ? "GenLayer verdict" : "Mock verdict";
+
   return (
-    <article className="result-card" aria-label="Mock verdict result">
+    <article className="result-card" aria-label={`${resultLabel} result`}>
       <div className="result-card-header">
         <div>
-          <p className="panel-label">Mock verdict</p>
+          <p className="panel-label">{resultLabel}</p>
           <h3>{result.verdict}</h3>
         </div>
         <span className={`verdict-pill verdict-pill-${result.verdict}`}>{result.confidence}</span>

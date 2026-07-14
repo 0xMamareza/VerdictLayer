@@ -109,6 +109,14 @@ All three deployed contract write methods were tested successfully from the brow
 
 Production form integration is the next milestone. Detailed transaction evidence is recorded in [GENLAYER_WRITE_TEST_REPORT.md](GENLAYER_WRITE_TEST_REPORT.md).
 
+The production Claim form integration is available behind `VITE_VERDICTLAYER_INTEGRATION_MODE=genlayer`. Task and Dispute remain demo/mock flows until their staged migrations. Keep `.env` local and uncommitted, and use a burner or development wallet for testnet interaction.
+
+## Production Claim Integration
+
+Claim Verdicts is the first production module connected to GenLayer. It was manually verified with a wallet-signed Studionet transaction; the transaction and typed read-after-write evidence are documented in [GENLAYER_PRODUCTION_TEST_REPORT.md](GENLAYER_PRODUCTION_TEST_REPORT.md).
+
+Task and Dispute remain mock until their separate staged migrations, and mock mode remains available.
+
 ## Roadmap
 
 - v0.1 deterministic contract

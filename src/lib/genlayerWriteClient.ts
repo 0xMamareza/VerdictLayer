@@ -11,7 +11,12 @@ import type {
   TaskVerdictContractInput,
 } from "../types/contractSchemas";
 import { getInjectedEthereumProvider } from "./wallet";
-import type { GenLayerWriteResult } from "./genlayerWriteTypes";
+import type { GenLayerWriteResult, GenLayerWriteStatus } from "./genlayerWriteTypes";
+
+type GenLayerWriteCallbacks = {
+  onStatusChange?: (status: GenLayerWriteStatus) => void;
+  onTransactionHash?: (txHash: string) => void;
+};
 
 function getSelectedGenLayerChain() {
   if (GENLAYER_NETWORK_NAME === "bradbury" || GENLAYER_NETWORK_NAME === "testnetBradbury") {
@@ -101,6 +106,7 @@ async function submitVerdictTransaction(
   args: string[],
   account: string,
   fallbackErrorMessage: string,
+  callbacks?: GenLayerWriteCallbacks,
 ): Promise<GenLayerWriteResult> {
   try {
     const provider = getInjectedEthereumProvider();
@@ -115,6 +121,8 @@ async function submitVerdictTransaction(
       provider,
     });
 
+    callbacks?.onStatusChange?.("submitting_transaction");
+
     const transactionHashResult: unknown = await client.writeContract({
       address: getConfiguredContractAddress(),
       functionName,
@@ -127,10 +135,15 @@ async function submitVerdictTransaction(
       throw new Error("GenLayer writeContract returned an unexpected transaction hash.");
     }
 
+    callbacks?.onTransactionHash?.(txHash);
+    callbacks?.onStatusChange?.("waiting_for_receipt");
+
     const receipt: unknown = await client.waitForTransactionReceipt({
       hash: txHash as `0x${string}` & { length: 66 },
       status: TransactionStatus.ACCEPTED,
     });
+
+    callbacks?.onStatusChange?.("reading_result");
 
     return {
       txHash,
@@ -151,12 +164,14 @@ async function submitVerdictTransaction(
 export async function submitClaimVerdictTransaction(
   input: ClaimVerdictContractInput,
   account: string,
+  options?: GenLayerWriteCallbacks,
 ): Promise<GenLayerWriteResult> {
   return submitVerdictTransaction(
     "submit_claim_verdict",
     [input.claim, input.sourceUrl1, input.sourceUrl2, input.sourceUrl3],
     account,
     "GenLayer claim write transaction failed.",
+    options,
   );
 }
 

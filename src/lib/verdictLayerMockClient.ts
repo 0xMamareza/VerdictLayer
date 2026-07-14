@@ -9,10 +9,11 @@ import type {
 import { mockClaimJudge } from "../utils/mockClaimJudge";
 import { mockDisputeResolver } from "../utils/mockDisputeResolver";
 import { mockTaskJudge } from "../utils/mockTaskJudge";
-import type { VerdictLayerClient } from "./verdictLayerClientTypes";
+import type { VerdictLayerClient, VerdictLayerSubmitContext } from "./verdictLayerClientTypes";
 
 export async function submitClaimVerdict(
   input: ClaimVerdictContractInput,
+  _context?: VerdictLayerSubmitContext,
 ): Promise<ClaimVerdictContractResult> {
   return mockClaimJudge({
     claim: input.claim,
@@ -23,6 +24,7 @@ export async function submitClaimVerdict(
 
 export async function submitTaskVerdict(
   input: TaskVerdictContractInput,
+  _context?: VerdictLayerSubmitContext,
 ): Promise<TaskVerdictContractResult> {
   return mockTaskJudge({
     ...input,
@@ -32,6 +34,7 @@ export async function submitTaskVerdict(
 
 export async function submitDisputeVerdict(
   input: DisputeVerdictContractInput,
+  _context?: VerdictLayerSubmitContext,
 ): Promise<DisputeVerdictContractResult> {
   return mockDisputeResolver({
     ...input,

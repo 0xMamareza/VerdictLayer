@@ -1,17 +1,70 @@
 import { type FormEvent, useState } from "react";
+import { INTEGRATION_MODE } from "../config/integration";
 import { verdictLayerClient } from "../lib/verdictLayerClient";
+import type { GenLayerWriteStatus } from "../lib/genlayerWriteTypes";
 import type { ClaimVerdictResult } from "../types/verdict";
 import { VerdictResultCard } from "./VerdictResultCard";
 
 const emptySourceUrls: readonly string[] = ["", "", ""];
 
-export function ClaimVerdictForm() {
+type ClaimVerdictFormProps = {
+  walletAddress: string | null;
+  isWalletConnected: boolean;
+  isSupportedGenLayerNetwork: boolean;
+};
+
+function isWriteRunning(status: GenLayerWriteStatus): boolean {
+  return (
+    status === "validating" ||
+    status === "submitting_transaction" ||
+    status === "waiting_for_receipt" ||
+    status === "reading_result"
+  );
+}
+
+function getGenLayerButtonLabel(status: GenLayerWriteStatus): string {
+  switch (status) {
+    case "validating":
+      return "Preparing...";
+    case "submitting_transaction":
+      return "Confirm in Wallet...";
+    case "waiting_for_receipt":
+      return "Waiting for Receipt...";
+    case "reading_result":
+      return "Reading Verdict...";
+    case "success":
+      return "Submit Another Claim";
+    case "error":
+      return "Retry GenLayer Submission";
+    default:
+      return "Submit Claim to GenLayer";
+  }
+}
+
+function getWriteStatusLabel(status: GenLayerWriteStatus): string {
+  return status.replace(/_/g, " ");
+}
+
+export function ClaimVerdictForm({
+  walletAddress,
+  isWalletConnected,
+  isSupportedGenLayerNetwork,
+}: ClaimVerdictFormProps) {
   const [claim, setClaim] = useState<string>("");
   const [sourceUrls, setSourceUrls] = useState<string[]>([...emptySourceUrls]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [writeStatus, setWriteStatus] = useState<GenLayerWriteStatus>("idle");
+  const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [result, setResult] = useState<ClaimVerdictResult | null>(null);
+
+  const isGenLayerMode = INTEGRATION_MODE === "genlayer";
+  const hasWalletAddress = walletAddress !== null && walletAddress.trim().length > 0;
+  const isGenLayerReady =
+    isWalletConnected && hasWalletAddress && isSupportedGenLayerNetwork;
+  const isGenLayerSubmitDisabled =
+    !isGenLayerReady || isSubmitting || isWriteRunning(writeStatus);
 
   function updateSourceUrl(index: number, value: string): void {
     setSourceUrls((currentSourceUrls) =>
@@ -27,35 +80,83 @@ export function ClaimVerdictForm() {
     const trimmedClaim: string = claim.trim();
     const hasSourceUrl: boolean = sourceUrls.some((sourceUrl) => sourceUrl.trim().length > 0);
 
+    setSubmitError(null);
+    setTransactionHash(null);
+    setWriteStatus(isGenLayerMode ? "validating" : "idle");
+
     if (trimmedClaim.length === 0) {
-      setErrorMessage("Enter a claim to generate a mock verdict.");
-      setSubmitError(null);
+      setErrorMessage(
+        isGenLayerMode
+          ? "Enter a claim to submit to GenLayer."
+          : "Enter a claim to generate a mock verdict.",
+      );
       setResult(null);
+      setWriteStatus("idle");
       return;
     }
 
     if (!hasSourceUrl) {
       setErrorMessage("Add at least one source URL.");
-      setSubmitError(null);
       setResult(null);
+      setWriteStatus("idle");
+      return;
+    }
+
+    if (isGenLayerMode && !isWalletConnected) {
+      setErrorMessage(null);
+      setSubmitError("Connect your wallet before submitting a GenLayer verdict.");
+      setWriteStatus("wallet_required");
+      return;
+    }
+
+    if (isGenLayerMode && !walletAddress) {
+      setErrorMessage(null);
+      setSubmitError("Connected wallet address is missing.");
+      setWriteStatus("wallet_required");
+      return;
+    }
+
+    if (isGenLayerMode && !isSupportedGenLayerNetwork) {
+      setErrorMessage(null);
+      setSubmitError("Switch to a supported GenLayer network before submitting.");
+      setWriteStatus("wrong_network");
       return;
     }
 
     setErrorMessage(null);
-    setSubmitError(null);
     setIsSubmitting(true);
 
     try {
-      const nextResult: ClaimVerdictResult = await verdictLayerClient.submitClaimVerdict({
+      const input = {
         claim: trimmedClaim,
         sourceUrl1: sourceUrls[0] ?? "",
         sourceUrl2: sourceUrls[1] ?? "",
         sourceUrl3: sourceUrls[2] ?? "",
-      });
+      };
+      const nextResult: ClaimVerdictResult = isGenLayerMode
+        ? await verdictLayerClient.submitClaimVerdict(input, {
+            walletAddress,
+            isWalletConnected,
+            isSupportedGenLayerNetwork,
+            onStatusChange: setWriteStatus,
+            onTransactionHash: setTransactionHash,
+          })
+        : await verdictLayerClient.submitClaimVerdict(input);
+
       setResult(nextResult);
     } catch (error: unknown) {
-      setSubmitError(error instanceof Error ? error.message : "Unable to generate mock verdict.");
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : isGenLayerMode
+            ? "Unable to submit the GenLayer verdict."
+            : "Unable to generate mock verdict.",
+      );
       setResult(null);
+
+      if (isGenLayerMode) {
+        setWriteStatus("error");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -64,6 +165,19 @@ export function ClaimVerdictForm() {
   return (
     <div className="claim-flow">
       <form className="claim-form" onSubmit={handleSubmit}>
+        {isGenLayerMode ? (
+          <div
+            className={`claim-genlayer-readiness ${isGenLayerReady ? "is-ready" : "is-warning"}`}
+          >
+            <h3>GenLayer transaction readiness</h3>
+            <p>Wallet: {isWalletConnected && hasWalletAddress ? "connected" : "required"}</p>
+            <p>
+              Supported GenLayer network: {isSupportedGenLayerNetwork ? "ready" : "required"}
+            </p>
+            <p>This submission sends a real wallet-signed transaction.</p>
+          </div>
+        ) : null}
+
         <label className="form-field">
           <span>Claim</span>
           <textarea
@@ -91,19 +205,52 @@ export function ClaimVerdictForm() {
         {errorMessage ? <p className="form-error">{errorMessage}</p> : null}
         {submitError ? <p className="form-error">{submitError}</p> : null}
 
-        <button className="module-button form-submit" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Generating..." : "Generate Mock Verdict"}
+        {isGenLayerMode ? (
+          <p
+            className={`claim-transaction-status ${writeStatus === "success" ? "is-success" : ""}`}
+          >
+            Transaction status: {getWriteStatusLabel(writeStatus)}
+          </p>
+        ) : null}
+
+        {isGenLayerMode && transactionHash ? (
+          <div className="claim-transaction-hash" aria-live="polite">
+            <span>Transaction Hash</span>
+            <code>{transactionHash}</code>
+          </div>
+        ) : null}
+
+        <button
+          className={`module-button form-submit ${isGenLayerMode ? "real-submit" : ""}`}
+          type="submit"
+          disabled={isGenLayerMode ? isGenLayerSubmitDisabled : isSubmitting}
+        >
+          {isGenLayerMode
+            ? getGenLayerButtonLabel(writeStatus)
+            : isSubmitting
+              ? "Generating..."
+              : "Generate Mock Verdict"}
         </button>
       </form>
 
-      <p className="helper-text">
-        This is a local mock verdict. GenLayer Intelligent Contract integration comes later.
-      </p>
-      <p className="helper-text">
-        Async-ready: this flow is prepared for future wallet-signed GenLayer transactions.
-      </p>
+      {isGenLayerMode ? (
+        <p className="helper-text">
+          The verdict is read from the deployed contract after the transaction is accepted.
+        </p>
+      ) : (
+        <>
+          <p className="helper-text">
+            This is a local mock verdict. GenLayer Intelligent Contract integration comes later.
+          </p>
+          <p className="helper-text">
+            Async-ready: this flow is prepared for future wallet-signed GenLayer transactions.
+          </p>
+        </>
+      )}
 
-      {result ? <VerdictResultCard result={result} /> : null}
+      {result ? (
+        <VerdictResultCard result={result} source={isGenLayerMode ? "genlayer" : "mock"} />
+      ) : null}
     </div>
   );
 }

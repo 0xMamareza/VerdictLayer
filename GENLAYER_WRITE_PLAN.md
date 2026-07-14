@@ -185,3 +185,17 @@ The dev-only Dispute write transaction was manually tested successfully. Its tra
 All three diagnostics write paths are now verified. Production form writes are still not implemented.
 
 The next implementation phase is to connect the production Claim, Task, and Dispute forms to the verified real client behind the existing integration-mode boundary.
+
+## Production Claim Form Integration
+
+The production Claim form now routes through the real GenLayer write/read flow when integration mode is `genlayer`, while it continues using deterministic local logic when integration mode is `mock`.
+
+Task and Dispute production forms temporarily remain mock-driven. The Claim flow enforces wallet and supported-network checks before submission, and its UI displays transaction lifecycle status plus the submitted transaction hash.
+
+## Production Claim Form Test Status
+
+The production Claim integration was manually tested successfully. Its transaction hash is recorded in `GENLAYER_PRODUCTION_TEST_REPORT.md`.
+
+Wallet and supported-network validation worked, the transaction lifecycle and hash were displayed in the Claim UI, and strict typed result parsing succeeded after the read-after-write step.
+
+Task and Dispute production forms remain mock. The next staged migration is Task production integration.
