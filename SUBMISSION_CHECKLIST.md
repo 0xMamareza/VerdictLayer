@@ -40,6 +40,17 @@
 - [x] Rejected transactions produce no transaction hash.
 - [x] Rejected transactions produce no result.
 - [x] Error-state documentation complete.
+- [x] Public deployment readiness audit completed.
+- [x] Public environment variables documented.
+- [x] Frontend secret-exposure rule documented.
+- [x] Testnet safety notice added and reviewed.
+- [x] Diagnostics public visibility reviewed.
+- [x] Browser metadata reviewed.
+- [x] Static-host compatibility reviewed.
+- [ ] Hosting provider selection pending.
+- [ ] Preview deployment pending.
+- [ ] Public URL pending.
+- [ ] Post-deployment wallet tests pending.
 - [ ] Public deployment pending.
 - [ ] Final demo recording pending.
 - [ ] Final submission review pending.

@@ -12,6 +12,7 @@ import {
   getGenLayerNetworkByKey,
   getKnownGenLayerNetworkByChainId,
 } from "./config/genlayerNetworks";
+import { SHOW_GENLAYER_DIAGNOSTICS } from "./config/integration";
 import { verdictModules, type VerdictModule, type VerdictModuleId } from "./config/modules";
 import {
   getInjectedEthereumProvider,
@@ -237,6 +238,12 @@ function App() {
         </p>
       </section>
 
+      <aside className="testnet-notice" aria-label="Testnet safety notice">
+        <strong>Testnet notice:</strong> VerdictLayer currently uses GenLayer Studionet. Use a
+        burner/dev wallet, review every transaction before approval, and never share wallet
+        secrets.
+      </aside>
+
       <div className="status-card-grid">
         <WalletStatusCard walletState={walletState} onConnect={handleConnectWallet} />
         <NetworkStatusCard
@@ -248,12 +255,16 @@ function App() {
         />
       </div>
 
-      <GenLayerReadDiagnostics />
-      <GenLayerWriteDiagnostics
-        walletAddress={walletState.address}
-        isWalletConnected={isWalletConnected}
-        isOnSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
-      />
+      {SHOW_GENLAYER_DIAGNOSTICS ? (
+        <>
+          <GenLayerReadDiagnostics />
+          <GenLayerWriteDiagnostics
+            walletAddress={walletState.address}
+            isWalletConnected={isWalletConnected}
+            isOnSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
+          />
+        </>
+      ) : null}
 
       <section className="module-grid" aria-label="VerdictLayer modules">
         {verdictModules.map((module) => (

@@ -242,3 +242,9 @@ Internal SDK details, version strings, and stack traces are not surfaced to prod
 ### Manual Verification
 
 Claim, Task, and Dispute display the same normalized wallet-rejection message. A rejected request creates no transaction hash or result, controlled inputs remain preserved, write status transitions to `error`, and retry UI remains available. Provider and SDK details are not surfaced.
+
+## Public Frontend Deployment Model
+
+VerdictLayer produces a static Vite bundle and interacts with GenLayerJS entirely in the browser through an injected wallet provider. Contract address, network name, integration mode, and diagnostics visibility are public frontend configuration; no private value belongs in a `VITE_` variable.
+
+There is no backend or database deployment dependency. Read and write diagnostics are hidden by default through `VITE_SHOW_GENLAYER_DIAGNOSTICS`, while production forms remain available. Every write still requires an explicit form submission and manual wallet approval.

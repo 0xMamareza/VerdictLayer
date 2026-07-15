@@ -70,6 +70,12 @@
 - Inputs preserved after rejection for all three modules.
 - Retry state verified for all three modules.
 - Production wallet-rejection error handling complete.
+- Public deployment-readiness audit completed.
+- Static frontend build verified for deployment preparation.
+- Runtime public environment requirements documented.
+- Diagnostics visibility policy documented.
+- No backend or database deployment dependency.
+- Public deployment pending.
 - All three manual browser diagnostic transaction tests completed.
 - Production Claim, Task, and Dispute wallet-signed writes verified.
 - Mock mode remains active.

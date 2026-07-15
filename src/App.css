@@ -78,6 +78,19 @@ h1 {
   line-height: 1.65;
 }
 
+.testnet-notice {
+  border: 1px solid #efd0a6;
+  border-radius: 8px;
+  padding: 14px 16px;
+  color: #65491d;
+  background: #fff7e8;
+  line-height: 1.55;
+}
+
+.testnet-notice strong {
+  color: #4f3712;
+}
+
 .module-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

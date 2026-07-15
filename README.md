@@ -71,7 +71,7 @@ DEMO_SCRIPT.md
 ## Local Setup Commands
 
 ```powershell
-Set-Location C:\Users\mruni\Documents\VerdictLayer\verdictlayer
+Set-Location C:\path\to\VerdictLayer
 npm install
 npm run build
 npm run dev
@@ -125,6 +125,12 @@ Production integration status:
 - Public frontend deployment: pending
 
 Production safety: disconnected-wallet and unsupported-network guards are verified. Wallet rejection is manually verified for Claim, Task, and Dispute and displays: "Transaction was rejected in your wallet. No transaction was submitted." Form inputs remain available for retry, and no rejected request produces a transaction hash or result. Evidence is documented in [GENLAYER_ERROR_TEST_REPORT.md](GENLAYER_ERROR_TEST_REPORT.md).
+
+## Public Deployment
+
+Provider-neutral deployment preparation is documented in [PUBLIC_DEPLOYMENT_READINESS.md](PUBLIC_DEPLOYMENT_READINESS.md). VerdictLayer is a static Vite frontend, and every `VITE_` environment variable is public browser configuration; never place secrets in frontend environment variables.
+
+Public deployment has not yet been completed. The intended target is GenLayer Studionet, using a burner or development wallet and manual approval for every transaction.
 
 ## Roadmap
 

@@ -45,8 +45,8 @@ export function WalletStatusCard({ walletState, onConnect }: WalletStatusCardPro
         ) : null}
 
         <p className="wallet-note">
-          Wallet connection is prepared for future GenLayer transactions. Current verdict flows
-          still run in mock mode.
+          Wallet connection is used only for manually approved GenLayer transactions. Mock mode
+          works without a wallet.
         </p>
       </div>
 
@@ -63,4 +63,3 @@ export function WalletStatusCard({ walletState, onConnect }: WalletStatusCardPro
     </section>
   );
 }
-

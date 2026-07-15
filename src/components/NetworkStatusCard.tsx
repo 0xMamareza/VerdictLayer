@@ -79,8 +79,8 @@ export function NetworkStatusCard({
         ) : null}
 
         <p className="network-note">
-          Network switching is prepared for future GenLayer transactions. Verdict flows still run
-          in mock mode.
+          Network switching is used only for manually approved GenLayer transactions. Mock mode
+          remains available without network changes.
         </p>
       </div>
 

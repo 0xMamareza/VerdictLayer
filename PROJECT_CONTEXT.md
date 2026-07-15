@@ -56,6 +56,8 @@ Production error-state testing verified disconnected-wallet protection, unsuppor
 
 Shared wallet-rejection error normalization is manually verified across Claim, Task, and Dispute. Rejected wallet requests now display a concise message without viem internals, submit no transaction, preserve all form inputs, and leave each production form ready for retry.
 
+Public deployment preparation completed. VerdictLayer is a static Vite frontend with browser wallet interaction and no backend/database dependency. Public environment variables and diagnostics visibility are documented. The current static build supports site-root hosting; subpath hosting requires a future Vite base-path decision. Hosting-provider selection and preview deployment remain pending.
+
 Submission package status: README, checklist, and demo script prepared.
 
 Published repository: https://github.com/0xMamareza/VerdictLayer
