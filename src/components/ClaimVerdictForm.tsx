@@ -3,6 +3,7 @@ import { INTEGRATION_MODE } from "../config/integration";
 import { verdictLayerClient } from "../lib/verdictLayerClient";
 import type { GenLayerWriteStatus } from "../lib/genlayerWriteTypes";
 import type { ClaimVerdictResult } from "../types/verdict";
+import { TransactionReadiness } from "./TransactionReadiness";
 import { VerdictResultCard } from "./VerdictResultCard";
 
 const emptySourceUrls: readonly string[] = ["", "", ""];
@@ -166,71 +167,93 @@ export function ClaimVerdictForm({
     <div className="claim-flow">
       <form className="claim-form" onSubmit={handleSubmit}>
         {isGenLayerMode ? (
-          <div
-            className={`claim-genlayer-readiness ${isGenLayerReady ? "is-ready" : "is-warning"}`}
-          >
-            <h3>GenLayer transaction readiness</h3>
-            <p>Wallet: {isWalletConnected && hasWalletAddress ? "connected" : "required"}</p>
-            <p>
-              Supported GenLayer network: {isSupportedGenLayerNetwork ? "ready" : "required"}
-            </p>
-            <p>This submission sends a real wallet-signed transaction.</p>
-          </div>
-        ) : null}
-
-        <label className="form-field">
-          <span>Claim</span>
-          <textarea
-            value={claim}
-            onChange={(event) => setClaim(event.target.value)}
-            placeholder="Example: GenLayer testnet is live"
-            rows={5}
+          <TransactionReadiness
+            isReady={isGenLayerReady}
+            isWalletReady={isWalletConnected && hasWalletAddress}
+            isNetworkReady={isSupportedGenLayerNetwork}
           />
-        </label>
-
-        <div className="source-grid" aria-label="Evidence sources">
-          {sourceUrls.map((sourceUrl, index) => (
-            <label className="form-field" key={`source-url-${index + 1}`}>
-              <span>Source URL {index + 1}</span>
-              <input
-                type="url"
-                value={sourceUrl}
-                onChange={(event) => updateSourceUrl(index, event.target.value)}
-                placeholder="https://example.com/evidence"
-              />
-            </label>
-          ))}
-        </div>
-
-        {errorMessage ? <p className="form-error">{errorMessage}</p> : null}
-        {submitError ? <p className="form-error">{submitError}</p> : null}
-
-        {isGenLayerMode ? (
-          <p
-            className={`claim-transaction-status ${writeStatus === "success" ? "is-success" : ""}`}
-          >
-            Transaction status: {getWriteStatusLabel(writeStatus)}
-          </p>
         ) : null}
 
-        {isGenLayerMode && transactionHash ? (
-          <div className="claim-transaction-hash" aria-live="polite">
-            <span>Transaction Hash</span>
-            <code>{transactionHash}</code>
+        <fieldset className="form-section">
+          <legend>
+            <span className="form-section-index">01</span>
+            <span>
+              <strong>Claim statement</strong>
+              <small>Define the statement to evaluate.</small>
+            </span>
+          </legend>
+          <label className="form-field">
+            <span className="field-label-row">
+              <span>Claim</span>
+              <small>Required</small>
+            </span>
+            <textarea
+              value={claim}
+              onChange={(event) => setClaim(event.target.value)}
+              placeholder="Example: GenLayer testnet is live"
+              rows={6}
+            />
+          </label>
+        </fieldset>
+
+        <fieldset className="form-section">
+          <legend>
+            <span className="form-section-index">02</span>
+            <span>
+              <strong>Evidence sources</strong>
+              <small>Add at least one URL supporting the claim.</small>
+            </span>
+          </legend>
+          <div className="source-grid" aria-label="Evidence sources">
+            {sourceUrls.map((sourceUrl, index) => (
+              <label className="form-field" key={`source-url-${index + 1}`}>
+                <span className="field-label-row">
+                  <span>Source URL {index + 1}</span>
+                  <small>{index === 0 ? "At least one" : "Optional"}</small>
+                </span>
+                <input
+                  type="url"
+                  value={sourceUrl}
+                  onChange={(event) => updateSourceUrl(index, event.target.value)}
+                  placeholder="https://example.com/evidence"
+                />
+              </label>
+            ))}
           </div>
-        ) : null}
+        </fieldset>
 
-        <button
-          className={`module-button form-submit ${isGenLayerMode ? "real-submit" : ""}`}
-          type="submit"
-          disabled={isGenLayerMode ? isGenLayerSubmitDisabled : isSubmitting}
-        >
-          {isGenLayerMode
-            ? getGenLayerButtonLabel(writeStatus)
-            : isSubmitting
-              ? "Generating..."
-              : "Generate Mock Verdict"}
-        </button>
+        <div className="form-submit-area">
+          {errorMessage ? <p className="form-error" role="alert">{errorMessage}</p> : null}
+          {submitError ? <p className="form-error" role="alert">{submitError}</p> : null}
+
+          {isGenLayerMode ? (
+            <p
+              className={`claim-transaction-status ${writeStatus === "success" ? "is-success" : ""}`}
+              aria-live="polite"
+            >
+              Transaction status: {getWriteStatusLabel(writeStatus)}
+            </p>
+          ) : null}
+
+          {isGenLayerMode && transactionHash ? (
+            <div className="claim-transaction-hash" aria-live="polite">
+              <span>Transaction Hash</span>
+              <code>{transactionHash}</code>
+            </div>
+          ) : null}
+
+          <button
+            className={`module-button form-submit ${isGenLayerMode ? "real-submit" : ""}`}
+            type="submit"
+            disabled={isGenLayerMode ? isGenLayerSubmitDisabled : isSubmitting}
+          >
+            {isGenLayerMode
+              ? getGenLayerButtonLabel(writeStatus)
+              : isSubmitting
+                ? "Generating..."
+                : "Generate Mock Verdict"}
+          </button>
+        </div>
       </form>
 
       {isGenLayerMode ? (

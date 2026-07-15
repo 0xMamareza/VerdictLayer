@@ -8,6 +8,13 @@
 - Deterministic mock fallback remains available through `mock` mode.
 - Public deployment has not yet been performed.
 
+## UI Redesign Deployment Status
+
+- The premium GenLayer-themed redesign is locally complete and approved.
+- The static build remains compatible with a site-root Vercel deployment.
+- The public site still needs to receive the redesign through the next Git push and deployment.
+- A post-deployment visual review remains pending.
+
 ## Deployment Model
 
 - VerdictLayer builds as a static Vite frontend.

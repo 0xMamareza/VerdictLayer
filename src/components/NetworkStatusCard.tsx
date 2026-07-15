@@ -42,13 +42,32 @@ export function NetworkStatusCard({
   const isChecking = networkState.status === "checking";
   const isBusy = isChecking || isSwitchingNetwork;
   const showUnsupportedWarning = networkState.status === "connected_unsupported";
+  const isSupported = networkState.status === "connected_supported";
 
   return (
-    <section className="network-card" aria-label="Network status">
+    <section className="network-card connection-panel" aria-label="Network status">
       <div>
-        <p className="panel-label">Network</p>
-        <h2>Network</h2>
-        <p className="network-target">Target: {targetNetworkLabel}</p>
+        <header className="connection-panel-heading">
+          <span className="connection-panel-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3" />
+              <circle cx="5" cy="6" r="2" />
+              <circle cx="19" cy="6" r="2" />
+              <circle cx="5" cy="18" r="2" />
+              <circle cx="19" cy="18" r="2" />
+              <path d="m7 7.5 3 2.5m4 0 3-2.5M7 16.5l3-2.5m4 0 3 2.5" />
+            </svg>
+          </span>
+          <div>
+            <p className="panel-label">Execution</p>
+            <h4>Network</h4>
+          </div>
+          <span className={`panel-status ${isSupported ? "is-ready" : ""}`}>
+            <span className="status-light" aria-hidden="true" />
+            {isSupported ? "Ready" : "Check network"}
+          </span>
+        </header>
+        <p className="network-target">Target / {targetNetworkLabel}</p>
         <p className="network-status">{getNetworkStatusText(networkState)}</p>
 
         {showUnsupportedWarning ? (
@@ -79,8 +98,7 @@ export function NetworkStatusCard({
         ) : null}
 
         <p className="network-note">
-          Network switching is used only for manually approved GenLayer transactions. Mock mode
-          remains available without network changes.
+          Network changes use your wallet's standard approval flow. No switch runs automatically.
         </p>
       </div>
 

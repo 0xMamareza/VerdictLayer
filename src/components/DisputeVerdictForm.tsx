@@ -4,6 +4,7 @@ import { verdictLayerClient } from "../lib/verdictLayerClient";
 import type { GenLayerWriteStatus } from "../lib/genlayerWriteTypes";
 import type { DisputeVerdictResult } from "../types/verdict";
 import { DisputeVerdictResultCard } from "./DisputeVerdictResultCard";
+import { TransactionReadiness } from "./TransactionReadiness";
 
 type DisputeVerdictFormProps = {
   walletAddress: string | null;
@@ -174,99 +175,115 @@ export function DisputeVerdictForm({
     <div className="dispute-flow">
       <form className="claim-form" onSubmit={handleSubmit}>
         {isGenLayerMode ? (
-          <div
-            className={`claim-genlayer-readiness ${isGenLayerReady ? "is-ready" : "is-warning"}`}
-          >
-            <h3>GenLayer transaction readiness</h3>
-            <p>Wallet: {isWalletConnected && hasWalletAddress ? "connected" : "required"}</p>
-            <p>
-              Supported GenLayer network: {isSupportedGenLayerNetwork ? "ready" : "required"}
+          <TransactionReadiness
+            isReady={isGenLayerReady}
+            isWalletReady={isWalletConnected && hasWalletAddress}
+            isNetworkReady={isSupportedGenLayerNetwork}
+          />
+        ) : null}
+
+        <fieldset className="form-section">
+          <legend>
+            <span className="form-section-index">01</span>
+            <span>
+              <strong>Dispute positions</strong>
+              <small>Capture the issue and both sides of the claim.</small>
+            </span>
+          </legend>
+          <label className="form-field">
+            <span className="field-label-row"><span>Dispute title</span><small>Required</small></span>
+            <input
+              type="text"
+              value={disputeTitle}
+              onChange={(event) => setDisputeTitle(event.target.value)}
+              placeholder="Example: Milestone payment dispute"
+            />
+          </label>
+
+          <div className="dispute-grid" aria-label="Dispute claims">
+            <label className="form-field">
+              <span className="field-label-row"><span>Side A claim</span><small>Required</small></span>
+              <textarea
+                value={sideAClaim}
+                onChange={(event) => setSideAClaim(event.target.value)}
+                placeholder="Describe Side A's position."
+                rows={6}
+              />
+            </label>
+
+            <label className="form-field">
+              <span className="field-label-row"><span>Side B claim</span><small>Required</small></span>
+              <textarea
+                value={sideBClaim}
+                onChange={(event) => setSideBClaim(event.target.value)}
+                placeholder="Describe Side B's position."
+                rows={6}
+              />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset className="form-section">
+          <legend>
+            <span className="form-section-index">02</span>
+            <span>
+              <strong>Evidence &amp; decision rule</strong>
+              <small>Define what should be considered and how to decide.</small>
+            </span>
+          </legend>
+          <label className="form-field">
+            <span className="field-label-row"><span>Evidence</span><small>Required</small></span>
+            <textarea
+              value={evidence}
+              onChange={(event) => setEvidence(event.target.value)}
+              placeholder="Paste the relevant evidence, messages, delivery notes, links, or agreement details."
+              rows={7}
+            />
+          </label>
+
+          <label className="form-field">
+            <span className="field-label-row"><span>Decision rule</span><small>Required</small></span>
+            <textarea
+              value={decisionRule}
+              onChange={(event) => setDecisionRule(event.target.value)}
+              placeholder="Describe the rule the resolver should apply."
+              rows={5}
+            />
+          </label>
+        </fieldset>
+
+        <div className="form-submit-area">
+          {errorMessage ? <p className="form-error" role="alert">{errorMessage}</p> : null}
+          {submitError ? <p className="form-error" role="alert">{submitError}</p> : null}
+
+          {isGenLayerMode ? (
+            <p
+              className={`claim-transaction-status ${writeStatus === "success" ? "is-success" : ""}`}
+              aria-live="polite"
+            >
+              Transaction status: {getWriteStatusLabel(writeStatus)}
             </p>
-            <p>This submission sends a real wallet-signed transaction.</p>
-          </div>
-        ) : null}
+          ) : null}
 
-        <label className="form-field">
-          <span>Dispute title</span>
-          <input
-            type="text"
-            value={disputeTitle}
-            onChange={(event) => setDisputeTitle(event.target.value)}
-            placeholder="Example: Milestone payment dispute"
-          />
-        </label>
+          {isGenLayerMode && transactionHash ? (
+            <div className="claim-transaction-hash" aria-live="polite">
+              <span>Transaction Hash</span>
+              <code>{transactionHash}</code>
+            </div>
+          ) : null}
 
-        <div className="dispute-grid" aria-label="Dispute claims">
-          <label className="form-field">
-            <span>Side A claim</span>
-            <textarea
-              value={sideAClaim}
-              onChange={(event) => setSideAClaim(event.target.value)}
-              placeholder="Describe Side A's position."
-              rows={5}
-            />
-          </label>
-
-          <label className="form-field">
-            <span>Side B claim</span>
-            <textarea
-              value={sideBClaim}
-              onChange={(event) => setSideBClaim(event.target.value)}
-              placeholder="Describe Side B's position."
-              rows={5}
-            />
-          </label>
-        </div>
-
-        <label className="form-field">
-          <span>Evidence</span>
-          <textarea
-            value={evidence}
-            onChange={(event) => setEvidence(event.target.value)}
-            placeholder="Paste the relevant evidence, messages, delivery notes, links, or agreement details."
-            rows={6}
-          />
-        </label>
-
-        <label className="form-field">
-          <span>Decision rule</span>
-          <textarea
-            value={decisionRule}
-            onChange={(event) => setDecisionRule(event.target.value)}
-            placeholder="Describe the rule the resolver should apply."
-            rows={4}
-          />
-        </label>
-
-        {errorMessage ? <p className="form-error">{errorMessage}</p> : null}
-        {submitError ? <p className="form-error">{submitError}</p> : null}
-
-        {isGenLayerMode ? (
-          <p
-            className={`claim-transaction-status ${writeStatus === "success" ? "is-success" : ""}`}
+          <button
+            className={`module-button form-submit ${isGenLayerMode ? "real-submit" : ""}`}
+            type="submit"
+            disabled={isGenLayerMode ? isGenLayerSubmitDisabled : isSubmitting}
           >
-            Transaction status: {getWriteStatusLabel(writeStatus)}
-          </p>
-        ) : null}
-
-        {isGenLayerMode && transactionHash ? (
-          <div className="claim-transaction-hash" aria-live="polite">
-            <span>Transaction Hash</span>
-            <code>{transactionHash}</code>
-          </div>
-        ) : null}
-
-        <button
-          className={`module-button form-submit ${isGenLayerMode ? "real-submit" : ""}`}
-          type="submit"
-          disabled={isGenLayerMode ? isGenLayerSubmitDisabled : isSubmitting}
-        >
-          {isGenLayerMode
-            ? getGenLayerButtonLabel(writeStatus)
-            : isSubmitting
-              ? "Resolving..."
-              : "Generate Mock Resolution"}
-        </button>
+            {isGenLayerMode
+              ? getGenLayerButtonLabel(writeStatus)
+              : isSubmitting
+                ? "Resolving..."
+                : "Generate Mock Resolution"}
+          </button>
+        </div>
       </form>
 
       {isGenLayerMode ? (

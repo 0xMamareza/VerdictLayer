@@ -29,16 +29,25 @@ export function TaskVerdictResultCard({
   const resultLabel = source === "genlayer" ? "GenLayer task review" : "Mock review";
 
   return (
-    <article className="result-card" aria-label={`${resultLabel} result`}>
+    <article
+      className={`result-card result-card-${result.status}`}
+      aria-label={`${resultLabel} result`}
+    >
       <div className="result-card-header">
-        <div>
-          <p className="panel-label">{resultLabel}</p>
+        <div className="result-outcome">
+          <p className="panel-label">
+            <span className="result-signal" aria-hidden="true" />
+            {resultLabel}
+          </p>
           <h3>{formatStatus(result.status)}</h3>
         </div>
         <span className={`verdict-pill verdict-pill-${result.status}`}>{result.score}/100</span>
       </div>
 
-      <p className="result-summary">{result.feedback}</p>
+      <div className="result-narrative">
+        <p className="result-section-label">Review feedback</p>
+        <p className="result-summary">{result.feedback}</p>
+      </div>
 
       <div className="missing-items-panel">
         <h4>Missing items</h4>

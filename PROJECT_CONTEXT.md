@@ -58,6 +58,8 @@ Shared wallet-rejection error normalization is manually verified across Claim, T
 
 Public deployment preparation completed. VerdictLayer is a static Vite frontend with browser wallet interaction and no backend/database dependency. Public environment variables and diagnostics visibility are documented. The current static build supports site-root hosting; subpath hosting requires a future Vite base-path decision. Hosting-provider selection and preview deployment remain pending.
 
+UI status: VerdictLayer has completed a manually approved premium GenLayer-themed redesign. The app now includes a high-end landing page, refined workspace, unified wallet/network dock, accessible About GenLayer menu, redesigned forms/results, and a single Built By 0xMamareza creator signature. Functional GenLayer integration remains unchanged.
+
 Submission package status: README, checklist, and demo script prepared.
 
 Published repository: https://github.com/0xMamareza/VerdictLayer

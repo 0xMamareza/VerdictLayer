@@ -4,6 +4,7 @@ import { verdictLayerClient } from "../lib/verdictLayerClient";
 import type { GenLayerWriteStatus } from "../lib/genlayerWriteTypes";
 import type { TaskVerdictResult } from "../types/verdict";
 import { TaskVerdictResultCard } from "./TaskVerdictResultCard";
+import { TransactionReadiness } from "./TransactionReadiness";
 
 type TaskVerdictFormProps = {
   walletAddress: string | null;
@@ -183,109 +184,127 @@ export function TaskVerdictForm({
     <div className="task-flow">
       <form className="claim-form" onSubmit={handleSubmit}>
         {isGenLayerMode ? (
-          <div
-            className={`claim-genlayer-readiness ${isGenLayerReady ? "is-ready" : "is-warning"}`}
-          >
-            <h3>GenLayer transaction readiness</h3>
-            <p>Wallet: {isWalletConnected && hasWalletAddress ? "connected" : "required"}</p>
-            <p>
-              Supported GenLayer network: {isSupportedGenLayerNetwork ? "ready" : "required"}
+          <TransactionReadiness
+            isReady={isGenLayerReady}
+            isWalletReady={isWalletConnected && hasWalletAddress}
+            isNetworkReady={isSupportedGenLayerNetwork}
+          />
+        ) : null}
+
+        <fieldset className="form-section">
+          <legend>
+            <span className="form-section-index">01</span>
+            <span>
+              <strong>Task brief</strong>
+              <small>Define the work and its acceptance criteria.</small>
+            </span>
+          </legend>
+          <div className="task-brief-grid">
+            <label className="form-field">
+              <span className="field-label-row"><span>Task title</span><small>Required</small></span>
+              <input
+                type="text"
+                value={taskTitle}
+                onChange={(event) => setTaskTitle(event.target.value)}
+                placeholder="Example: Deploy verification contract"
+              />
+            </label>
+
+            <label className="form-field">
+              <span className="field-label-row"><span>Task requirements</span><small>Required</small></span>
+              <textarea
+                value={taskRequirements}
+                onChange={(event) => setTaskRequirements(event.target.value)}
+                placeholder="Describe acceptance criteria, proof requirements, demo, README, or screenshots."
+                rows={6}
+              />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset className="form-section">
+          <legend>
+            <span className="form-section-index">02</span>
+            <span>
+              <strong>Proof package</strong>
+              <small>Provide at least one proof field for review.</small>
+            </span>
+          </legend>
+          <div className="proof-grid" aria-label="Submission proof">
+            <label className="form-field">
+              <span>Contract address</span>
+              <input
+                type="text"
+                value={contractAddress}
+                onChange={(event) => setContractAddress(event.target.value)}
+                placeholder="0x..."
+              />
+            </label>
+
+            <label className="form-field">
+              <span>Transaction hash</span>
+              <input
+                type="text"
+                value={proofTransactionHash}
+                onChange={(event) => setProofTransactionHash(event.target.value)}
+                placeholder="0x..."
+              />
+            </label>
+
+            <label className="form-field">
+              <span>GitHub repo URL</span>
+              <input
+                type="url"
+                value={githubRepoUrl}
+                onChange={(event) => setGithubRepoUrl(event.target.value)}
+                placeholder="https://github.com/example/repo"
+              />
+            </label>
+          </div>
+
+          <label className="form-field form-field-wide">
+            <span>Explanation</span>
+            <textarea
+              value={explanation}
+              onChange={(event) => setExplanation(event.target.value)}
+              placeholder="Explain what was built, how it satisfies the task, and where reviewers should look."
+              rows={6}
+            />
+          </label>
+        </fieldset>
+
+        <div className="form-submit-area">
+          {errorMessage ? <p className="form-error" role="alert">{errorMessage}</p> : null}
+          {submitError ? <p className="form-error" role="alert">{submitError}</p> : null}
+
+          {isGenLayerMode ? (
+            <p
+              className={`claim-transaction-status ${writeStatus === "success" ? "is-success" : ""}`}
+              aria-live="polite"
+            >
+              Transaction status: {getWriteStatusLabel(writeStatus)}
             </p>
-            <p>This submission sends a real wallet-signed transaction.</p>
-          </div>
-        ) : null}
+          ) : null}
 
-        <label className="form-field">
-          <span>Task title</span>
-          <input
-            type="text"
-            value={taskTitle}
-            onChange={(event) => setTaskTitle(event.target.value)}
-            placeholder="Example: Deploy verification contract"
-          />
-        </label>
+          {isGenLayerMode && transactionHash ? (
+            <div className="claim-transaction-hash" aria-live="polite">
+              <span>Transaction Hash</span>
+              <code>{transactionHash}</code>
+            </div>
+          ) : null}
 
-        <label className="form-field">
-          <span>Task requirements</span>
-          <textarea
-            value={taskRequirements}
-            onChange={(event) => setTaskRequirements(event.target.value)}
-            placeholder="Describe acceptance criteria, proof requirements, demo, README, or screenshots."
-            rows={5}
-          />
-        </label>
-
-        <div className="proof-grid" aria-label="Submission proof">
-          <label className="form-field">
-            <span>Contract address</span>
-            <input
-              type="text"
-              value={contractAddress}
-              onChange={(event) => setContractAddress(event.target.value)}
-              placeholder="0x..."
-            />
-          </label>
-
-          <label className="form-field">
-            <span>Transaction hash</span>
-            <input
-              type="text"
-              value={proofTransactionHash}
-              onChange={(event) => setProofTransactionHash(event.target.value)}
-              placeholder="0x..."
-            />
-          </label>
-
-          <label className="form-field">
-            <span>GitHub repo URL</span>
-            <input
-              type="url"
-              value={githubRepoUrl}
-              onChange={(event) => setGithubRepoUrl(event.target.value)}
-              placeholder="https://github.com/example/repo"
-            />
-          </label>
-        </div>
-
-        <label className="form-field">
-          <span>Explanation</span>
-          <textarea
-            value={explanation}
-            onChange={(event) => setExplanation(event.target.value)}
-            placeholder="Explain what was built, how it satisfies the task, and where reviewers should look."
-            rows={5}
-          />
-        </label>
-
-        {errorMessage ? <p className="form-error">{errorMessage}</p> : null}
-        {submitError ? <p className="form-error">{submitError}</p> : null}
-
-        {isGenLayerMode ? (
-          <p
-            className={`claim-transaction-status ${writeStatus === "success" ? "is-success" : ""}`}
+          <button
+            className={`module-button form-submit ${isGenLayerMode ? "real-submit" : ""}`}
+            type="submit"
+            disabled={isGenLayerMode ? isGenLayerSubmitDisabled : isSubmitting}
           >
-            Transaction status: {getWriteStatusLabel(writeStatus)}
-          </p>
-        ) : null}
-
-        {isGenLayerMode && transactionHash ? (
-          <div className="claim-transaction-hash" aria-live="polite">
-            <span>Transaction Hash</span>
-            <code>{transactionHash}</code>
-          </div>
-        ) : null}
-
-        <button
-          className={`module-button form-submit ${isGenLayerMode ? "real-submit" : ""}`}
-          type="submit"
-          disabled={isGenLayerMode ? isGenLayerSubmitDisabled : isSubmitting}
-        >
-          {isGenLayerMode
-            ? getGenLayerButtonLabel(writeStatus)
-            : isSubmitting
-              ? "Reviewing..."
-              : "Generate Mock Review"}
-        </button>
+            {isGenLayerMode
+              ? getGenLayerButtonLabel(writeStatus)
+              : isSubmitting
+                ? "Reviewing..."
+                : "Generate Mock Review"}
+          </button>
+        </div>
       </form>
 
       {isGenLayerMode ? (

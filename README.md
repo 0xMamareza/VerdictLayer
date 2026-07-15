@@ -22,6 +22,12 @@ GenLayer is a strong fit because Intelligent Contracts can eventually combine on
 - Task Verdicts: review builder or bounty submissions against proof requirements.
 - Dispute Verdicts: resolve small disputes using submitted claims, evidence, and decision rules.
 
+## Interface
+
+VerdictLayer now includes a GenLayer-themed landing experience and a premium production workspace for Claim, Task, and Dispute. The interface also includes redesigned wallet and network controls, an About GenLayer resource menu, responsive desktop and mobile behavior, and creator attribution for 0xMamareza.
+
+Full redesign details are documented in [UI_REDESIGN_REPORT.md](UI_REDESIGN_REPORT.md).
+
 ## Current MVP Status
 
 - Frontend shell is implemented with React, Vite, TypeScript, and plain CSS.

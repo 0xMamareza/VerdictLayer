@@ -47,6 +47,18 @@
 - [x] Diagnostics public visibility reviewed.
 - [x] Browser metadata reviewed.
 - [x] Static-host compatibility reviewed.
+- [x] Premium landing page implemented.
+- [x] GenLayer visual theme implemented.
+- [x] Wallet/network UI redesigned.
+- [x] Claim, Task, and Dispute workspace redesigned.
+- [x] Result cards redesigned.
+- [x] About GenLayer menu implemented.
+- [x] Creator PFP attribution implemented.
+- [x] Desktop visual review completed.
+- [x] Mobile visual review completed.
+- [x] UI redesign approved.
+- [ ] Public redesign redeployment pending.
+- [ ] Public visual smoke test pending.
 - [ ] Hosting provider selection pending.
 - [ ] Preview deployment pending.
 - [ ] Public URL pending.

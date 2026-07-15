@@ -29,16 +29,25 @@ export function DisputeVerdictResultCard({
   const resultLabel = source === "genlayer" ? "GenLayer dispute verdict" : "Mock resolution";
 
   return (
-    <article className="result-card" aria-label={`${resultLabel} result`}>
+    <article
+      className={`result-card result-card-${result.verdict}`}
+      aria-label={`${resultLabel} result`}
+    >
       <div className="result-card-header">
-        <div>
-          <p className="panel-label">{resultLabel}</p>
+        <div className="result-outcome">
+          <p className="panel-label">
+            <span className="result-signal" aria-hidden="true" />
+            {resultLabel}
+          </p>
           <h3>{formatVerdict(result.verdict)}</h3>
         </div>
         <span className={`verdict-pill verdict-pill-${result.verdict}`}>{result.confidence}</span>
       </div>
 
-      <p className="result-summary">{result.reason}</p>
+      <div className="result-narrative">
+        <p className="result-section-label">Decision reason</p>
+        <p className="result-summary">{result.reason}</p>
+      </div>
 
       <div className="resolution-panel">
         <h4>Recommended resolution</h4>

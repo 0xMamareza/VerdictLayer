@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import { BuilderSignature } from "./components/BuilderSignature";
 import { ClaimVerdictForm } from "./components/ClaimVerdictForm";
 import { DisputeVerdictForm } from "./components/DisputeVerdictForm";
 import { GenLayerReadDiagnostics } from "./components/GenLayerReadDiagnostics";
 import { GenLayerWriteDiagnostics } from "./components/GenLayerWriteDiagnostics";
+import { LandingHero } from "./components/LandingHero";
 import { NetworkStatusCard } from "./components/NetworkStatusCard";
+import { SiteFooter } from "./components/SiteFooter";
+import { SiteHeader } from "./components/SiteHeader";
 import { TaskVerdictForm } from "./components/TaskVerdictForm";
 import { WalletStatusCard } from "./components/WalletStatusCard";
 import {
@@ -12,7 +16,7 @@ import {
   getGenLayerNetworkByKey,
   getKnownGenLayerNetworkByChainId,
 } from "./config/genlayerNetworks";
-import { SHOW_GENLAYER_DIAGNOSTICS } from "./config/integration";
+import { INTEGRATION_MODE, SHOW_GENLAYER_DIAGNOSTICS } from "./config/integration";
 import { verdictModules, type VerdictModule, type VerdictModuleId } from "./config/modules";
 import {
   getInjectedEthereumProvider,
@@ -25,6 +29,60 @@ import {
 } from "./lib/wallet";
 
 const targetGenLayerNetwork = getGenLayerNetworkByKey(DEFAULT_TARGET_GENLAYER_NETWORK_KEY);
+
+const capabilityContent = [
+  {
+    id: "claim-verdicts" as const,
+    index: "01",
+    title: "Claim Verdicts",
+    description: "Evaluate claims against submitted evidence.",
+    label: "Evidence verification",
+  },
+  {
+    id: "task-verdicts" as const,
+    index: "02",
+    title: "Task Verdicts",
+    description: "Review completed work and identify missing proof.",
+    label: "Submission review",
+  },
+  {
+    id: "dispute-verdicts" as const,
+    index: "03",
+    title: "Dispute Verdicts",
+    description: "Compare both sides and produce a structured resolution.",
+    label: "Evidence resolution",
+  },
+] as const;
+
+const workflowSteps = [
+  { index: "01", title: "Submit Evidence", detail: "Structure the claim, proof, or dispute context." },
+  { index: "02", title: "Confirm in Wallet", detail: "Review and approve the GenLayer transaction." },
+  { index: "03", title: "Read the Verdict", detail: "Receive the typed result from contract state." },
+] as const;
+
+function WorkflowGlyph({ moduleId }: { moduleId: VerdictModuleId }) {
+  if (moduleId === "claim-verdicts") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 4h16v12H8l-4 4V4Zm3 4h10M7 12h7" />
+      </svg>
+    );
+  }
+
+  if (moduleId === "task-verdicts") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M7 4h10v3h3v13H4V7h3V4Zm2 0v4h6V4H9Zm-1 9 2.5 2.5L16 10" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3v18M6 6h12M7 6l-4 7h8L7 6Zm10 0-4 7h8l-4-7ZM8 21h8" />
+    </svg>
+  );
+}
 
 function getReadableErrorMessage(error: unknown, fallbackMessage: string): string {
   if (error instanceof Error && error.message.trim().length > 0) {
@@ -226,96 +284,213 @@ function App() {
       });
   }
 
+  const connectionReady = isWalletConnected && isOnSupportedGenLayerNetwork;
+
   return (
-    <main className="app-shell">
-      <section className="hero-section" aria-labelledby="product-title">
-        <p className="eyebrow">GenLayer-powered MVP</p>
-        <h1 id="product-title">VerdictLayer</h1>
-        <p className="tagline">AI-native verdicts for claims, tasks, and disputes.</p>
-        <p className="description">
-          VerdictLayer is a GenLayer-powered MVP for turning messy evidence into structured
-          verdicts across Web3 claims, builder submissions, and small disputes.
-        </p>
-      </section>
+    <>
+      <SiteHeader
+        walletState={walletState}
+        networkState={networkState}
+        targetNetworkLabel={targetGenLayerNetwork.label}
+        onConnectWallet={handleConnectWallet}
+      />
 
-      <aside className="testnet-notice" aria-label="Testnet safety notice">
-        <strong>Testnet notice:</strong> VerdictLayer currently uses GenLayer Studionet. Use a
-        burner/dev wallet, review every transaction before approval, and never share wallet
-        secrets.
-      </aside>
+      <main>
+        <div className="page-shell">
+          <LandingHero />
 
-      <div className="status-card-grid">
-        <WalletStatusCard walletState={walletState} onConnect={handleConnectWallet} />
-        <NetworkStatusCard
-          networkState={networkState}
-          targetNetworkLabel={targetGenLayerNetwork.label}
-          onRefreshNetwork={handleRefreshNetwork}
-          onSwitchNetwork={handleSwitchNetwork}
-          isSwitchingNetwork={isSwitchingNetwork}
-        />
-      </div>
-
-      {SHOW_GENLAYER_DIAGNOSTICS ? (
-        <>
-          <GenLayerReadDiagnostics />
-          <GenLayerWriteDiagnostics
-            walletAddress={walletState.address}
-            isWalletConnected={isWalletConnected}
-            isOnSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
-          />
-        </>
-      ) : null}
-
-      <section className="module-grid" aria-label="VerdictLayer modules">
-        {verdictModules.map((module) => (
-          <article className="module-card" key={module.id}>
-            <div className="module-card-header">
-              <h2>{module.title}</h2>
-              <span className="status-badge">{module.status}</span>
+          <section className="capabilities-section" id="capabilities" aria-labelledby="capabilities-title">
+            <div className="section-heading-row">
+              <div>
+                <p className="section-eyebrow">Verdict infrastructure</p>
+                <h2 id="capabilities-title">Three workflows. One decision layer.</h2>
+              </div>
+              <p>Purpose-built evidence surfaces for Web3 coordination.</p>
             </div>
-            <p>{module.description}</p>
-            <button
-              className="module-button"
-              type="button"
-              onClick={() => setSelectedModuleId(module.id)}
+
+            <div className="capability-grid">
+              {capabilityContent.map((capability) => (
+                <article className="capability-card" key={capability.id}>
+                  <div className="capability-card-topline">
+                    <span>{capability.index}</span>
+                    <span>{capability.label}</span>
+                  </div>
+                  <span className="capability-icon">
+                    <WorkflowGlyph moduleId={capability.id} />
+                  </span>
+                  <h3>{capability.title}</h3>
+                  <p>{capability.description}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="process-section" aria-labelledby="process-title">
+            <div className="process-heading">
+              <p className="section-eyebrow">Consensus path</p>
+              <h2 id="process-title">From evidence to outcome.</h2>
+            </div>
+            <ol className="process-list">
+              {workflowSteps.map((step) => (
+                <li key={step.index}>
+                  <span className="process-index">{step.index}</span>
+                  <div>
+                    <h3>{step.title}</h3>
+                    <p>{step.detail}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </div>
+
+        <section className="workspace-section" id="workspace" aria-labelledby="workspace-title">
+          <div className="workspace-inner">
+            <div className="workspace-heading">
+              <p className="section-eyebrow">VerdictLayer workspace</p>
+              <h2 id="workspace-title">Choose a verdict workflow.</h2>
+              <p>
+                Every GenLayer submission requires a connected wallet, a supported network, and
+                manual approval.
+              </p>
+            </div>
+
+            <aside className="testnet-notice" aria-label="Testnet safety notice">
+              <span className="notice-signal" aria-hidden="true">
+                <span />
+              </span>
+              <div>
+                <strong>Testnet environment</strong>
+                <p>
+                  VerdictLayer currently uses GenLayer Studionet. Use a burner/dev wallet, review
+                  every transaction before approval, and never share wallet secrets.
+                </p>
+              </div>
+            </aside>
+
+            <section className="connection-dock" aria-labelledby="connection-title">
+              <header className="connection-dock-header">
+                <div>
+                  <p className="panel-label">Connection layer</p>
+                  <h3 id="connection-title">Wallet &amp; network</h3>
+                </div>
+                <span className={`connection-summary ${connectionReady ? "is-ready" : ""}`}>
+                  <span className="status-light" aria-hidden="true" />
+                  {connectionReady ? "Ready for submission" : "Setup required"}
+                </span>
+              </header>
+              <div className="connection-grid">
+                <WalletStatusCard walletState={walletState} onConnect={handleConnectWallet} />
+                <NetworkStatusCard
+                  networkState={networkState}
+                  targetNetworkLabel={targetGenLayerNetwork.label}
+                  onRefreshNetwork={handleRefreshNetwork}
+                  onSwitchNetwork={handleSwitchNetwork}
+                  isSwitchingNetwork={isSwitchingNetwork}
+                />
+              </div>
+            </section>
+
+            <div className="module-switcher" role="tablist" aria-label="Verdict workflows">
+              {verdictModules.map((module) => {
+                const capability = capabilityContent.find((item) => item.id === module.id);
+                const isActive = selectedModuleId === module.id;
+
+                return (
+                  <button
+                    className={`module-tab ${isActive ? "is-active" : ""}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls="workflow-panel"
+                    onClick={() => setSelectedModuleId(module.id)}
+                    key={module.id}
+                  >
+                    <span className="module-tab-icon">
+                      <WorkflowGlyph moduleId={module.id} />
+                    </span>
+                    <span className="module-tab-copy">
+                      <strong>{module.title}</strong>
+                      <small>{capability?.label}</small>
+                    </span>
+                    <span className="module-active-marker">{isActive ? "Active" : "Open"}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <section
+              className={`workspace-panel ${selectedModule ? "has-workflow" : ""}`}
+              id="workflow-panel"
+              role="tabpanel"
+              aria-live="polite"
             >
-              Open Module
-            </button>
-          </article>
-        ))}
-      </section>
+              {selectedModule ? (
+                <>
+                  <header className="workspace-panel-header">
+                    <div>
+                      <p className="panel-label">Active workflow</p>
+                      <h3>{selectedModule.title}</h3>
+                      <p>{selectedModule.description}</p>
+                    </div>
+                    <span className="runtime-badge">
+                      <span className="status-light" aria-hidden="true" />
+                      {INTEGRATION_MODE === "genlayer" ? "GenLayer mode" : "Mock mode"}
+                    </span>
+                  </header>
 
-      {selectedModule ? (
-        <section className="selected-panel" aria-live="polite">
-          <p className="panel-label">Selected module</p>
-          <h2>{selectedModule.title}</h2>
-          <p>{selectedModule.description}</p>
-          <span className="status-badge">{selectedModule.status}</span>
+                  {selectedModule.id === "claim-verdicts" ? (
+                    <ClaimVerdictForm
+                      walletAddress={walletState.address}
+                      isWalletConnected={isWalletConnected}
+                      isSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
+                    />
+                  ) : null}
+                  {selectedModule.id === "task-verdicts" ? (
+                    <TaskVerdictForm
+                      walletAddress={walletState.address}
+                      isWalletConnected={isWalletConnected}
+                      isSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
+                    />
+                  ) : null}
+                  {selectedModule.id === "dispute-verdicts" ? (
+                    <DisputeVerdictForm
+                      walletAddress={walletState.address}
+                      isWalletConnected={isWalletConnected}
+                      isSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
+                    />
+                  ) : null}
+                </>
+              ) : (
+                <div className="workspace-empty-state">
+                  <span className="empty-state-mark" aria-hidden="true">VL / 00</span>
+                  <h3>Select a workflow to begin.</h3>
+                  <p>Choose Claim, Task, or Dispute above. Your inputs stay local until you submit.</p>
+                </div>
+              )}
+            </section>
 
-          {selectedModule.id === "claim-verdicts" ? (
-            <ClaimVerdictForm
-              walletAddress={walletState.address}
-              isWalletConnected={isWalletConnected}
-              isSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
-            />
-          ) : null}
-          {selectedModule.id === "task-verdicts" ? (
-            <TaskVerdictForm
-              walletAddress={walletState.address}
-              isWalletConnected={isWalletConnected}
-              isSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
-            />
-          ) : null}
-          {selectedModule.id === "dispute-verdicts" ? (
-            <DisputeVerdictForm
-              walletAddress={walletState.address}
-              isWalletConnected={isWalletConnected}
-              isSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
-            />
-          ) : null}
+            {SHOW_GENLAYER_DIAGNOSTICS ? (
+              <section className="technical-diagnostics" aria-label="Technical diagnostics">
+                <header>
+                  <p className="section-eyebrow">Technical verification</p>
+                  <h2>GenLayer diagnostics</h2>
+                </header>
+                <GenLayerReadDiagnostics />
+                <GenLayerWriteDiagnostics
+                  walletAddress={walletState.address}
+                  isWalletConnected={isWalletConnected}
+                  isOnSupportedGenLayerNetwork={isOnSupportedGenLayerNetwork}
+                />
+              </section>
+            ) : null}
+          </div>
         </section>
-      ) : null}
-    </main>
+      </main>
+
+      <SiteFooter />
+      <BuilderSignature />
+    </>
   );
 }
 
