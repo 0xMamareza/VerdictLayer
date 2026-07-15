@@ -52,6 +52,10 @@ Production integration status: Claim, Task, and Dispute forms are connected to r
 
 Production Dispute integration verified. Claim, Task, and Dispute production forms have all successfully submitted browser wallet-signed GenLayer Studionet transactions and rendered strictly parsed read-after-write results. Genlayer mode now provides real integration for all three modules, while mock mode remains the deterministic fallback.
 
+Production error-state testing verified disconnected-wallet protection, unsupported-network protection, network recovery, and wallet-rejection recovery for Claim, Task, and Dispute. A shared error normalizer removes viem internals from user-facing rejection errors.
+
+Shared wallet-rejection error normalization is manually verified across Claim, Task, and Dispute. Rejected wallet requests now display a concise message without viem internals, submit no transaction, preserve all form inputs, and leave each production form ready for retry.
+
 Submission package status: README, checklist, and demo script prepared.
 
 Published repository: https://github.com/0xMamareza/VerdictLayer

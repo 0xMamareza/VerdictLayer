@@ -28,6 +28,18 @@
 - [x] Claim, Task, and Dispute production routing verified.
 - [x] All three read-after-write paths verified.
 - [x] Production integration evidence report complete.
+- [x] Production disconnected-wallet guards verified.
+- [x] Production unsupported-network guards verified.
+- [x] Network recovery verified.
+- [x] Wallet rejection preserves inputs and retry state.
+- [x] User-facing rejection-message cleanup implemented.
+- [x] User-facing Claim rejection message verified.
+- [x] User-facing Task rejection message verified.
+- [x] User-facing Dispute rejection message verified.
+- [x] Raw viem details removed from rejection messages.
+- [x] Rejected transactions produce no transaction hash.
+- [x] Rejected transactions produce no result.
+- [x] Error-state documentation complete.
 - [ ] Public deployment pending.
 - [ ] Final demo recording pending.
 - [ ] Final submission review pending.

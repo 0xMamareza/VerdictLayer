@@ -232,3 +232,13 @@ In `genlayer` mode:
 - Dispute -> real client
 
 Diagnostics remain isolated from production forms. No automatic transaction submission exists; every real transaction requires manual form submission and wallet approval.
+
+## Shared GenLayer Error Normalization
+
+Transaction helpers normalize unknown SDK and provider errors centrally. Wallet rejection is recognized through common provider codes, error names, and message patterns.
+
+Internal SDK details, version strings, and stack traces are not surfaced to production forms. Forms retain their inputs and display the existing retry state, while diagnostics receive normalized errors through the same transaction helpers.
+
+### Manual Verification
+
+Claim, Task, and Dispute display the same normalized wallet-rejection message. A rejected request creates no transaction hash or result, controlled inputs remain preserved, write status transitions to `error`, and retry UI remains available. Provider and SDK details are not surfaced.

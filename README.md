@@ -124,6 +124,8 @@ Production integration status:
 - Dispute: verified
 - Public frontend deployment: pending
 
+Production safety: disconnected-wallet and unsupported-network guards are verified. Wallet rejection is manually verified for Claim, Task, and Dispute and displays: "Transaction was rejected in your wallet. No transaction was submitted." Form inputs remain available for retry, and no rejected request produces a transaction hash or result. Evidence is documented in [GENLAYER_ERROR_TEST_REPORT.md](GENLAYER_ERROR_TEST_REPORT.md).
+
 ## Roadmap
 
 - v0.1 deterministic contract

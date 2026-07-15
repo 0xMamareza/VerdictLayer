@@ -56,7 +56,20 @@
 - All three modules are implemented behind `genlayer` mode.
 - Mock fallback preserved for all three modules.
 - Public deployment still pending.
-- Production error-state testing still pending.
+- Disconnected-wallet guard verified for Claim.
+- Disconnected-wallet guard verified for Task.
+- Disconnected-wallet guard verified for Dispute.
+- Unsupported-network guard verified for all three modules.
+- Network-switch recovery verified.
+- Wallet-rejection state verified for all three modules.
+- Shared rejection-message cleanup implemented.
+- Cleaned Claim rejection message manually verified.
+- Cleaned Task rejection message manually verified.
+- Cleaned Dispute rejection message manually verified.
+- No SDK or provider internals exposed after rejection.
+- Inputs preserved after rejection for all three modules.
+- Retry state verified for all three modules.
+- Production wallet-rejection error handling complete.
 - All three manual browser diagnostic transaction tests completed.
 - Production Claim, Task, and Dispute wallet-signed writes verified.
 - Mock mode remains active.

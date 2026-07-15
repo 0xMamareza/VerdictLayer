@@ -10,6 +10,7 @@ import type {
   DisputeVerdictContractInput,
   TaskVerdictContractInput,
 } from "../types/contractSchemas";
+import { getUserFacingGenLayerError } from "./genlayerErrorMessages";
 import { getInjectedEthereumProvider } from "./wallet";
 import type { GenLayerWriteResult, GenLayerWriteStatus } from "./genlayerWriteTypes";
 
@@ -54,22 +55,6 @@ function getConfiguredAccount(account: string): `0x${string}` {
   return normalizedAccount as `0x${string}`;
 }
 
-function getReadableErrorMessage(error: unknown, fallbackMessage: string): string {
-  if (error instanceof Error && error.message.trim().length > 0) {
-    return error.message;
-  }
-
-  if (typeof error === "object" && error !== null && "message" in error) {
-    const message = error.message;
-
-    if (typeof message === "string" && message.trim().length > 0) {
-      return message;
-    }
-  }
-
-  return fallbackMessage;
-}
-
 function getTransactionHash(value: unknown): string | null {
   return typeof value === "string" && value.length > 0 ? value : null;
 }
@@ -105,7 +90,6 @@ async function submitVerdictTransaction(
     | "submit_dispute_verdict",
   args: string[],
   account: string,
-  fallbackErrorMessage: string,
   callbacks?: GenLayerWriteCallbacks,
 ): Promise<GenLayerWriteResult> {
   try {
@@ -156,7 +140,7 @@ async function submitVerdictTransaction(
       txHash: null,
       receiptStatus: null,
       rawResult: null,
-      errorMessage: getReadableErrorMessage(error, fallbackErrorMessage),
+      errorMessage: getUserFacingGenLayerError(error),
     };
   }
 }
@@ -170,7 +154,6 @@ export async function submitClaimVerdictTransaction(
     "submit_claim_verdict",
     [input.claim, input.sourceUrl1, input.sourceUrl2, input.sourceUrl3],
     account,
-    "GenLayer claim write transaction failed.",
     options,
   );
 }
@@ -191,7 +174,6 @@ export async function submitTaskVerdictTransaction(
       input.explanation,
     ],
     account,
-    "GenLayer task write transaction failed.",
     options,
   );
 }
@@ -211,7 +193,6 @@ export async function submitDisputeVerdictTransaction(
       input.decisionRule,
     ],
     account,
-    "GenLayer dispute write transaction failed.",
     options,
   );
 }
