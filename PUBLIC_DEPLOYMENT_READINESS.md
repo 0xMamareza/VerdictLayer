@@ -2,18 +2,18 @@
 
 ## Current Status
 
-- Public deployment preparation and the provider-neutral readiness audit are complete.
+- Public deployment preparation, the provider-neutral readiness audit, and the Vercel deployment are complete.
 - The production build passes with the existing non-blocking Vite warnings documented below.
 - Claim, Task, and Dispute production forms are connected to GenLayer behind `genlayer` mode and have been manually verified on Studionet.
 - Deterministic mock fallback remains available through `mock` mode.
-- Public deployment has not yet been performed.
+- The public deployment is live at https://verdict-layer-seven.vercel.app/.
 
 ## UI Redesign Deployment Status
 
-- The premium GenLayer-themed redesign is locally complete and approved.
+- The premium GenLayer-themed redesign is complete, approved, and live.
 - The static build remains compatible with a site-root Vercel deployment.
-- The public site still needs to receive the redesign through the next Git push and deployment.
-- A post-deployment visual review remains pending.
+- Vercel serves the redesign successfully from the site root.
+- The public visual, wallet/network, and three-module transaction reviews passed.
 
 ## Deployment Model
 
@@ -64,22 +64,29 @@ Maintainers can enable diagnostics for a deliberate technical demo. Enabling the
 - Navigation uses React state rather than React Router or browser-history routes, so no SPA fallback rewrite is currently required.
 - A generic static host can serve `dist/index.html` and `dist/assets` at the site root.
 - Vite currently uses its default root base path. A provider that deploys under a repository subpath would require a base-path decision before deployment.
-- No hosting platform has been selected and no platform-specific configuration has been added.
+- Vercel is the selected hosting platform and serves the application at the domain root without a fallback rewrite.
 
 ## Known Non-Blocking Warnings
 
 - When diagnostics are enabled, Vite has reported that `verdictLayerRealClient.ts` is both statically and dynamically imported, so the dynamic import does not create a separate chunk.
 - The bundled GenLayer SDK chunk is approximately 523.53 kB after minification, above Vite's default 500 kB warning threshold.
 - The GenLayer SDK bundle includes dormant built-in localnet endpoint constants. VerdictLayer source selects Studionet and contains no localhost runtime endpoint configuration.
-- The production build succeeds; the two Vite warnings above are not claimed as fixed in this readiness step.
+- The production build succeeds. The GenLayer SDK chunk-size warning remains active; the conditional diagnostics import note is retained as historical readiness context.
+
+## Public Deployment Completed
+
+- Vercel deployment completed at https://verdict-layer-seven.vercel.app/.
+- Site-root static hosting works.
+- Public environment variables are configured for `genlayer` mode and Studionet.
+- Diagnostics are hidden.
+- The public smoke test passed.
+- The public wallet/network test passed, including unsupported-network blocking and Studionet recovery.
+- Claim, Task, and Dispute live transactions and read-after-write results passed.
+- The public deployment readiness milestone is complete.
 
 ## Remaining Steps
 
-1. Choose a static hosting provider and confirm whether it serves at the domain root or a subpath.
-2. Configure the safe public environment variables above.
-3. Deploy a preview build.
-4. Manually test disconnected wallet, wrong network, network switching, approval, and rejection states on the preview URL.
-5. Verify Claim, Task, and Dispute production flows.
-6. Confirm diagnostics are hidden by default and intentionally visible only when enabled.
-7. Record the public URL.
-8. Complete the final demo and submission review.
+1. Record the final demo.
+2. Capture the final submission screenshots.
+3. Complete the final submission description and repository review.
+4. Deliver the builder submission.

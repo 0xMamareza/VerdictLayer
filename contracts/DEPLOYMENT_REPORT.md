@@ -55,3 +55,15 @@ Wallet/private key information must never be committed.
 ## Conclusion
 
 VerdictLayer v0.1 deterministic contract deployed successfully and all read/write methods were manually tested in GenLayer Studio.
+
+## Public Frontend Deployment
+
+- Public frontend URL: https://verdict-layer-seven.vercel.app/
+- Hosting provider: Vercel
+- Deployment status: live and verified
+- Public environment mode: `genlayer`
+- Network: GenLayer Studionet
+- Contract address: `0xf7931C9C809b31B516b6C8fF199cA2e7819165d5`
+- Diagnostics: hidden
+- Public Claim, Task, and Dispute production tests: verified
+- Detailed public evidence: [PUBLIC_DEPLOYMENT_TEST_REPORT.md](../PUBLIC_DEPLOYMENT_TEST_REPORT.md)

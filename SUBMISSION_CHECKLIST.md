@@ -57,14 +57,18 @@
 - [x] Desktop visual review completed.
 - [x] Mobile visual review completed.
 - [x] UI redesign approved.
-- [ ] Public redesign redeployment pending.
-- [ ] Public visual smoke test pending.
-- [ ] Hosting provider selection pending.
-- [ ] Preview deployment pending.
-- [ ] Public URL pending.
-- [ ] Post-deployment wallet tests pending.
-- [ ] Public deployment pending.
+- [x] Public frontend deployed.
+- [x] Public URL recorded: https://verdict-layer-seven.vercel.app/.
+- [x] Approved UI deployed.
+- [x] Public desktop smoke test completed.
+- [x] Public wallet/network test completed.
+- [x] Public Claim transaction documented.
+- [x] Public Task transaction documented.
+- [x] Public Dispute transaction documented.
+- [x] Public deployment report complete.
 - [ ] Final demo recording pending.
+- [ ] Final screenshots pending.
+- [ ] Final submission copy pending.
 - [ ] Final submission review pending.
 
 ## Screenshots Needed

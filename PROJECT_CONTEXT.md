@@ -10,6 +10,8 @@ VerdictLayer is a GenLayer-powered Web3 MVP for turning messy evidence into stru
 
 Current integration mode: local mock contract boundary. No wallet or GenLayerJS yet.
 
+Current production runtime: `genlayer` on GenLayer Studionet, with deterministic `mock` mode retained as a local fallback. The milestone notes below are preserved chronologically; earlier statements describing mock-only operation record completed development phases.
+
 Current runtime mode: mock.
 
 Frontend client boundary migrated to async mode. Runtime remains mock.
@@ -59,6 +61,8 @@ Shared wallet-rejection error normalization is manually verified across Claim, T
 Public deployment preparation completed. VerdictLayer is a static Vite frontend with browser wallet interaction and no backend/database dependency. Public environment variables and diagnostics visibility are documented. The current static build supports site-root hosting; subpath hosting requires a future Vite base-path decision. Hosting-provider selection and preview deployment remain pending.
 
 UI status: VerdictLayer has completed a manually approved premium GenLayer-themed redesign. The app now includes a high-end landing page, refined workspace, unified wallet/network dock, accessible About GenLayer menu, redesigned forms/results, and a single Built By 0xMamareza creator signature. Functional GenLayer integration remains unchanged.
+
+Public deployment status: VerdictLayer is live on Vercel at https://verdict-layer-seven.vercel.app/. The approved GenLayer-themed UI, wallet/network flow, diagnostics gating, and all three production workflows were manually verified from the public site. Claim, Task, and Dispute each completed wallet-signed Studionet transactions and rendered typed read-after-write results.
 
 Submission package status: README, checklist, and demo script prepared.
 

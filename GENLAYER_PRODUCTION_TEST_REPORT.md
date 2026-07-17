@@ -164,3 +164,15 @@ The production Dispute Verdicts form successfully submitted a wallet-signed GenL
 - Status: verified
 
 All three transactions were manually wallet-signed from the production forms. All three read-after-write operations returned updated contract state, and all three typed parsers succeeded. Diagnostics remain available separately, and mock fallback remains available.
+
+## Live Public Deployment Verification
+
+The evidence above records local browser production tests. A separate live Vercel verification was completed against https://verdict-layer-seven.vercel.app/ and is documented in [PUBLIC_DEPLOYMENT_TEST_REPORT.md](PUBLIC_DEPLOYMENT_TEST_REPORT.md).
+
+| Module | Live transaction hash | Live typed result | Status |
+| --- | --- | --- | --- |
+| Claim | `0xf075cfbd057b25e14d7fe3884b946f97e8a1889ac164df25eb0f9a3a805f6dec` | `unclear` / `medium`, 2 sources | Verified |
+| Task | `0x82c94dc4c05b0c6345c5416c4ccbe04270fb715d9b1e868eb3b73968f4da52e9` | `accepted`, score `100`, `missingItems: []` | Verified |
+| Dispute | `0x61c346d17d2a3ad1383a25e74239a11af5040d95fe15ad946f2d3926d4933624` | `side_a` / `high` | Verified |
+
+These live public tests are distinct from the earlier local production verification. Each live workflow completed a wallet-signed Studionet transaction and rendered its typed read-after-write result while diagnostics remained hidden.

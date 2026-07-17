@@ -5,7 +5,7 @@
 - Implementation complete.
 - Manually reviewed.
 - Approved for commit.
-- Public redeployment pending.
+- Public deployment completed and verified.
 
 ## Design Direction
 
@@ -60,8 +60,15 @@ The interface uses the real `public/0xmamareza-pfp.png` asset alongside the text
 
 The redesigned interface was manually reviewed by the project owner on desktop and mobile and approved without additional changes.
 
+## Public Deployment Verification
+
+- The approved redesign is live at https://verdict-layer-seven.vercel.app/.
+- The alternative Variant B experiment was rejected and removed without changing `main`.
+- Desktop and public interaction review passed.
+- Wallet connection, unsupported-network blocking, and Studionet switching passed publicly.
+- Claim, Task, and Dispute production modules each completed a public wallet-signed transaction and rendered the typed result.
+- Diagnostics remained hidden.
+
 ## Remaining Step
 
-- Commit and push the redesign.
-- Allow Vercel to build the updated frontend.
-- Perform a public visual smoke test on the deployed URL.
+- Complete the final demo, screenshots, submission copy, repository review, and submission delivery.

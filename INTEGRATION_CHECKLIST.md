@@ -55,7 +55,16 @@
 - Production three-module integration milestone complete.
 - All three modules are implemented behind `genlayer` mode.
 - Mock fallback preserved for all three modules.
-- Public deployment still pending.
+- Public Vercel deployment complete.
+- Public URL recorded: https://verdict-layer-seven.vercel.app/.
+- Public disconnected-wallet state verified.
+- Public unsupported-network guard verified for all three modules.
+- Public Studionet switching and button recovery verified.
+- Public Claim transaction and read-after-write result verified.
+- Public Task transaction and read-after-write result verified.
+- Public Dispute transaction and read-after-write result verified.
+- Diagnostics verified hidden in the public deployment.
+- Three-module public integration milestone complete.
 - Disconnected-wallet guard verified for Claim.
 - Disconnected-wallet guard verified for Task.
 - Disconnected-wallet guard verified for Dispute.
@@ -75,7 +84,7 @@
 - Runtime public environment requirements documented.
 - Diagnostics visibility policy documented.
 - No backend or database deployment dependency.
-- Public deployment pending.
+- Public deployment complete and manually verified.
 - All three manual browser diagnostic transaction tests completed.
 - Production Claim, Task, and Dispute wallet-signed writes verified.
 - Mock mode remains active.
