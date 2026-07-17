@@ -26,7 +26,7 @@ export function DisputeVerdictResultCard({
   result,
   source = "mock",
 }: DisputeVerdictResultCardProps) {
-  const resultLabel = source === "genlayer" ? "GenLayer dispute verdict" : "Mock resolution";
+  const resultLabel = source === "genlayer" ? "GenLayer dispute resolution" : "Mock resolution";
 
   return (
     <article

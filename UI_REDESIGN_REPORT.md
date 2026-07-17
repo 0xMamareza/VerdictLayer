@@ -1,4 +1,4 @@
-# VerdictLayer Premium UI Redesign Report
+# Consenza Premium UI Redesign Report
 
 ## Status
 
@@ -9,7 +9,7 @@
 
 ## Design Direction
 
-VerdictLayer now uses a high-end GenLayer visual language built on a carbon and graphite foundation, cobalt interaction color, and restrained success and error signals. Precise technical surfaces, strong typography, responsive layouts, and accessible interaction keep the interface focused and production-oriented.
+Consenza uses a high-end GenLayer visual language built on a carbon and graphite foundation, cobalt interaction color, and restrained success and error signals. Precise technical surfaces, strong typography, responsive layouts, and accessible interaction keep the interface focused and production-oriented.
 
 ## Landing Experience
 

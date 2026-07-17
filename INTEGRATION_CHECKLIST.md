@@ -1,4 +1,4 @@
-# VerdictLayer GenLayer Integration Checklist
+# Consenza GenLayer Integration Checklist
 
 ## A. Current status
 

@@ -1,12 +1,12 @@
-# VerdictLayer Contracts
+# Consenza Contracts
 
-`contracts/verdict_layer.py` is the first deployable deterministic VerdictLayer contract.
+`contracts/verdict_layer.py` is Consenza's first deployable deterministic GenLayer contract. Its Python class remains `VerdictLayer` for compatibility with the deployed interface and evidence.
 
-It mirrors all three VerdictLayer modules:
+It supports all three Consenza modules:
 
-- Claim Verdicts
-- Task Verdicts
-- Dispute Verdicts
+- Claim Decisions
+- Task Reviews
+- Dispute Resolutions
 
 This version does not use AI, non-deterministic calls, wallet logic, or external APIs. It stores only the latest JSON-like result string for each module.
 

@@ -1,4 +1,4 @@
-# VerdictLayer Evidence
+# Consenza Evidence
 
 Place screenshots here locally, or upload them to GitHub if you want public proof for the builder task submission.
 

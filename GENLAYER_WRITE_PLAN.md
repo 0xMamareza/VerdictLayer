@@ -2,7 +2,7 @@
 
 ## A. Current Verified State
 
-- Read-only browser diagnostics work against the deployed VerdictLayer contract.
+- Read-only browser diagnostics work against Consenza's deployed `VerdictLayer` contract.
 - Wallet detection/connect UI exists.
 - GenLayer network detection and switching UI exists.
 - Write transactions are not implemented yet.
@@ -76,9 +76,9 @@ It accepts `hash`, optional `status`, optional `interval`, and optional `retries
 
 | Frontend module | Contract method | Args order | Read-after-write method |
 | --- | --- | --- | --- |
-| Claim Verdicts | `submit_claim_verdict` | `claim`, `source_url_1`, `source_url_2`, `source_url_3` | `get_latest_claim_verdict` |
-| Task Verdicts | `submit_task_verdict` | `task_title`, `task_requirements`, `contract_address`, `transaction_hash`, `github_repo_url`, `explanation` | `get_latest_task_verdict` |
-| Dispute Verdicts | `submit_dispute_verdict` | `dispute_title`, `side_a_claim`, `side_b_claim`, `evidence`, `decision_rule` | `get_latest_dispute_verdict` |
+| Claim Decisions | `submit_claim_verdict` | `claim`, `source_url_1`, `source_url_2`, `source_url_3` | `get_latest_claim_verdict` |
+| Task Reviews | `submit_task_verdict` | `task_title`, `task_requirements`, `contract_address`, `transaction_hash`, `github_repo_url`, `explanation` | `get_latest_task_verdict` |
+| Dispute Resolutions | `submit_dispute_verdict` | `dispute_title`, `side_a_claim`, `side_b_claim`, `evidence`, `decision_rule` | `get_latest_dispute_verdict` |
 
 ## D. Proposed Write Transaction Lifecycle
 

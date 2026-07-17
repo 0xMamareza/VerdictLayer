@@ -32,7 +32,7 @@ function getGenLayerButtonLabel(status: GenLayerWriteStatus): string {
     case "waiting_for_receipt":
       return "Waiting for Receipt...";
     case "reading_result":
-      return "Reading Verdict...";
+      return "Reading Decision...";
     case "success":
       return "Submit Another Claim";
     case "error":
@@ -89,7 +89,7 @@ export function ClaimVerdictForm({
       setErrorMessage(
         isGenLayerMode
           ? "Enter a claim to submit to GenLayer."
-          : "Enter a claim to generate a mock verdict.",
+          : "Enter a claim to generate a mock decision.",
       );
       setResult(null);
       setWriteStatus("idle");
@@ -105,7 +105,7 @@ export function ClaimVerdictForm({
 
     if (isGenLayerMode && !isWalletConnected) {
       setErrorMessage(null);
-      setSubmitError("Connect your wallet before submitting a GenLayer verdict.");
+      setSubmitError("Connect your wallet before submitting a GenLayer decision.");
       setWriteStatus("wallet_required");
       return;
     }
@@ -150,8 +150,8 @@ export function ClaimVerdictForm({
         error instanceof Error
           ? error.message
           : isGenLayerMode
-            ? "Unable to submit the GenLayer verdict."
-            : "Unable to generate mock verdict.",
+            ? "Unable to submit the GenLayer decision."
+            : "Unable to generate mock decision.",
       );
       setResult(null);
 
@@ -251,19 +251,19 @@ export function ClaimVerdictForm({
               ? getGenLayerButtonLabel(writeStatus)
               : isSubmitting
                 ? "Generating..."
-                : "Generate Mock Verdict"}
+                : "Generate Mock Decision"}
           </button>
         </div>
       </form>
 
       {isGenLayerMode ? (
         <p className="helper-text">
-          The verdict is read from the deployed contract after the transaction is accepted.
+          The decision is read from the deployed contract after the transaction is accepted.
         </p>
       ) : (
         <>
           <p className="helper-text">
-            This is a local mock verdict. GenLayer Intelligent Contract integration comes later.
+            This is a local mock decision. GenLayer Intelligent Contract integration comes later.
           </p>
           <p className="helper-text">
             Async-ready: this flow is prepared for future wallet-signed GenLayer transactions.

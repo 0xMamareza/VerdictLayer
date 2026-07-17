@@ -1,8 +1,8 @@
-# VerdictLayer Architecture
+# Consenza Architecture
 
 ## Current Architecture
 
-VerdictLayer currently uses a Vite, React, and TypeScript frontend-only architecture. The app is a single-page shell with module metadata stored in `src/config/modules.ts` and simple module selection state managed in `src/App.tsx`.
+Consenza uses a Vite, React, and TypeScript frontend architecture. The app is a single-page experience with module metadata stored in `src/config/modules.ts` and module selection state managed in `src/App.tsx`.
 
 ## Future Architecture
 
@@ -15,7 +15,7 @@ verdictlayer/
   contracts/
     DEPLOYMENT_REPORT.md
     README.md
-    VERDICTLAYER_CONTRACT_SPEC.md
+    CONSENZA_CONTRACT_SPEC.md
     verdict_layer.py
     verdict_layer_skeleton.py
   INTEGRATION_CHECKLIST.md
@@ -71,17 +71,17 @@ verdictlayer/
 
 Phase 1: frontend shell
 
-Phase 2: Claim Verdicts mock flow
+Phase 2: Claim Decisions mock flow
 
-Claim Verdicts mock flow implemented locally with deterministic mock logic. No GenLayer integration yet.
+Claim Decisions mock flow implemented locally with deterministic mock logic. No GenLayer integration yet.
 
-Phase 3: Task Verdicts mock flow
+Phase 3: Task Reviews mock flow
 
-Task Verdicts mock flow implemented locally with deterministic scoring logic. No GenLayer integration yet.
+Task Reviews mock flow implemented locally with deterministic scoring logic. No GenLayer integration yet.
 
-Phase 4: Dispute Verdicts mock flow
+Phase 4: Dispute Resolutions mock flow
 
-Dispute Verdicts mock flow implemented locally with deterministic resolution logic. No GenLayer integration yet.
+Dispute Resolutions mock flow implemented locally with deterministic resolution logic. No GenLayer integration yet.
 
 Phase 5: GenLayer Intelligent Contract
 
@@ -145,7 +145,7 @@ The UI can manually trigger read-only GenLayer contract calls through the GenLay
 
 ## Verified Browser Read Path
 
-The Vite frontend can call deployed GenLayer read methods through the diagnostics panel. The verified browser path reads the contract version and latest module results for Claim, Task, and Dispute verdicts.
+The Vite frontend can call deployed GenLayer read methods through the diagnostics panel. The verified browser path reads the contract version and latest module results for Claim, Task, and Dispute.
 
 The read diagnostics path does not send wallet-signed writes.
 
@@ -245,6 +245,6 @@ Claim, Task, and Dispute display the same normalized wallet-rejection message. A
 
 ## Public Frontend Deployment Model
 
-VerdictLayer produces a static Vite bundle and interacts with GenLayerJS entirely in the browser through an injected wallet provider. Contract address, network name, integration mode, and diagnostics visibility are public frontend configuration; no private value belongs in a `VITE_` variable.
+Consenza produces a static Vite bundle and interacts with GenLayerJS entirely in the browser through an injected wallet provider. Contract address, network name, integration mode, and diagnostics visibility are public frontend configuration; no private value belongs in a `VITE_` variable.
 
 There is no backend or database deployment dependency. Read and write diagnostics are hidden by default through `VITE_SHOW_GENLAYER_DIAGNOSTICS`, while production forms remain available. Every write still requires an explicit form submission and manual wallet approval.

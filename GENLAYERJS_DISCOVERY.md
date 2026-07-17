@@ -17,7 +17,7 @@
 - `studionet`
 - `testnetBradbury`
 
-The package also exposes `localnet` and `testnetAsimov` from `genlayer-js/chains`, but VerdictLayer discovery currently records only the planned `studionet` and `testnetBradbury` options.
+The package also exposes `localnet` and `testnetAsimov` from `genlayer-js/chains`, but Consenza discovery currently records only the planned `studionet` and `testnetBradbury` options.
 
 ## Transaction Status
 

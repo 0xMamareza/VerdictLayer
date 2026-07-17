@@ -2,7 +2,7 @@
 
 ## Current Status
 
-VerdictLayer now has a read-only GenLayer client layer for the deployed deterministic contract. Runtime still defaults to mock mode, and the frontend forms are not wired to real contract reads or writes yet.
+Consenza has a read-only GenLayer client layer for the deployed deterministic contract. This section records the earlier read-integration phase, when runtime still defaulted to mock mode and the frontend forms were not yet wired to real contract reads or writes.
 
 ## Required Environment Variables
 
@@ -18,7 +18,7 @@ Do not commit `.env`. The contract address is public, but private keys, seed phr
 
 ## Read Layer
 
-`src/lib/genlayerReadClient.ts` selects the GenLayer chain from `VITE_GENLAYER_NETWORK_NAME` and exposes read-only calls for the current VerdictLayer contract methods.
+`src/lib/genlayerReadClient.ts` selects the GenLayer chain from `VITE_GENLAYER_NETWORK_NAME` and exposes read-only calls for Consenza's deployed `VerdictLayer` contract methods.
 
 `src/lib/genlayerReadSmokeTest.ts` exposes a helper for future manual testing:
 

@@ -1,28 +1,28 @@
-# VerdictLayer Demo Script
+# Consenza Demo Script
 
 ## 30-Second Intro
 
-VerdictLayer is a GenLayer-powered Web3 product for turning messy evidence into structured verdicts. It covers three early modules: Claim Verdicts, Task Verdicts, and Dispute Verdicts.
+Consenza provides onchain decisions for claims, tasks, and disputes. Users submit evidence, review completed work, and resolve disputes through wallet-signed GenLayer workflows.
 
 The frontend currently runs in local mock mode, while the v0.1 deterministic GenLayer contract has already been deployed and tested manually in GenLayer Studio.
 
 ## Frontend Walkthrough
 
-### Claim Verdicts Mock Flow
+### Claim Decisions Mock Flow
 
-Open the Claim Verdicts module, enter a Web3 claim, add at least one source URL, and generate a mock verdict. Show the verdict, confidence, summary, source count, and generated time.
+Open Claim Decisions, enter a Web3 claim, add at least one source URL, and generate a mock decision. Show the returned result, confidence, summary, source count, and generated time.
 
-### Task Verdicts Mock Flow
+### Task Reviews Mock Flow
 
-Open the Task Verdicts module, enter task requirements and submission proof, then generate a mock review. Show the status, score, feedback, missing items, and generated time.
+Open Task Reviews, enter task requirements and submission proof, then generate a mock review. Show the status, score, feedback, missing items, and generated time.
 
-### Dispute Verdicts Mock Flow
+### Dispute Resolutions Mock Flow
 
-Open the Dispute Verdicts module, enter both sides of the dispute, evidence, and a decision rule. Generate a mock resolution and show the verdict, confidence, reason, and recommended resolution.
+Open Dispute Resolutions, enter both sides of the dispute, evidence, and a decision rule. Generate a mock resolution and show the returned result, confidence, reason, and recommended resolution.
 
 ## Contract Walkthrough
 
-Open the deployed VerdictLayer contract in GenLayer Studio.
+Open Consenza's deployed `VerdictLayer` contract in GenLayer Studio.
 
 Show:
 

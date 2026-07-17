@@ -1,4 +1,4 @@
-# VerdictLayer Submission Checklist
+# Consenza Submission Checklist
 
 ## Completed
 
@@ -68,7 +68,7 @@
 - [x] Public deployment report complete.
 - [ ] Final demo recording pending.
 - [ ] Final screenshots pending.
-- [ ] Final submission copy pending.
+- [x] Final submission copy prepared in `FINAL_SUBMISSION_COPY.md`.
 - [ ] Final submission review pending.
 
 ## Screenshots Needed
@@ -106,4 +106,4 @@
 
 ## Final Submission Notes
 
-TBD
+Use the reviewed copy in `FINAL_SUBMISSION_COPY.md`. External GitHub and Vercel renames remain a separate manual step documented in `CONSENZA_REBRAND_STATUS.md`.

@@ -1,12 +1,12 @@
-# VerdictLayer Production Integration Test Report
+# Consenza Production Integration Test Report
 
 ## Test Scope
 
-- Production module tested: Claim Verdicts
+- Production module tested: Claim Decisions
 - Network: GenLayer Studionet
 - Runtime mode: `genlayer`
 - Wallet type: burner/dev wallet
-- Contract: deployed VerdictLayer v0.1 deterministic contract
+- Contract: Consenza's deployed `VerdictLayer` v0.1 deterministic contract
 - Task and Dispute remained mock during this staged rollout
 
 ## Preconditions
@@ -43,7 +43,7 @@
 
 ## Conclusion
 
-The production Claim Verdicts form successfully submitted a wallet-signed GenLayer transaction, waited for acceptance, read the updated contract result, and rendered the typed verdict in the existing production result card.
+The production Claim Decisions form successfully submitted a wallet-signed GenLayer transaction, waited for acceptance, read the updated contract result, and rendered the typed verdict in the existing production result card.
 
 ## Safety
 
@@ -55,7 +55,7 @@ The production Claim Verdicts form successfully submitted a wallet-signed GenLay
 
 ### Test Scope
 
-- Production module tested: Task Verdicts
+- Production module tested: Task Reviews
 - Network: GenLayer Studionet
 - Runtime mode: `genlayer`
 - Wallet type: burner/dev wallet
@@ -93,13 +93,13 @@ The deployed v0.1 contract returned `missingItems` in its string-compatible form
 
 ### Conclusion
 
-The production Task Verdicts form successfully submitted a wallet-signed GenLayer transaction, waited for acceptance, read the updated task review, normalized the deployed contract result, and rendered the typed result in the production Task UI.
+The production Task Reviews form successfully submitted a wallet-signed GenLayer transaction, waited for acceptance, read the updated task review, normalized the deployed contract result, and rendered the typed result in the production Task UI.
 
 ## Production Dispute Integration Test Status
 
 ### Test Scope
 
-- Production module tested: Dispute Verdicts
+- Production module tested: Dispute Resolutions
 - Network: GenLayer Studionet
 - Runtime mode: `genlayer`
 - Wallet type: burner/dev wallet
@@ -138,7 +138,7 @@ The contract verdict value `side_a` was preserved in the typed result and render
 
 ### Conclusion
 
-The production Dispute Verdicts form successfully submitted a wallet-signed GenLayer transaction, waited for acceptance, read the updated dispute verdict, strictly validated the result, and rendered it in the production Dispute UI.
+The production Dispute Resolutions form successfully submitted a wallet-signed GenLayer transaction, waited for acceptance, read the updated dispute verdict, strictly validated the result, and rendered it in the production Dispute UI.
 
 ## Three-Module Production Verification Summary
 

@@ -5,7 +5,7 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div className="site-footer-inner">
         <div>
-          <strong>VerdictLayer</strong>
+          <strong>Consenza</strong>
           <p>Built on GenLayer Studionet</p>
         </div>
         <nav className="footer-links" aria-label="GenLayer links">

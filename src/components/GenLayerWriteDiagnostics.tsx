@@ -21,7 +21,7 @@ const sampleTaskInput: TaskVerdictContractInput = {
   transactionHash: "0xtesthash123",
   githubRepoUrl: "https://github.com/0xMamareza/VerdictLayer",
   explanation:
-    "This submission deploys a deterministic VerdictLayer GenLayer contract and includes proof fields for the builder task validation flow.",
+    "Consenza uses its deterministic GenLayer contract and includes proof fields for the builder task validation flow.",
 };
 
 const sampleDisputeInput: DisputeVerdictContractInput = {

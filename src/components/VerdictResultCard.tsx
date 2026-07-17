@@ -19,7 +19,7 @@ function formatGeneratedAt(generatedAt: string): string {
 }
 
 export function VerdictResultCard({ result, source = "mock" }: VerdictResultCardProps) {
-  const resultLabel = source === "genlayer" ? "GenLayer verdict" : "Mock verdict";
+  const resultLabel = source === "genlayer" ? "GenLayer claim decision" : "Mock decision";
 
   return (
     <article

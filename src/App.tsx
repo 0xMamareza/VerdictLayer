@@ -34,21 +34,21 @@ const capabilityContent = [
   {
     id: "claim-verdicts" as const,
     index: "01",
-    title: "Claim Verdicts",
+    title: "Claim Decisions",
     description: "Evaluate claims against submitted evidence.",
     label: "Evidence verification",
   },
   {
     id: "task-verdicts" as const,
     index: "02",
-    title: "Task Verdicts",
+    title: "Task Reviews",
     description: "Review completed work and identify missing proof.",
     label: "Submission review",
   },
   {
     id: "dispute-verdicts" as const,
     index: "03",
-    title: "Dispute Verdicts",
+    title: "Dispute Resolutions",
     description: "Compare both sides and produce a structured resolution.",
     label: "Evidence resolution",
   },
@@ -57,7 +57,7 @@ const capabilityContent = [
 const workflowSteps = [
   { index: "01", title: "Submit Evidence", detail: "Structure the claim, proof, or dispute context." },
   { index: "02", title: "Confirm in Wallet", detail: "Review and approve the GenLayer transaction." },
-  { index: "03", title: "Read the Verdict", detail: "Receive the typed result from contract state." },
+  { index: "03", title: "Read the Decision", detail: "Receive the typed result from contract state." },
 ] as const;
 
 function WorkflowGlyph({ moduleId }: { moduleId: VerdictModuleId }) {
@@ -302,7 +302,7 @@ function App() {
           <section className="capabilities-section" id="capabilities" aria-labelledby="capabilities-title">
             <div className="section-heading-row">
               <div>
-                <p className="section-eyebrow">Verdict infrastructure</p>
+                <p className="section-eyebrow">Decision infrastructure</p>
                 <h2 id="capabilities-title">Three workflows. One decision layer.</h2>
               </div>
               <p>Purpose-built evidence surfaces for Web3 coordination.</p>
@@ -347,8 +347,8 @@ function App() {
         <section className="workspace-section" id="workspace" aria-labelledby="workspace-title">
           <div className="workspace-inner">
             <div className="workspace-heading">
-              <p className="section-eyebrow">VerdictLayer workspace</p>
-              <h2 id="workspace-title">Choose a verdict workflow.</h2>
+              <p className="section-eyebrow">Consenza Workspace</p>
+              <h2 id="workspace-title">Choose a decision workflow.</h2>
               <p>
                 Every GenLayer submission requires a connected wallet, a supported network, and
                 manual approval.
@@ -362,7 +362,7 @@ function App() {
               <div>
                 <strong>Testnet environment</strong>
                 <p>
-                  VerdictLayer currently uses GenLayer Studionet. Use a burner/dev wallet, review
+                  Consenza currently uses GenLayer Studionet. Use a burner/dev wallet, review
                   every transaction before approval, and never share wallet secrets.
                 </p>
               </div>
@@ -391,7 +391,7 @@ function App() {
               </div>
             </section>
 
-            <div className="module-switcher" role="tablist" aria-label="Verdict workflows">
+            <div className="module-switcher" role="tablist" aria-label="Decision workflows">
               {verdictModules.map((module) => {
                 const capability = capabilityContent.find((item) => item.id === module.id);
                 const isActive = selectedModuleId === module.id;
@@ -463,7 +463,7 @@ function App() {
                 </>
               ) : (
                 <div className="workspace-empty-state">
-                  <span className="empty-state-mark" aria-hidden="true">VL / 00</span>
+                  <span className="empty-state-mark" aria-hidden="true">C / 00</span>
                   <h3>Select a workflow to begin.</h3>
                   <p>Choose Claim, Task, or Dispute above. Your inputs stay local until you submit.</p>
                 </div>

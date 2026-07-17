@@ -48,7 +48,7 @@ export function createVerdictLayerReadClient(): ReturnType<typeof createClient> 
 
 export async function readVerdictLayerString(methodName: string): Promise<string> {
   if (!isVerdictLayerReadMethodName(methodName)) {
-    throw new Error(`Unsupported VerdictLayer read method: ${methodName}`);
+    throw new Error(`Unsupported Consenza contract read method: ${methodName}`);
   }
 
   const client = createVerdictLayerReadClient();
@@ -59,9 +59,8 @@ export async function readVerdictLayerString(methodName: string): Promise<string
   });
 
   if (typeof result !== "string") {
-    throw new Error(`VerdictLayer read method ${methodName} returned a non-string result.`);
+    throw new Error(`Consenza contract read method ${methodName} returned a non-string result.`);
   }
 
   return result;
 }
-

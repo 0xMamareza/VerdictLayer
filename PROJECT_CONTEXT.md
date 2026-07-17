@@ -1,12 +1,14 @@
-# VerdictLayer Project Context
+# Consenza Project Context
 
 ## Product Name
 
-VerdictLayer
+Consenza
 
 ## Product Summary
 
-VerdictLayer is a GenLayer-powered Web3 MVP for turning messy evidence into structured verdicts. It focuses on claim checks, task reviews, and small dispute decisions that can later be backed by GenLayer Intelligent Contracts.
+Consenza provides onchain decisions for claims, tasks, and disputes. Users submit evidence, review completed work, and resolve disputes through wallet-signed GenLayer workflows.
+
+Public rebrand status: application code, browser metadata, package metadata, documentation, and submission copy use Consenza. The deployed `VerdictLayer` contract and existing `verdictLayer` integration identifiers remain unchanged for compatibility.
 
 Current integration mode: local mock contract boundary. No wallet or GenLayerJS yet.
 
@@ -40,7 +42,7 @@ Task write diagnostics succeeded. A real wallet-signed GenLayer transaction was 
 
 Dispute write diagnostics status: dev-only Dispute write transaction path added. Production forms remain mock.
 
-Dispute write diagnostics succeeded. All three VerdictLayer modules now have verified browser-based wallet-signed GenLayer write transactions and successful read-after-write results. Production forms still use mock mode.
+Dispute write diagnostics succeeded. All three Consenza modules now have verified browser-based wallet-signed GenLayer write transactions and successful read-after-write results. Production forms still use mock mode.
 
 Production integration status: Claim, Task, and Dispute forms are connected to the verified GenLayer write/read flow behind the genlayer integration mode.
 
@@ -58,11 +60,11 @@ Production error-state testing verified disconnected-wallet protection, unsuppor
 
 Shared wallet-rejection error normalization is manually verified across Claim, Task, and Dispute. Rejected wallet requests now display a concise message without viem internals, submit no transaction, preserve all form inputs, and leave each production form ready for retry.
 
-Public deployment preparation completed. VerdictLayer is a static Vite frontend with browser wallet interaction and no backend/database dependency. Public environment variables and diagnostics visibility are documented. The current static build supports site-root hosting; subpath hosting requires a future Vite base-path decision. Hosting-provider selection and preview deployment remain pending.
+Public deployment preparation completed. Consenza is a static Vite frontend with browser wallet interaction and no backend/database dependency. Public environment variables and diagnostics visibility are documented. The current static build supports site-root hosting; subpath hosting requires a future Vite base-path decision. Hosting-provider selection and preview deployment remain pending.
 
-UI status: VerdictLayer has completed a manually approved premium GenLayer-themed redesign. The app now includes a high-end landing page, refined workspace, unified wallet/network dock, accessible About GenLayer menu, redesigned forms/results, and a single Built By 0xMamareza creator signature. Functional GenLayer integration remains unchanged.
+UI status: Consenza has completed a manually approved premium GenLayer-themed redesign. The app now includes a high-end landing page, refined workspace, unified wallet/network dock, accessible About GenLayer menu, redesigned forms/results, and a single Built By 0xMamareza creator signature. Functional GenLayer integration remains unchanged.
 
-Public deployment status: VerdictLayer is live on Vercel at https://verdict-layer-seven.vercel.app/. The approved GenLayer-themed UI, wallet/network flow, diagnostics gating, and all three production workflows were manually verified from the public site. Claim, Task, and Dispute each completed wallet-signed Studionet transactions and rendered typed read-after-write results.
+Public deployment status: Consenza is live on Vercel at https://verdict-layer-seven.vercel.app/. The approved GenLayer-themed UI, wallet/network flow, diagnostics gating, and all three production workflows were manually verified from the public site. Claim, Task, and Dispute each completed wallet-signed Studionet transactions and rendered typed read-after-write results.
 
 Submission package status: README, checklist, and demo script prepared.
 
@@ -77,9 +79,9 @@ Published repository: https://github.com/0xMamareza/VerdictLayer
 
 ## Modules
 
-- Claim Verdicts: verify Web3 claims from evidence.
-- Task Verdicts: review builder and bounty submissions.
-- Dispute Verdicts: resolve small evidence-based disputes.
+- Claim Decisions: verify Web3 claims from evidence.
+- Task Reviews: review builder and bounty submissions.
+- Dispute Resolutions: resolve small evidence-based disputes.
 
 ## Current MVP Rule
 

@@ -10,15 +10,15 @@ export function LandingHero() {
   return (
     <section className="landing-hero" id="top" aria-labelledby="hero-title">
       <div className="hero-copy">
-        <p className="section-eyebrow">Built on GenLayer</p>
-        <h1 id="hero-title">Onchain verdicts for claims, tasks, and disputes.</h1>
+        <p className="section-eyebrow">Consenza / Built on GenLayer</p>
+        <h1 id="hero-title">Onchain decisions for claims, tasks, and disputes.</h1>
         <p className="hero-description">
           Submit evidence, review completed work, and resolve disputes through wallet-signed
           GenLayer workflows.
         </p>
         <div className="hero-actions">
           <a className="primary-action" href="#workspace">
-            Launch VerdictLayer
+            Launch Consenza
             <ArrowIcon />
           </a>
           <span className="hero-network-label">
@@ -28,7 +28,7 @@ export function LandingHero() {
         </div>
       </div>
 
-      <div className="consensus-scene" role="img" aria-label="Claim, Task, and Dispute evidence converging into a GenLayer verdict core">
+      <div className="consensus-scene" role="img" aria-label="Claim, Task, and Dispute evidence converging into a GenLayer decision core">
         <span className="scene-coordinate scene-coordinate-top">CONSENSUS / 03</span>
         <span className="scene-coordinate scene-coordinate-bottom">VALIDATOR SIGNAL: STABLE</span>
         <span className="scene-line scene-line-horizontal" aria-hidden="true" />
@@ -57,7 +57,7 @@ export function LandingHero() {
           <span className="core-ring" aria-hidden="true" />
           <span className="core-signal" aria-hidden="true" />
           <small>GenLayer</small>
-          <strong>VERDICT</strong>
+          <strong>DECISION</strong>
           <span className="core-status">Accepted</span>
         </div>
 

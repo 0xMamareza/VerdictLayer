@@ -1,8 +1,8 @@
-# VerdictLayer Deployment Report
+# Consenza Deployment Report
 
 ## Project
 
-VerdictLayer
+Consenza
 
 ## Contract
 
@@ -16,9 +16,9 @@ Wallet/private key information must never be committed.
 
 ## Module Summary
 
-- Claim Verdicts: verifies Web3 claims from submitted evidence sources.
-- Task Verdicts: reviews builder or bounty submissions against task proof.
-- Dispute Verdicts: resolves small evidence-based disputes between two sides.
+- Claim Decisions: verifies Web3 claims from submitted evidence sources.
+- Task Reviews: reviews builder or bounty submissions against task proof.
+- Dispute Resolutions: resolves small evidence-based disputes between two sides.
 
 ## Manual Test Results
 
@@ -54,7 +54,7 @@ Wallet/private key information must never be committed.
 
 ## Conclusion
 
-VerdictLayer v0.1 deterministic contract deployed successfully and all read/write methods were manually tested in GenLayer Studio.
+Consenza's `VerdictLayer` v0.1 deterministic contract deployed successfully and all read/write methods were manually tested in GenLayer Studio.
 
 ## Public Frontend Deployment
 

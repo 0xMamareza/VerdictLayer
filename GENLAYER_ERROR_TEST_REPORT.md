@@ -1,4 +1,4 @@
-# VerdictLayer Production Error-State Test Report
+# Consenza Production Error-State Test Report
 
 ## Disconnected Wallet Guard
 

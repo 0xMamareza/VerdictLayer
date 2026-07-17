@@ -1,30 +1,34 @@
-# VerdictLayer
+# Consenza
 
-AI-native verdicts for claims, tasks, and disputes.
+Onchain decisions for claims, tasks, and disputes.
+
+Submit evidence, review completed work, and resolve disputes through wallet-signed GenLayer workflows.
+
+Built on GenLayer.
 
 GitHub Repository: https://github.com/0xMamareza/VerdictLayer
 
-## What VerdictLayer Is
+## What Consenza Is
 
-VerdictLayer is a GenLayer-powered Web3 MVP for turning messy evidence into structured verdicts. It gives builders a simple interface for checking claims, reviewing task submissions, and resolving small evidence-based disputes.
+Consenza is a GenLayer-powered product for turning evidence into structured onchain decisions. It gives builders a focused interface for checking claims, reviewing task submissions, and resolving evidence-based disputes.
 
 The public app demonstrates the production UX while the deployed GenLayer contract provides the verified read/write method interface.
 
 ## Why GenLayer
 
-VerdictLayer needs more than deterministic smart contract execution over fixed inputs. Future versions should evaluate natural-language evidence, compare claims against sources, and produce structured decisions from messy context.
+Consenza needs more than deterministic smart contract execution over fixed inputs. Future versions should evaluate natural-language evidence, compare claims against sources, and produce structured decisions from messy context.
 
 GenLayer is a strong fit because Intelligent Contracts can eventually combine on-chain execution with AI/non-deterministic reasoning and validator-based agreement.
 
 ## Core Modules
 
-- Claim Verdicts: verify Web3 claims from submitted evidence sources.
-- Task Verdicts: review builder or bounty submissions against proof requirements.
-- Dispute Verdicts: resolve small disputes using submitted claims, evidence, and decision rules.
+- Claim Decisions: verify Web3 claims from submitted evidence sources.
+- Task Reviews: review builder or bounty submissions against proof requirements.
+- Dispute Resolutions: resolve small disputes using submitted claims, evidence, and decision rules.
 
 ## Interface
 
-VerdictLayer now includes a GenLayer-themed landing experience and a premium production workspace for Claim, Task, and Dispute. The interface also includes redesigned wallet and network controls, an About GenLayer resource menu, responsive desktop and mobile behavior, and creator attribution for 0xMamareza.
+Consenza includes a GenLayer-themed landing experience and a production workspace for Claim, Task, and Dispute decisions. The interface also includes wallet and network controls, an About GenLayer resource menu, responsive desktop and mobile behavior, and creator attribution for 0xMamareza.
 
 Full redesign details are documented in [UI_REDESIGN_REPORT.md](UI_REDESIGN_REPORT.md).
 
@@ -78,7 +82,7 @@ DEMO_SCRIPT.md
 ## Local Setup Commands
 
 ```powershell
-Set-Location C:\path\to\VerdictLayer
+Set-Location C:\path\to\verdictlayer
 npm install
 npm run build
 npm run dev
@@ -120,7 +124,7 @@ The production Claim, Task, and Dispute form integrations are available behind `
 
 ## Production Claim, Task, and Dispute Integration
 
-Claim, Task, and Dispute Verdicts are connected to the deployed GenLayer contract behind `VITE_VERDICTLAYER_INTEGRATION_MODE=genlayer`. All three were manually verified with wallet-signed Studionet transactions; their transaction and typed read-after-write evidence is documented in [GENLAYER_PRODUCTION_TEST_REPORT.md](GENLAYER_PRODUCTION_TEST_REPORT.md).
+Claim Decisions, Task Reviews, and Dispute Resolutions are connected to the deployed GenLayer contract behind `VITE_VERDICTLAYER_INTEGRATION_MODE=genlayer`. All three were manually verified with wallet-signed Studionet transactions; their transaction and typed read-after-write evidence is documented in [GENLAYER_PRODUCTION_TEST_REPORT.md](GENLAYER_PRODUCTION_TEST_REPORT.md).
 
 Mock mode remains available for all modules. Keep `.env` uncommitted and use a burner/dev wallet for testnet interaction.
 
@@ -135,7 +139,7 @@ Production safety: disconnected-wallet and unsupported-network guards are verifi
 
 ## Public Deployment
 
-VerdictLayer is live at https://verdict-layer-seven.vercel.app/ as a static Vite application connected to GenLayer Studionet. Claim, Task, and Dispute were each verified publicly with wallet-signed transactions and typed read-after-write results. Diagnostics are hidden in the public deployment.
+Consenza is live at https://verdict-layer-seven.vercel.app/ as a static Vite application connected to GenLayer Studionet. Claim, Task, and Dispute were each verified publicly with wallet-signed transactions and typed read-after-write results. Diagnostics are hidden in the public deployment.
 
 Public deployment status:
 
@@ -147,6 +151,15 @@ Public deployment status:
 - Network: GenLayer Studionet
 
 Deployment preparation is documented in [PUBLIC_DEPLOYMENT_READINESS.md](PUBLIC_DEPLOYMENT_READINESS.md), and public test evidence is recorded in [PUBLIC_DEPLOYMENT_TEST_REPORT.md](PUBLIC_DEPLOYMENT_TEST_REPORT.md). Use a burner/dev wallet, manually review every transaction, never share wallet secrets, and never commit `.env`.
+
+## Consenza Status
+
+- Product: Consenza
+- Network: GenLayer Studionet
+- Claim: verified
+- Task: verified
+- Dispute: verified
+- Public deployment: live at https://verdict-layer-seven.vercel.app/ pending external URL rename
 
 ## Roadmap
 

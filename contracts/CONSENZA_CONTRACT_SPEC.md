@@ -1,12 +1,28 @@
-# VerdictLayer Contract Interface Specification
+# Consenza Contract Specification
+
+Consenza is the public product name. The deployed Python class remains `VerdictLayer` so the verified contract interface, deployment evidence, and frontend compatibility identifiers stay unchanged.
 
 ## Contract Name
 
 VerdictLayer
 
+## Deployed Compatibility Identity
+
+- Python class: `VerdictLayer`
+- Contract file: `contracts/verdict_layer.py`
+- Contract version: `verdictlayer-v0.1-deterministic`
+- Contract address: `0xf7931C9C809b31B516b6C8fF199cA2e7819165d5`
+
+Persistent storage fields:
+
+- `latest_claim_verdict_json`
+- `latest_task_verdict_json`
+- `latest_dispute_verdict_json`
+- `contract_version`
+
 ## Purpose
 
-VerdictLayer is the planned GenLayer Intelligent Contract for producing structured verdicts from messy Web3 evidence. The MVP contract will support claim checks, task reviews, and dispute resolutions through strict JSON-like result shapes that the frontend can read consistently.
+Consenza uses the `VerdictLayer` GenLayer Intelligent Contract to produce structured decisions from Web3 evidence. The contract supports claim checks, task reviews, and dispute resolutions through strict JSON-like result shapes that the frontend can read consistently.
 
 ## MVP Storage Strategy
 
@@ -58,6 +74,7 @@ Expected behavior: resolve the evidence-based dispute according to the decision 
 
 ## Planned Public View Methods
 
+- `get_contract_version()`
 - `get_latest_claim_verdict()`
 - `get_latest_task_verdict()`
 - `get_latest_dispute_verdict()`
@@ -149,4 +166,4 @@ For validator comparison, enum fields should be treated as the primary verdict s
 
 ## Implementation Note
 
-This is a contract interface specification only. The actual Python GenLayer Intelligent Contract will be implemented in a later step.
+This specification documents Consenza's stable contract boundary. The deployed Python implementation remains `contracts/verdict_layer.py` with class name `VerdictLayer` and version `verdictlayer-v0.1-deterministic`.

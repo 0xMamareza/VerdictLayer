@@ -31,10 +31,10 @@ export function SiteHeader({
   return (
     <header className="site-header">
       <div className="site-header-inner">
-        <a className="brand-lockup" href="#top" aria-label="VerdictLayer home">
-          <span className="brand-mark" aria-hidden="true">VL</span>
+        <a className="brand-lockup" href="#top" aria-label="Consenza home">
+          <span className="brand-mark" aria-hidden="true">C</span>
           <span>
-            <strong>VerdictLayer</strong>
+            <strong>Consenza</strong>
             <small>Built on GenLayer</small>
           </span>
         </a>

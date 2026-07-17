@@ -30,7 +30,7 @@ function getGenLayerButtonLabel(status: GenLayerWriteStatus): string {
     case "waiting_for_receipt":
       return "Waiting for Receipt...";
     case "reading_result":
-      return "Reading Dispute Verdict...";
+      return "Reading Dispute Resolution...";
     case "success":
       return "Submit Another Dispute";
     case "error":
@@ -288,7 +288,7 @@ export function DisputeVerdictForm({
 
       {isGenLayerMode ? (
         <p className="helper-text">
-          The dispute verdict is read from the deployed contract after the transaction is accepted.
+          The dispute resolution is read from the deployed contract after the transaction is accepted.
         </p>
       ) : (
         <>

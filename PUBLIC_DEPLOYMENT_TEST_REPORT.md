@@ -1,4 +1,6 @@
-# VerdictLayer Public Deployment Test Report
+# Consenza Public Deployment Test Report
+
+These tests were originally completed before the public Consenza rebrand. The deployed contract, transaction evidence, and integration behavior are unchanged.
 
 ## Deployment
 
@@ -12,7 +14,7 @@
 
 ## Public Smoke Test
 
-- The public page loaded successfully with VerdictLayer branding visible.
+- The public page loaded successfully with the pre-rebrand product branding visible.
 - The GenLayer Studionet notice and disconnected-wallet state were displayed.
 - Claim, Task, and Dispute showed their GenLayer submit controls disabled without a wallet.
 - Module navigation and browser refresh worked.
@@ -117,7 +119,7 @@ The UI rendered the contract value `side_a` as the human-readable verdict "side 
 
 ## Final Status
 
-VerdictLayer is publicly deployed and its Claim, Task, and Dispute production workflows have all been manually verified from the live Vercel application using wallet-signed GenLayer Studionet transactions.
+Consenza is publicly deployed, and its Claim, Task, and Dispute production workflows have all been manually verified from the live Vercel application using wallet-signed GenLayer Studionet transactions.
 
 ## Remaining Submission Work
 

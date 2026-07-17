@@ -2,7 +2,7 @@
 
 ## Project
 
-VerdictLayer
+Consenza
 
 ## Test Summary
 
