@@ -56,7 +56,9 @@
 - All three modules are implemented behind `genlayer` mode.
 - Mock fallback preserved for all three modules.
 - Public Vercel deployment complete.
-- Public URL recorded: https://verdict-layer-seven.vercel.app/.
+- Public URL recorded: https://consenza-seven.vercel.app/.
+- External GitHub and Vercel rename completed.
+- New Consenza production domain smoke-tested without submitting a transaction.
 - Public disconnected-wallet state verified.
 - Public unsupported-network guard verified for all three modules.
 - Public Studionet switching and button recovery verified.

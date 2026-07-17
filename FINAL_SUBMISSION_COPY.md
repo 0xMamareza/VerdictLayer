@@ -30,15 +30,15 @@ Consenza supports Claim decisions, Task reviews, and Dispute resolutions through
 
 ## Live Application
 
-https://verdict-layer-seven.vercel.app/
-
-Public URL will be renamed during the external rebrand step.
+https://consenza-seven.vercel.app/
 
 ## GitHub
 
-https://github.com/0xMamareza/VerdictLayer
+https://github.com/0xMamareza/Consenza
 
-Repository will be renamed during the external rebrand step.
+## Network
+
+GenLayer Studionet
 
 ## Contract
 

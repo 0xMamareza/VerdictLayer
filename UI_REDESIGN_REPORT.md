@@ -62,7 +62,7 @@ The redesigned interface was manually reviewed by the project owner on desktop a
 
 ## Public Deployment Verification
 
-- The approved redesign is live at https://verdict-layer-seven.vercel.app/.
+- The approved redesign is live at https://consenza-seven.vercel.app/.
 - The alternative Variant B experiment was rejected and removed without changing `main`.
 - Desktop and public interaction review passed.
 - Wallet connection, unsupported-network blocking, and Studionet switching passed publicly.

@@ -19,7 +19,7 @@ const sampleTaskInput: TaskVerdictContractInput = {
   taskRequirements: "Submit contract address, transaction hash, README, and screenshot.",
   contractAddress: "0x123456789",
   transactionHash: "0xtesthash123",
-  githubRepoUrl: "https://github.com/0xMamareza/VerdictLayer",
+  githubRepoUrl: "https://github.com/0xMamareza/Consenza",
   explanation:
     "Consenza uses its deterministic GenLayer contract and includes proof fields for the builder task validation flow.",
 };

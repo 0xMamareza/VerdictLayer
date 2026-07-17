@@ -1,10 +1,10 @@
 # Consenza Public Deployment Test Report
 
-These tests were originally completed before the public Consenza rebrand. The deployed contract, transaction evidence, and integration behavior are unchanged.
+The original public deployment used a previous Vercel domain before the Consenza external rebrand. The frontend project, deployed contract, transaction evidence, and integration behavior remain unchanged.
 
 ## Deployment
 
-- Public URL: https://verdict-layer-seven.vercel.app/
+- Public URL: https://consenza-seven.vercel.app/
 - Hosting provider: Vercel
 - Frontend type: static Vite application
 - Network: GenLayer Studionet
@@ -14,11 +14,13 @@ These tests were originally completed before the public Consenza rebrand. The de
 
 ## Public Smoke Test
 
-- The public page loaded successfully with the pre-rebrand product branding visible.
+- The new public domain loaded successfully with Consenza branding visible.
 - The GenLayer Studionet notice and disconnected-wallet state were displayed.
 - Claim, Task, and Dispute showed their GenLayer submit controls disabled without a wallet.
 - Module navigation and browser refresh worked.
 - Diagnostics remained hidden.
+- Claim Decisions, Task Reviews, and Dispute Resolutions rendered and navigated successfully.
+- Wallet and network behavior was verified without submitting a transaction during the rebrand smoke test.
 - No layout, blank-screen, or runtime error was observed.
 - Status: passed
 

@@ -64,11 +64,13 @@ Public deployment preparation completed. Consenza is a static Vite frontend with
 
 UI status: Consenza has completed a manually approved premium GenLayer-themed redesign. The app now includes a high-end landing page, refined workspace, unified wallet/network dock, accessible About GenLayer menu, redesigned forms/results, and a single Built By 0xMamareza creator signature. Functional GenLayer integration remains unchanged.
 
-Public deployment status: Consenza is live on Vercel at https://verdict-layer-seven.vercel.app/. The approved GenLayer-themed UI, wallet/network flow, diagnostics gating, and all three production workflows were manually verified from the public site. Claim, Task, and Dispute each completed wallet-signed Studionet transactions and rendered typed read-after-write results.
+Public deployment status: Consenza is live on Vercel at https://consenza-seven.vercel.app/. The approved GenLayer-themed UI, wallet/network flow, diagnostics gating, and all three production workflows were manually verified from the public site. Claim, Task, and Dispute each completed wallet-signed Studionet transactions and rendered typed read-after-write results.
+
+External rebrand status: GitHub repository, local remote, Vercel project, and production domain updated. The new public domain was smoke-tested without submitting a transaction.
 
 Submission package status: README, checklist, and demo script prepared.
 
-Published repository: https://github.com/0xMamareza/VerdictLayer
+Published repository: https://github.com/0xMamareza/Consenza
 
 ## Current Contract Status
 

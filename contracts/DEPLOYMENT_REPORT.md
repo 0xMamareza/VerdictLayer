@@ -58,7 +58,7 @@ Consenza's `VerdictLayer` v0.1 deterministic contract deployed successfully and 
 
 ## Public Frontend Deployment
 
-- Public frontend URL: https://verdict-layer-seven.vercel.app/
+- Public frontend URL: https://consenza-seven.vercel.app/
 - Hosting provider: Vercel
 - Deployment status: live and verified
 - Public environment mode: `genlayer`

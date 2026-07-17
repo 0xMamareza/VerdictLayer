@@ -6,7 +6,7 @@ Submit evidence, review completed work, and resolve disputes through wallet-sign
 
 Built on GenLayer.
 
-GitHub Repository: https://github.com/0xMamareza/VerdictLayer
+GitHub Repository: https://github.com/0xMamareza/Consenza
 
 ## What Consenza Is
 
@@ -139,7 +139,7 @@ Production safety: disconnected-wallet and unsupported-network guards are verifi
 
 ## Public Deployment
 
-Consenza is live at https://verdict-layer-seven.vercel.app/ as a static Vite application connected to GenLayer Studionet. Claim, Task, and Dispute were each verified publicly with wallet-signed transactions and typed read-after-write results. Diagnostics are hidden in the public deployment.
+Consenza is live at https://consenza-seven.vercel.app/ as a static Vite application connected to GenLayer Studionet. Claim, Task, and Dispute were each verified publicly with wallet-signed transactions and typed read-after-write results. Diagnostics are hidden in the public deployment.
 
 Public deployment status:
 
@@ -155,11 +155,14 @@ Deployment preparation is documented in [PUBLIC_DEPLOYMENT_READINESS.md](PUBLIC_
 ## Consenza Status
 
 - Product: Consenza
+- Public deployment: live
+- Public URL: https://consenza-seven.vercel.app/
+- Repository: https://github.com/0xMamareza/Consenza
 - Network: GenLayer Studionet
-- Claim: verified
-- Task: verified
-- Dispute: verified
-- Public deployment: live at https://verdict-layer-seven.vercel.app/ pending external URL rename
+- Claim Decisions: verified
+- Task Reviews: verified
+- Dispute Resolutions: verified
+- Diagnostics: hidden publicly
 
 ## Roadmap
 

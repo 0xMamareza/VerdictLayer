@@ -6,7 +6,7 @@
 - The production build passes with the existing non-blocking Vite warnings documented below.
 - Claim, Task, and Dispute production forms are connected to GenLayer behind `genlayer` mode and have been manually verified on Studionet.
 - Deterministic mock fallback remains available through `mock` mode.
-- The public deployment is live at https://verdict-layer-seven.vercel.app/.
+- The public deployment is live at https://consenza-seven.vercel.app/.
 
 ## UI Redesign Deployment Status
 
@@ -75,7 +75,7 @@ Maintainers can enable diagnostics for a deliberate technical demo. Enabling the
 
 ## Public Deployment Completed
 
-- Vercel deployment completed at https://verdict-layer-seven.vercel.app/.
+- Vercel deployment completed at https://consenza-seven.vercel.app/.
 - Site-root static hosting works.
 - Public environment variables are configured for `genlayer` mode and Studionet.
 - Diagnostics are hidden.

@@ -15,7 +15,7 @@ Consenza
 - GitHub repository name
 - Vercel project name and URL
 
-This code phase does not rename or redeploy the verified contract, change integration behavior, rename the local project directory, or change external GitHub and Vercel resources.
+The external rebrand changed public repository and hosting identifiers without renaming or redeploying the verified contract, changing integration behavior, or renaming the local project directory.
 
 ## Completed in This Code Phase
 
@@ -43,24 +43,27 @@ These values are compatibility internals, not public branding.
 
 ## Current External Identifiers
 
-- GitHub: https://github.com/0xMamareza/VerdictLayer
-- Vercel: https://verdict-layer-seven.vercel.app/
+- GitHub: https://github.com/0xMamareza/Consenza
+- Vercel: https://consenza-seven.vercel.app/
 
-These URLs remain active and intentionally unchanged during the local code phase.
+These are the active public repository and production application URLs.
 
-## Pending Manual External Renames
+## External Rebrand Completed
 
-- Rename the GitHub repository to Consenza.
-- Update the local Git remote.
-- Rename the Vercel project to `consenza` if available.
-- Assign the new Vercel production domain.
-- Confirm the GitHub integration remains connected.
-- Update tracked URLs after external renames.
-- Perform a public smoke test.
-- Perform one no-transaction wallet/network check.
+- GitHub repository renamed to Consenza.
+- Local Git remote updated to the renamed repository.
+- Vercel project renamed to `consenza`.
+- New production domain assigned: https://consenza-seven.vercel.app/.
+- Former production domain removed: https://verdict-layer-seven.vercel.app/.
+- GitHub `main` branch and commit history preserved.
+- Vercel Git integration remains functional.
+- New public domain manually smoke-tested.
+- Wallet and network flow manually verified without submitting a transaction.
+- Consenza branding verified on the public deployment.
+- Claim Decisions, Task Reviews, and Dispute Resolutions verified to render and navigate.
+- Diagnostics verified hidden publicly.
+- No contract redeployment or new transaction was performed for the external rebrand.
 
 ## Rollback
 
 `cd314e17444d8c74dd38cb58fad8990333872580`
-
-No external GitHub or Vercel rename is claimed as complete in this phase.

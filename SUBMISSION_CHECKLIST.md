@@ -58,7 +58,7 @@
 - [x] Mobile visual review completed.
 - [x] UI redesign approved.
 - [x] Public frontend deployed.
-- [x] Public URL recorded: https://verdict-layer-seven.vercel.app/.
+- [x] Public URL recorded: https://consenza-seven.vercel.app/.
 - [x] Approved UI deployed.
 - [x] Public desktop smoke test completed.
 - [x] Public wallet/network test completed.
@@ -66,7 +66,22 @@
 - [x] Public Task transaction documented.
 - [x] Public Dispute transaction documented.
 - [x] Public deployment report complete.
-- [ ] Final demo recording pending.
+- [x] GitHub repository renamed to Consenza.
+- [x] Local Git remote updated.
+- [x] Vercel project renamed to `consenza`.
+- [x] New Consenza public URL active.
+- [x] Old Vercel domain removed.
+- [x] New public domain smoke test passed.
+- [x] Public Consenza branding verified.
+- [x] Claim Decisions navigation verified.
+- [x] Task Reviews navigation verified.
+- [x] Dispute Resolutions navigation verified.
+- [x] Wallet/network flow verified without a transaction.
+- [x] Diagnostics hidden publicly.
+- [x] External rebrand completed.
+- [x] Final repository URL recorded.
+- [x] Final application URL recorded.
+- [ ] Demo recording optional; complete only if the submission platform requires it.
 - [ ] Final screenshots pending.
 - [x] Final submission copy prepared in `FINAL_SUBMISSION_COPY.md`.
 - [ ] Final submission review pending.
@@ -102,8 +117,9 @@
 
 ## Links
 
-- GitHub repo link: https://github.com/0xMamareza/VerdictLayer
+- GitHub repo link: https://github.com/0xMamareza/Consenza
+- Live application: https://consenza-seven.vercel.app/
 
 ## Final Submission Notes
 
-Use the reviewed copy in `FINAL_SUBMISSION_COPY.md`. External GitHub and Vercel renames remain a separate manual step documented in `CONSENZA_REBRAND_STATUS.md`.
+Use the reviewed copy in `FINAL_SUBMISSION_COPY.md`. The completed external GitHub and Vercel rebrand is documented in `CONSENZA_REBRAND_STATUS.md`.

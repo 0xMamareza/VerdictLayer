@@ -167,7 +167,7 @@ All three transactions were manually wallet-signed from the production forms. Al
 
 ## Live Public Deployment Verification
 
-The evidence above records local browser production tests. A separate live Vercel verification was completed against https://verdict-layer-seven.vercel.app/ and is documented in [PUBLIC_DEPLOYMENT_TEST_REPORT.md](PUBLIC_DEPLOYMENT_TEST_REPORT.md).
+The evidence above records local browser production tests. A separate live Vercel verification was completed against https://consenza-seven.vercel.app/ and is documented in [PUBLIC_DEPLOYMENT_TEST_REPORT.md](PUBLIC_DEPLOYMENT_TEST_REPORT.md).
 
 | Module | Live transaction hash | Live typed result | Status |
 | --- | --- | --- | --- |
